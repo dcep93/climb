@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= gym.name %></title>
+	<link rel="shortcut icon" href="favicon.ico">
+</head>
+<body>
+	<a href="/">Home</a>
+	<div><%= gym.name %></div>
+	<div><%= gym.description %></div>
+	<br>
+	<div>
+		<p>Walls</p>
+		<br>
+		<% for (var wall of walls) { %>
+			<div>
+				<p>id: <%= wall.id %></p>
+				<p>name: <%= wall.name %></p>
+				<p>difficulty: <%= wall.difficulty %></p>
+				<p>location: <%= wall.location %></p>
+				<p>date: <%= wall.date %></p>
+				<p>setter: <%= wall.setter %></p>
+				<p>status: <%= wall.active ? 'active' : 'inactive' %></p>
+			</div>
+			<br>
+		<% } %>
+	</div>
+</body>
+</html>

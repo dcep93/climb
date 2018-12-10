@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The Climbing App</title>
+	<link rel="shortcut icon" href="favicon.ico">
+</head>
+<body>
+	<div>The Climbing App</div>
+	<div>
+		<% for (var gym of gyms) { %>
+			<p><a href="/gym/<%= gym.path %>"><%= gym.name %> | <%= gym.description %></p>
+		<% } %>
+	</div>
+</body>
+</html>
