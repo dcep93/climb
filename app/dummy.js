@@ -13,6 +13,7 @@ var walls = [
 		'date': '2018/12/13',
 		'setter': 'Dan',
 		'active': true,
+		'color': 'red',
 	},
 	{
 		'id': 456,
@@ -22,7 +23,12 @@ var walls = [
 		'date': '2018/12/13',
 		'setter': 'Eric',
 		'active': true,
+		'color': 'blue',
 	},
 ];
 
-module.exports = {dpb: dpb, walls: walls};
+var climbedWalls = [
+	123,
+];
+
+module.exports = {dpb: dpb, walls: walls, climbedWalls: climbedWalls};

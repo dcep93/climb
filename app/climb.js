@@ -19,10 +19,13 @@ app.get('/gym/:gym', function(req, res) {
 			res.redirect('/');
 		} else {
 			orm(req, res).getWalls(gym.id, (walls) =>
-				res.render('gym.ejs', {
-					gym: gym,
-					walls: walls,
-				})
+				orm(req, res).getClimbedWalls(gym.id, (climbedWalls) =>
+					res.render('gym.ejs', {
+						gym: gym,
+						walls: walls,
+						climbedWalls: climbedWalls,
+					})
+				)
 			);
 		}
 	});

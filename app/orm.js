@@ -17,6 +17,10 @@ class Orm {
 	getWalls(gymId, callback) {
 		callback(dummy.walls);
 	}
+
+	getClimbedWalls(gymId, callback) {
+		callback(dummy.climbedWalls);
+	}
 }
 
 module.exports = () => new Orm(...arguments);
