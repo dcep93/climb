@@ -11,10 +11,13 @@ var express = require('express');
 var path = require('path');
 
 var climb = require('./climb');
+var admin = require('./admin');
 
 var app = express();
 
 app.use(climb);
+
+app.use(admin);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
