@@ -14,6 +14,6 @@ fi
 
 echo "$(date) startup" | tee -a $LOG_FILE
 
-screen -dm bash -c "set -x; nodemon --delay 1 $INDEX; exec sh"
+screen -Dm bash -c "set -x; nodemon --watch $(dirname $INDEX) --delay 1 $INDEX; sh"
 
 echo "$(date) success" | tee -a $LOG_FILE

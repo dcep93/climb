@@ -15,6 +15,8 @@ var admin = require('./admin');
 
 var app = express();
 
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(climb);
 
 app.use(admin);
