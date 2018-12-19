@@ -14,10 +14,6 @@ fi
 
 echo "$(date) startup" | tee -a $LOG_FILE
 
-folder=$(dirname $INDEX)
-
-env_file="$folder/env.sh"
-
-screen -Dm bash -c "set -x; if [[ -f "$env_file" ]]; then source "$env_file"; fi; nodemon --watch $folder --delay 1 $INDEX; sh"
+screen -Dm bash -c "set -x; cd $(dirname $INDEX); if [[ -f "env.sh" ]]; then source "env.sh"; fi; nodemon --delay 1 $INDEX; sh"
 
 echo "$(date) success" | tee -a $LOG_FILE
