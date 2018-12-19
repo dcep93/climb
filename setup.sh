@@ -44,6 +44,7 @@ WantedBy=multi-user.target
 END
 systemctl daemon-reload
 systemctl enable climb
+systemctl start climb
 
 # accept http traffic
 iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-ports 8080
