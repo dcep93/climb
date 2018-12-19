@@ -3,7 +3,9 @@
 set -e
 set -o pipefail
 
-LOG_FILE=/var/log/climb.log
+NAME=climb
+
+LOG_FILE=/var/log/$NAME.log
 
 INDEX=$1
 
@@ -14,6 +16,6 @@ fi
 
 echo "$(date) startup" | tee -a $LOG_FILE
 
-screen -Dm bash -c "set -x; cd $(dirname $INDEX); if [[ -f env.sh ]]; then source env.sh; fi; nodemon --delay 1 $INDEX; sh"
+screen -S $NAME -Dm bash -c "set -x; cd $(dirname $INDEX); if [[ -f env.sh ]]; then source env.sh; fi; nodemon --delay 1 $INDEX; sh"
 
 echo "$(date) success" | tee -a $LOG_FILE
