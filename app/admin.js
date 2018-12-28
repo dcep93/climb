@@ -5,13 +5,16 @@ var app = express.Router();
 
 app.use('/pull', function(req, res) {
 	exec(`git -C ${__dirname} pull -f`, function(err, stdout, stderr) {
+		var sendString;
 		if (err) {
 			console.log(stderr);
-			res.status(500).send(stderr);
+			res.status(500);
+			sendString = stderr;
 		} else {
 			console.info(stdout);
-			res.send(stdout);
+			sendString = stdout;
 		}
+		res.send(`<pre>${sendString}</pre>`);
 	});
 });
 
