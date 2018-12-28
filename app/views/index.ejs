@@ -3,6 +3,8 @@
 <head>
 	<title>The Climbing App</title>
 	<link rel="shortcut icon" href="favicon.ico">
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<meta name="google-signin-client_id" content="<%= google_signin_client_id %>">
 </head>
 <body>
 	<div>The Climbing App</div>
@@ -11,5 +13,6 @@
 			<p><a href="/gym/<%= gym.path %>"><%= gym.name %> | <%= gym.description %></a></p>
 		<% } %>
 	</div>
+	<div class="g-signin2" data-onsuccess="onSignIn"></div>
 </body>
 </html>

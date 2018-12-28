@@ -1,12 +1,14 @@
 var express = require('express');
 
 var orm = require('./orm');
+var config = require('./config');
 
 var app = express.Router();
 
 app.get('/', function(req, res) {
 	orm(req, res).getAllGyms((gyms) => 
 		res.render('index.ejs', {
+			google_signin_client_id: config.google_signin_client_id,
 			gyms: gyms,
 		})
 	);
