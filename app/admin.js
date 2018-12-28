@@ -4,7 +4,7 @@ var exec = require('child_process').exec;
 var app = express.Router();
 
 app.use('/pull', function(req, res) {
-	exec(`git -C ${__dirname} pull`, function(err, stdout, stderr) {
+	exec(`git -C ${__dirname} pull -f`, function(err, stdout, stderr) {
 		if (err) {
 			console.log(stderr);
 			res.status(500).send(stderr);
