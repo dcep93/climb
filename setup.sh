@@ -11,6 +11,9 @@ set -o pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# write app config
+bash $DIR/setup_config_json.sh
+
 # install mysql
 bash $DIR/setup_mysql.sh
 
