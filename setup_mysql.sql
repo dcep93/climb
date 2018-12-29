@@ -15,8 +15,7 @@ CREATE TABLE users (
     is_verified BOOL NOT NULL DEFAULT FALSE,
     name TEXT,
     image TEXT,
-    PRIMARY KEY (id),
-    UNIQUE KEY google_id (google_id)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE gyms (
@@ -24,8 +23,7 @@ CREATE TABLE gyms (
     path VARCHAR(32) NOT NULL,
     name VARCHAR(32) NOT NULL,
     description TEXT NOT NULL,
-    PRIMARY KEY (id),
-    UNIQUE KEY path (path)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE walls (
@@ -38,8 +36,7 @@ CREATE TABLE walls (
     setter VARCHAR(32) NOT NULL,
     active BOOL NOT NULL,
     color VARCHAR(32) NOT NULL,
-    PRIMARY KEY (gym_id, id),
-    UNIQUE KEY id (id)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE climbed_walls (
@@ -48,7 +45,5 @@ CREATE TABLE climbed_walls (
     wall_id INT UNSIGNED NOT NULL,
     user_id INT UNSIGNED NOT NULL,
     active BOOL NOT NULL DEFAULT TRUE,
-    PRIMARY KEY (id),
-    UNIQUE KEY gym_id_wall_id_user_id(gym_id, wall_id, user_id),
-    KEY user_id(user_id)
+    PRIMARY KEY (id)
 );
