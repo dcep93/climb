@@ -39,7 +39,7 @@ app.get('/gym/:gym', function(req, res) {
 	var gymName = req.params.gym;
 	orm(req, res).getGym(gymName, function (gym) {
 		if (gym === null) {
-			res.redirect('/');
+			res.sendStatus(404);
 		} else {
 			this.getWalls(gym.id, (walls) =>
 				this.getClimbedWalls(gym.id, (climbedWalls) =>
