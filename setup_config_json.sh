@@ -5,7 +5,7 @@ set -o pipefail
 DIR=$1
 
 echo -n "google signin client id: "
-read -s GOOGLE_SIGNIN_CLIENT_ID
+read GOOGLE_SIGNIN_CLIENT_ID
 
 echo -n "mysql password: "
 read -s MYSQL_PASSWORD
