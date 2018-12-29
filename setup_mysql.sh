@@ -11,8 +11,6 @@ apt-get install -y mysql-server
 systemctl start mysql
 # systemctl enable mysql
 
-cmd="UPDATE mysql.user SET Password = PASSWORD('$MYSQL_PASSWORD') WHERE User = 'root'; FLUSH PRIVILEGES"
+mysql -e "set @pw=${MYSQL_PASSWORD}; source $DIR/setup_mysql.sql"
 
-mysql -e "$cmd"
-
-ufw allow mysql
+iptables -A INPUT -i eth0 -p tcp -m tcp --dport 3306 -j ACCEPT
