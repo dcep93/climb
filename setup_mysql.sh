@@ -11,6 +11,6 @@ apt-get install -y mysql-server
 systemctl start mysql
 # systemctl enable mysql
 
-mysql -e "set @pw=${MYSQL_PASSWORD}; source $DIR/setup_mysql.sql"
+mysql -e "set @pw='${MYSQL_PASSWORD}'; `cat $DIR/setup_mysql.sql`"
 
 iptables -A INPUT -i eth0 -p tcp -m tcp --dport 3306 -j ACCEPT

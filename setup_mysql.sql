@@ -1,3 +1,4 @@
+
 DROP USER 'root'@'localhost';
 CREATE USER 'root'@'%' IDENTIFIED BY @pw;
 GRANT ALL PRIVILEGES TO *.* TO 'root'@'%' WITH GRANT OPTION;
@@ -8,10 +9,10 @@ USE climb;
 
 CREATE TABLE users (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    google_id VARCHAR NOT NULL,
+    google_id VARCHAR(32) NOT NULL,
     timestamp TIMESTAMP NOT NULL,
-    name VARCHAR,
-    image VARCHAR,
+    name TEXT,
+    image TEXT,
     PRIMARY KEY (id),
     UNIQUE KEY google_id (google_id)
 );
