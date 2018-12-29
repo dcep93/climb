@@ -37,17 +37,14 @@ app.post('/logout', function(req, res) {
 
 app.get('/gym/:gym', function(req, res) {
 	var gymName = req.params.gym;
-	orm(req, res).getGym(gymName, (gym) => {
+	var o = orm(req, res);
+	o.getGym(gymName, function (gym) {
 		if (gym === null) {
 			res.redirect('/');
 		} else {
-			orm(req, res).getWalls(gym.id, (walls) =>
-				orm(req, res).getClimbedWalls(gym.id, (climbedWalls) =>
-					res.render('gym.ejs', {
-						gym: gym,
-						walls: walls,
-						climbedWalls: climbedWalls,
-					})
+			o.getWalls(gym.id, (walls) =>
+				o.getClimbedWalls(gym.id, (climbedWalls) =>
+					res.render('gym.ejs', { gym, walls, climbedWalls})
 				)
 			);
 		}

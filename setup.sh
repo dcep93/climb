@@ -9,13 +9,17 @@ set -e
 set -x
 set -o pipefail
 
+apt-get update
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+which jq || apt-get install -y jq
+
 # write app config
-bash $DIR/setup_config_json.sh
+if [[ ! -f "$DIR/app/config.json" ]]; then bash $DIR/setup_config_json.sh $DIR; fi
 
 # install mysql
-bash $DIR/setup_mysql.sh
+which mysql || bash $DIR/setup_mysql.sh $DIR
 
 # install nodejs
 which node || ( curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -y nodejs )
