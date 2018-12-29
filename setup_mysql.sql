@@ -11,6 +11,8 @@ CREATE TABLE users (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     google_id VARCHAR(32) NOT NULL,
     timestamp TIMESTAMP NOT NULL,
+    is_admin BOOL NOT NULL DEFAULT FALSE,
+    is_verified BOOL NOT NULL DEFAULT FALSE,
     name TEXT,
     image TEXT,
     PRIMARY KEY (id),
@@ -42,10 +44,11 @@ CREATE TABLE walls (
 
 CREATE TABLE climbed_walls (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    gym_id INT UNSIGNED NOT NULL,
     wall_id INT UNSIGNED NOT NULL,
     user_id INT UNSIGNED NOT NULL,
     active BOOL NOT NULL DEFAULT TRUE,
     PRIMARY KEY (id),
-    UNIQUE KEY wall_id_user_id(wall_id, user_id),
+    UNIQUE KEY gym_id_wall_id_user_id(gym_id, wall_id, user_id),
     KEY user_id(user_id)
 );
