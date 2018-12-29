@@ -36,8 +36,8 @@ app.post('/logout', function(req, res) {
 });
 
 app.get('/gym/:gym', function(req, res) {
-	var gymName = req.params.gym;
-	orm(req, res).getGym(gymName, function (gym) {
+	var gymPath = req.params.gym;
+	orm(req, res).getGym(gymPath, function (gym) {
 		if (gym === null) {
 			res.sendStatus(404);
 		} else {

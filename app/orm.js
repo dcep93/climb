@@ -42,8 +42,8 @@ class Orm {
 		this.query(callback, 'SELECT * FROM gyms');
 	}
 
-	getGym(gymName, callback) {
-		this.query(callback, 'SELECT * FROM gyms WHERE name = ?', [gymName], true);
+	getGym(gymPath, callback) {
+		this.query(callback, 'SELECT * FROM gyms WHERE path = ?', [gymPath], true);
 	}
 
 	getWalls(gymId, callback) {
