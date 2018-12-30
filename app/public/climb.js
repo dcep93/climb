@@ -1,18 +1,29 @@
 function onSignIn(googleUser) {
+    if (loggedIn()) return;
     var id_token = googleUser.getAuthResponse().id_token;
-    $.post('/login', {id_token: id_token}, signIn);
+    var refreshLock = lock(refresh, 2);
+    $.post('/login', {id_token: id_token}, refreshLock);
+    refreshLock();
 }
 
-function signIn(data) {
-    console.log('success');
-    console.log(data);
+function lock(f, times) {
+    var remaining = times;
+    return function() {
+        if (--remaining === 0) f();
+    }
+}
+
+function refresh() {
+    location.reload();
 }
 
 function signOut() {
-    $.post('/logout');
+    var refreshLock = lock(refresh, 2);
+    $.post('/logout', undefined, refreshLock);
     gapi.auth2.getAuthInstance().signOut();
+    refreshLock();
 }
 
-$(document).ready(function() {
-    $('#sign-in-button').hide();
-});
+function loggedIn() {
+    return $('meta[name=is-signed-in]').attr('content') === 'true';
+}

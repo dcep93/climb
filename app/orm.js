@@ -36,7 +36,7 @@ class Orm {
 			try {
 				callback.bind(thisOrm)(results);
 			} catch (e) {
-				return thisOrm.err(e.err);
+				return thisOrm.err(e);
 			}
 		});
 	}
@@ -84,6 +84,10 @@ class Orm {
 			this.req.session.climbed[wallId] = climbed;
 			this.res.sendStatus(200);
 		}
+	}
+
+	upsertUser(googleId, name, image, callback) {
+		this.query((packet) => callback(packet.insertId), 'REPLACE INTO users (google_id, name, image) VALUES (?,?,?)', [googleId, name, image]);
 	}
 }
 

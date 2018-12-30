@@ -9,6 +9,7 @@ var app = express.Router();
 app.get('/', function(req, res) {
 	orm(req, res).getAllGyms((gyms) => 
 		res.render('index.ejs', {
+			isSignedIn: req.session.userId !== undefined,
 			google_signin_client_id: config.google_signin_client_id,
 			gyms: gyms,
 		})
@@ -23,15 +24,15 @@ app.post('/login', function(req, res) {
 		audience: config.clientId,
 	}).then(function(ticket) {
 		var payload = ticket.getPayload();
-		res.send({
-			userId: payload['sub'],
-			name: payload['name'],
-			image: payload['picture'],
+		orm(req, res).upsertUser(payload['sub'], payload['name'], payload['picture'], (userId) => {
+			req.session.userId = userId;
+			res.sendStatus(200);
 		});
 	});
 });
 
 app.post('/logout', function(req, res) {
+	req.session.userId = undefined;
 	res.sendStatus(200);
 });
 
