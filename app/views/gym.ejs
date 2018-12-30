@@ -3,6 +3,9 @@
 <head>
 	<title><%= gym.name %></title>
 	<link rel="shortcut icon" href="/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="/assets/bootstrap/bootstrap.css">
+	<script type="text/javascript" src="/assets/jquery/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="/gym.js"></script>
 </head>
 <body>
 	<a href="/">Home</a>
@@ -13,7 +16,7 @@
 		<p>Walls</p>
 		<br>
 		<% for (var wall of walls) { %>
-			<div>
+			<div class="wall" data-wall-id="<%= wall.id %>">
 				<p>id: <%= wall.id %></p>
 				<p>name: <%= wall.name %></p>
 				<p>difficulty: <%= wall.difficulty %></p>
@@ -22,7 +25,7 @@
 				<p>setter: <%= wall.setter %></p>
 				<p>color: <%= wall.color %></p>
 				<p>status: <%= wall.active ? 'active' : 'inactive' %></p>
-				<p>climbed: <input type="checkbox" <%= climbedWalls.indexOf(wall.id) !== -1 ? 'checked ' : '' %></p>
+				<p>climbed: <input class="wall-climbed-checkbox" type="checkbox" <%= climbedWalls.indexOf(wall.id) !== -1 ? 'checked ' : '' %></p>
 			</div>
 			<br>
 		<% } %>

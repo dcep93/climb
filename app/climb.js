@@ -35,19 +35,26 @@ app.post('/logout', function(req, res) {
 	res.sendStatus(200);
 });
 
-app.get('/gym/:gym', function(req, res) {
-	var gymPath = req.params.gym;
+app.get('/gym/:gym_path', function(req, res) {
+	var gymPath = req.params.gym_path;
 	orm(req, res).getGym(gymPath, function (gym) {
 		if (gym === null) {
 			res.sendStatus(404);
 		} else {
-			this.getWalls(gym.id, (walls) =>
-				this.getClimbedWalls(gym.id, (climbedWalls) =>
+			this.getWalls(gym.id, (walls) => 
+				this.getClimbedWalls(gymPath, (climbedWalls) =>
 					res.render('gym.ejs', { gym, walls, climbedWalls})
 				)
 			);
 		}
 	});
+});
+
+app.post('/gym/:gym_path/:wall_id/climb', function(req, res) {
+	var gymPath = req.params.gym_path;
+	var wallId = req.params.wall_id;
+	var climbed = req.body.climbed;
+	orm(req, res).setClimbed(gymPath, wallId, climbed);
 });
 
 module.exports = app;

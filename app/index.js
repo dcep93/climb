@@ -9,17 +9,25 @@ console.log = function() {
 
 var express = require('express');
 var path = require('path');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var cookieSession = require('cookie-session');
 
 var climb = require('./climb');
 var admin = require('./admin');
+var config = require('./config');
 
 var app = express();
+
+app.set('trust proxy', 1); // trust first proxy
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set('views', path.join(__dirname, 'views'));
+app.use(cookieSession({
+	name: 'session',
+	secret: config.cookie_secret || '*'
+}));
 
 app.use(climb);
 
