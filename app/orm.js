@@ -87,7 +87,11 @@ class Orm {
 	}
 
 	upsertUser(googleId, name, image, callback) {
-		this.query((packet) => callback(packet.insertId), 'REPLACE INTO users (google_id, name, image) VALUES (?,?,?)', [googleId, name, image]);
+		this.query(function (packet) { callback.bind(this)(packet.insertId) }, 'INSERT INTO users (google_id, name, image) VALUES (?,?,?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=?, image=?', [googleId, name, image, name, image]);
+	}
+
+	setAdmin(userId) {
+		this.update('UPDATE users SET is_admin = true, is_verified = true WHERE id = ?' [userId]);
 	}
 }
 

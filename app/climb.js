@@ -6,6 +6,8 @@ var config = require('./config');
 
 var app = express.Router();
 
+var alreadySetInitialAdmin = false;
+
 app.get('/', function(req, res) {
 	orm(req, res).getAllGyms((gyms) => 
 		res.render('index.ejs', {
@@ -26,6 +28,10 @@ app.post('/login', function(req, res) {
 		var payload = ticket.getPayload();
 		orm(req, res).upsertUser(payload['sub'], payload['name'], payload['picture'], (userId) => {
 			req.session.userId = userId;
+			if (!alreadySetInitialAdmin && userId === 1) {
+				alreadySetInitialAdmin = true;
+				return this.setAdmin(userId);
+			}
 			res.sendStatus(200);
 		});
 	});

@@ -10,12 +10,13 @@ USE climb;
 CREATE TABLE users (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     google_id VARCHAR(32) NOT NULL,
-    timestamp TIMESTAMP NOT NULL,
     is_admin BOOL NOT NULL DEFAULT FALSE,
     is_verified BOOL NOT NULL DEFAULT FALSE,
     name TEXT,
     image TEXT,
-    PRIMARY KEY (id)
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY google_id (google_id)
 );
 
 CREATE TABLE gyms (
@@ -23,6 +24,7 @@ CREATE TABLE gyms (
     path VARCHAR(32) NOT NULL,
     name VARCHAR(32) NOT NULL,
     description TEXT NOT NULL,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
 
@@ -36,6 +38,7 @@ CREATE TABLE walls (
     setter VARCHAR(32) NOT NULL,
     active BOOL NOT NULL,
     color VARCHAR(32) NOT NULL,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
 
@@ -45,5 +48,6 @@ CREATE TABLE climbed_walls (
     wall_id INT UNSIGNED NOT NULL,
     user_id INT UNSIGNED NOT NULL,
     active BOOL NOT NULL DEFAULT TRUE,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
