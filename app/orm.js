@@ -64,7 +64,7 @@ class Orm {
 			if (climbed !== undefined) {
 				var walls = [];
 				for (var wallId in climbed) {
-					if (climbed[wallId] === 'true') walls.push(Number.parseInt(wallId));
+					if (climbed[wallId]) walls.push(Number.parseInt(wallId));
 				}
 				callback(walls);
 			} else {
