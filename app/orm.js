@@ -79,7 +79,7 @@ class Orm {
 			this.update('INSERT INTO climbed_walls (active, gym_path, wall_id, user_id) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE active = ?', [active, gymPath, wallId, userId, active]);
 		} else {
 			if (this.req.session.climbed === undefined) this.req.session.climbed = {};
-			this.req.session.climbed[wallId] = climbed;
+			this.req.session.climbed[wallId] = active;
 			this.res.sendStatus(200);
 		}
 	}
