@@ -28,8 +28,8 @@ class Orm {
 				console.error(q);
 				return thisOrm.next(err);
 			}
-			if (useSingleCol && results.length > 0) results = results.map((row) => row[fields[0].name]);
-			if (useSingleRow && results.length > 0) results = results[0];
+			if (useSingleCol && fields.length > 0) results = results.map((row) => row[fields[0].name]);
+			if (useSingleRow) results = results[0];
 			try {
 				callback.bind(thisOrm)(results);
 			} catch (e) {

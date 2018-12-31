@@ -47,7 +47,7 @@ app.get('/gym/:gym_path', function(req, res, next) {
 	var gymPath = req.params.gym_path;
 	var common = req.common;
 	orm(req, res, next).getGym(gymPath, function (gym) {
-		if (gym === null) {
+		if (gym === undefined) {
 			res.sendStatus(404);
 		} else {
 			this.getWalls(gym.id, (walls) => 
