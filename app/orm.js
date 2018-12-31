@@ -15,28 +15,26 @@ function connect() {
 }
 
 class Orm {
-	constructor(req, res) {
+	constructor(req, res, next) {
 		this.req = req;
 		this.res = res;
-	}
-
-	err(e) {
-		console.error(e);
-		this.res.status(500).send(e);
+		this.next = next;
 	}
 
 	query(callback, q, params, useSingleRow, useSingleCol) {
 		var thisOrm = this;
 		conn.query(q, params, function(err, results, fields) {
 			if (err) {
-				return thisOrm.err(err);
+				console.error(q);
+				return thisOrm.next(err);
 			}
-			if (useSingleCol && results.length > 0) results = results.map((row) => row[fields[0]]);
+			if (useSingleCol && results.length > 0) results = results.map((row) => row[fields[0].name]);
 			if (useSingleRow && results.length > 0) results = results[0];
 			try {
 				callback.bind(thisOrm)(results);
 			} catch (e) {
-				return thisOrm.err(e);
+				console.error(q);
+				return thisOrm.next(e);
 			}
 		});
 	}
@@ -60,7 +58,7 @@ class Orm {
 	getClimbedWalls(gymPath, callback) {
 		var userId = this.req.session.userId;
 		if (userId !== undefined) {
-			this.query(callback, 'SELECT id FROM climbed_walls WHERE gym_path = ? AND user_id = ?', [gymPath, userId], false, true);
+			this.query(callback, 'SELECT wall_id FROM climbed_walls WHERE gym_path = ? AND user_id = ? AND active', [gymPath, userId], false, true);
 		} else {
 			var climbed = this.req.session.climbed;
 			if (climbed !== undefined) {
@@ -75,10 +73,10 @@ class Orm {
 		}
 	}
 
-	setClimbed(gymPath, wallId, climbed) {
+	setClimbed(gymPath, wallId, active) {
 		var userId = this.req.session.userId;
 		if (userId !== undefined) {
-			this.update('UPDATE climbed_walls SET active = ? WHERE gym_path = ? AND wall_id = ?', [climbed, gymPath, wallId]);
+			this.update('INSERT INTO climbed_walls (active, gym_path, wall_id, user_id) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE active = ?', [active, gymPath, wallId, userId, active]);
 		} else {
 			if (this.req.session.climbed === undefined) this.req.session.climbed = {};
 			this.req.session.climbed[wallId] = climbed;
@@ -87,7 +85,7 @@ class Orm {
 	}
 
 	upsertUser(googleId, name, image, callback) {
-		this.query(function (packet) { callback.bind(this)(packet.insertId) }, 'INSERT INTO users (google_id, name, image) VALUES (?,?,?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=?, image=?', [googleId, name, image, name, image]);
+		this.query((packet) => callback(packet.insertId), 'INSERT INTO users (google_id, name, image) VALUES (?,?,?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=?, image=?', [googleId, name, image, name, image]);
 	}
 
 	setAdmin(userId) {

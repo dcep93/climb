@@ -47,7 +47,8 @@ CREATE TABLE climbed_walls (
     gym_path VARCHAR(32) NOT NULL,
     wall_id INT UNSIGNED NOT NULL,
     user_id INT UNSIGNED NOT NULL,
-    active BOOL NOT NULL DEFAULT TRUE,
+    active BOOL NOT NULL,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE KEY gym_path_wall_id_user_id (gym_path, wall_id, user_id)
 );
