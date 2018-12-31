@@ -6,4 +6,4 @@
 ### clone this repo
 `git clone https://github.com/dcep93/climb`
 
-[`./setup.sh`](setup.sh)
+[`bash ./setup/setup.sh`](setup/setup.sh)

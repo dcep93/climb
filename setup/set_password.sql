@@ -1,0 +1,5 @@
+
+DROP USER 'root'@'localhost';
+CREATE USER 'root'@'%' IDENTIFIED BY @pw;
+GRANT ALL PRIVILEGES TO *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;

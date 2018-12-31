@@ -16,7 +16,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 which jq || apt-get install -y jq
 
 # write app config
-if [[ ! -f "$DIR/app/config.json" ]]; then bash $DIR/setup_config_json.sh $DIR; fi
+if [[ ! -f "$DIR/../app/config.json" ]]; then bash $DIR/setup_config_json.sh $DIR; fi
 
 # install mysql
 which mysql || bash $DIR/setup_mysql.sh $DIR
@@ -28,11 +28,11 @@ which node || ( curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-ge
 which nodemon || npm install --global nodemon
 
 if [ ! -d $DIR/app/node_modules ]; then
-	( cd $DIR/app && npm install )
+	( cd $DIR/../app && npm install )
 fi
 
-STARTUP_SCRIPT=$DIR/run.sh
-INDEX=$DIR/app/index.js
+STARTUP_SCRIPT=$DIR/../run.sh
+INDEX=$DIR/../app/index.js
 
 # server service
 cat <<END > /etc/systemd/system/climb.service
