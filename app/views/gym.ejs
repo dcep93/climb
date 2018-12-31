@@ -2,12 +2,11 @@
 <html>
 <head>
 	<title><%= gym.name %></title>
-	<link rel="shortcut icon" href="/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="/assets/bootstrap/bootstrap.css">
-	<script type="text/javascript" src="/assets/jquery/jquery-1.12.4.min.js"></script>
+	<%- include('head.ejs') %>
 	<script type="text/javascript" src="/gym.js"></script>
 </head>
 <body>
+	<%- include('signin.ejs') %>
 	<a href="/">Home</a>
 	<div><%= gym.name %></div>
 	<div><%= gym.description %></div>

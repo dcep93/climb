@@ -6,11 +6,18 @@ var config = require('./config');
 
 var app = express.Router();
 
+app.use(function(req, res, next) {
+	req.common = {
+		isSignedIn: req.session.userId !== undefined,
+		google_signin_client_id: config.google_signin_client_id,
+	}
+	next();
+});
+
 app.get('/', function(req, res, next) {
 	orm(req, res, next).getAllGyms((gyms) => 
 		res.render('index.ejs', {
-			isSignedIn: req.session.userId !== undefined,
-			google_signin_client_id: config.google_signin_client_id,
+			common: req.common,
 			gyms: gyms,
 		})
 	);
@@ -38,13 +45,14 @@ app.post('/logout', function(req, res) {
 
 app.get('/gym/:gym_path', function(req, res, next) {
 	var gymPath = req.params.gym_path;
+	var common = req.common;
 	orm(req, res, next).getGym(gymPath, function (gym) {
 		if (gym === null) {
 			res.sendStatus(404);
 		} else {
 			this.getWalls(gym.id, (walls) => 
 				this.getClimbedWalls(gymPath, (climbedWalls) =>
-					res.render('gym.ejs', { gym, walls, climbedWalls})
+					res.render('gym.ejs', { common, gym, walls, climbedWalls})
 				)
 			);
 		}
