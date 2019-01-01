@@ -64,7 +64,7 @@ app.get('/gym/:gym_path', function(req, res, next) {
 
 app.get('/gym/:gym_path/edit', function(req, res, next) {
 	var gymPath = req.params.gym_path;
-	if (!res.locals.user.is_verified) return res.redirect('/gym/'+gymPath);
+	if (!res.locals.common.user.is_verified) return res.redirect('/gym/'+gymPath);
 	orm(req, res, next).getGym(gymPath, function (gym) {
 		if (gym === undefined) return res.sendStatus(404);
 		this.getWalls(gymPath, (walls) =>
