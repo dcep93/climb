@@ -19,6 +19,8 @@ $(document).ready(function() {
     });
 
     var dateParts = new Date().toLocaleDateString('en-US').split('/');
+    if (dateParts[0].length === 1) dateParts[0] = '0'+dateParts[0];
+    if (dateParts[1].length === 1) dateParts[1] = '0'+dateParts[1];
     var today = dateParts[2]+'-'+dateParts[0]+'-'+dateParts[1];
     $('form.new-wall-form input[name=date]').val(today);
 });
