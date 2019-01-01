@@ -1,4 +1,8 @@
 <div>
+<% if (common.user.id === undefined) { %>
     <div id="sign-in-button" class="g-signin2" data-onsuccess="onSignIn"></div>
-    <a href="" onclick="signOut(); return false;">Sign out</a>
+<% } else { %>
+    <a href="" onclick="signOut(); return false;">Sign out</a><br>
+    <a href="/user/<%= common.user.id %>">Profile</a><br>
+<% } %>
 </div>

@@ -96,10 +96,6 @@ class Orm {
 		this.query(callback, 'SELECT * FROM users WHERE id = ?', [userId], true);
 	}
 
-	setAdmin(userId) {
-		this.update('UPDATE users SET is_admin = true, is_verified = true WHERE id = ?' [userId]);
-	}
-
 	editWall(gymPath, wallId, name, difficulty, location, date, setter, color, active) {
 		this.update(
 			'UPDATE walls SET name = ?, difficulty = ?, location = ?, date = ?, setter = ?, color = ?, active = ? WHERE gym_path = ? and id = ?',
@@ -112,6 +108,26 @@ class Orm {
 			'INSERT INTO walls (gym_path, name, difficulty, location, date, setter, color, active) VALUES (?,?,?,?,?,?,?,?)',
 			[gymPath, name, difficulty, location, date, setter, color, active]
 		);
+	}
+
+	getUserNumClimbedWalls(userId, callback) {
+		this.query(callback, 'SELECT COUNT(*) FROM climbed_walls WHERE active and user_id = ?', [userId], true, true);
+	}
+
+	updateUserStatus(userId, isAdmin, isVerified) {
+		var updateStrings = [];
+		var parameters = [];
+		if (isAdmin !== undefined) {
+			updateStrings.push('is_admin = ?');
+			parameters.push(isAdmin);
+		}
+		if (isVerified !== undefined) {
+			updateStrings.push('is_verified = ?');
+			parameters.push(isVerified);
+		}
+		var q = updateStrings.join(', ')
+		parameters.push(userId);
+		this.update('UPDATE users SET '+q+' WHERE id = ?', parameters);
 	}
 }
 
