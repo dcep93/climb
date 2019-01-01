@@ -19,12 +19,13 @@ CREATE TABLE gyms (
     name VARCHAR(32) NOT NULL,
     description TEXT NOT NULL,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE KEY path (path)
 );
 
 CREATE TABLE walls (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    gym_id INT UNSIGNED NOT NULL,
+    gym_path VARCHAR(32) NOT NULL,
     name VARCHAR(32) NOT NULL,
     difficulty VARCHAR(32) NOT NULL,
     location VARCHAR(32) NOT NULL,
@@ -33,7 +34,7 @@ CREATE TABLE walls (
     active BOOL NOT NULL,
     color VARCHAR(32) NOT NULL,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    PRIMARY KEY (gym_path, id)
 );
 
 CREATE TABLE climbed_walls (

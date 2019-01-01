@@ -51,8 +51,8 @@ class Orm {
 		this.query(callback, 'SELECT * FROM gyms WHERE path = ?', [gymPath], true);
 	}
 
-	getWalls(gymId, callback) {
-		this.query(callback, 'SELECT * FROM walls WHERE gym_id = ?', [gymId]);
+	getWalls(gymPath, callback) {
+		this.query(callback, 'SELECT * FROM walls WHERE gym_path = ?', [gymPath]);
 	}
 
 	getClimbedWalls(gymPath, callback) {
@@ -84,12 +84,27 @@ class Orm {
 		}
 	}
 
+	insert(callback, q, params) {
+		this.query((packet) => callback.bind(this)(packet.insertId), q, params);
+	}
+
 	upsertUser(googleId, name, image, callback) {
-		this.query((packet) => callback(packet.insertId), 'INSERT INTO users (google_id, name, image) VALUES (?,?,?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=?, image=?', [googleId, name, image, name, image]);
+		this.insert(callback, 'INSERT INTO users (google_id, name, image) VALUES (?,?,?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=?, image=?', [googleId, name, image, name, image]);
+	}
+
+	getUser(userId, callback) {
+		this.query(callback, 'SELECT * FROM users WHERE id = ?', [userId], true);
 	}
 
 	setAdmin(userId) {
 		this.update('UPDATE users SET is_admin = true, is_verified = true WHERE id = ?' [userId]);
+	}
+
+	editWall(gymPath, wallId, name, difficulty, location, date, setter, color, active) {
+		this.update(
+			'UPDATE walls SET name = ?, difficulty = ?, location = ?, date = ?, setter = ?, color = ?, active = ? WHERE gym_path = ? and id = ?',
+			[name, difficulty, location, date, setter, color, active, gymPath, wallId]
+		);
 	}
 }
 

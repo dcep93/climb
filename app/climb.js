@@ -8,10 +8,18 @@ var app = express.Router();
 
 app.use(function(req, res, next) {
 	req.common = {
-		isSignedIn: req.session.userId !== undefined,
 		google_signin_client_id: config.google_signin_client_id,
 	}
-	next();
+	var userId = req.session.userId;
+	if (userId !== undefined) {
+		orm(req, res, next).getUser(userId, function(user) {
+			req.common.user = user;
+			next();
+		});
+	} else {
+		req.common.user = {};
+		next();
+	}
 });
 
 app.get('/', function(req, res, next) {
@@ -50,7 +58,7 @@ app.get('/gym/:gym_path', function(req, res, next) {
 		if (gym === undefined) {
 			res.sendStatus(404);
 		} else {
-			this.getWalls(gym.id, (walls) => 
+			this.getWalls(gymPath, (walls) =>
 				this.getClimbedWalls(gymPath, (climbedWalls) =>
 					res.render('gym.ejs', { common, gym, walls, climbedWalls})
 				)
@@ -64,6 +72,24 @@ app.post('/gym/:gym_path/:wall_id/climb', function(req, res, next) {
 	var wallId = req.params.wall_id;
 	var climbed = req.body.climbed === 'true';
 	orm(req, res, next).setClimbed(gymPath, wallId, climbed);
+});
+
+app.post('/gym/:gym_path/:wall_id/edit', function(req, res, next) {
+	if (!req.common.user.is_verified) return res.sendStatus(403);
+	var gymPath = req.params.gym_path;
+	var wallId = req.params.wall_id;
+	console.log(req.body);
+	orm(req, res, next).editWall(
+		gymPath,
+		wallId,
+		req.body.name,
+		req.body.difficulty,
+		req.body.location,
+		req.body.date,
+		req.body.setter,
+		req.body.color,
+		req.body.active === 'on',
+	);
 });
 
 module.exports = app;
