@@ -81,7 +81,7 @@ app.post('/gym/:gym_path/:wall_id/climb', function(req, res, next) {
 });
 
 app.post('/gym/:gym_path/edit/wall/:wall_id', function(req, res, next) {
-	if (!req.common.user.is_verified) return res.sendStatus(403);
+	if (!res.locals.common.user.is_verified) return res.sendStatus(403);
 	var gymPath = req.params.gym_path;
 	var wallId = req.params.wall_id;
 	orm(req, res, next).editWall(
@@ -90,7 +90,7 @@ app.post('/gym/:gym_path/edit/wall/:wall_id', function(req, res, next) {
 		req.body.name,
 		req.body.difficulty,
 		req.body.location,
-		req.body.date,
+		req.body.date || new Date(),
 		req.body.setter,
 		req.body.color,
 		req.body.active === 'on',
@@ -98,14 +98,14 @@ app.post('/gym/:gym_path/edit/wall/:wall_id', function(req, res, next) {
 });
 
 app.post('/gym/:gym_path/edit/new_wall', function(req, res, next) {
-	if (!req.common.user.is_verified) return res.sendStatus(403);
+	if (!res.locals.common.user.is_verified) return res.sendStatus(403);
 	var gymPath = req.params.gym_path;
 	orm(req, res, next).createWall(
 		gymPath,
 		req.body.name,
 		req.body.difficulty,
 		req.body.location,
-		req.body.date,
+		req.body.date || new Date(),
 		req.body.setter,
 		req.body.color,
 		req.body.active === 'on',
