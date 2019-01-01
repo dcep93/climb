@@ -78,7 +78,6 @@ app.post('/gym/:gym_path/:wall_id/edit', function(req, res, next) {
 	if (!req.common.user.is_verified) return res.sendStatus(403);
 	var gymPath = req.params.gym_path;
 	var wallId = req.params.wall_id;
-	console.log(req.body);
 	orm(req, res, next).editWall(
 		gymPath,
 		wallId,
