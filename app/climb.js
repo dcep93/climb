@@ -67,6 +67,21 @@ app.get('/gym/:gym_path', function(req, res, next) {
 	});
 });
 
+app.get('/gym/:gym_path/edit', function(req, res, next) {
+	var gymPath = req.params.gym_path;
+	if (!req.common.user.is_verified) return res.redirect('/gym/'+gymPath);
+	var common = req.common;
+	orm(req, res, next).getGym(gymPath, function (gym) {
+		if (gym === undefined) {
+			res.sendStatus(404);
+		} else {
+			this.getWalls(gymPath, (walls) =>
+				res.render('gym_edit.ejs', { common, gym, walls })
+			);
+		}
+	});
+});
+
 app.post('/gym/:gym_path/:wall_id/climb', function(req, res, next) {
 	var gymPath = req.params.gym_path;
 	var wallId = req.params.wall_id;
@@ -74,7 +89,7 @@ app.post('/gym/:gym_path/:wall_id/climb', function(req, res, next) {
 	orm(req, res, next).setClimbed(gymPath, wallId, climbed);
 });
 
-app.post('/gym/:gym_path/:wall_id/edit', function(req, res, next) {
+app.post('/gym/:gym_path/edit/wall/:wall_id', function(req, res, next) {
 	if (!req.common.user.is_verified) return res.sendStatus(403);
 	var gymPath = req.params.gym_path;
 	var wallId = req.params.wall_id;
@@ -91,7 +106,7 @@ app.post('/gym/:gym_path/:wall_id/edit', function(req, res, next) {
 	);
 });
 
-app.post('/gym/:gym_path/new', function(req, res, next) {
+app.post('/gym/:gym_path/edit/new_wall', function(req, res, next) {
 	if (!req.common.user.is_verified) return res.sendStatus(403);
 	var gymPath = req.params.gym_path;
 	orm(req, res, next).createWall(

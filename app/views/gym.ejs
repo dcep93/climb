@@ -16,51 +16,21 @@
 		<p>Walls</p>
 		<br>
 		<% if (common.user.is_verified) { %>
-
-			<form class="new-wall-form">
-				<p>New Wall</p>
-				<p>name: <input name="name" type="text"></p>
-				<p>difficulty: <input name="difficulty" type="text"></p>
-				<p>location: <input name="location" type="text"></p>
-				<p>date: <input name="date" type="date"></p>
-				<p>setter: <input name="setter" type="text"></p>
-				<p>color: <input name="color" type="text"></p>
-				<p>active: <input name="active" type="checkbox"></p>
-				<input type="submit">
-			</form>
-
-			<% for (var wall of walls) { %>
-				<div class="wall" data-wall-id="<%= wall.id %>">
-					<form class="wall-update-form">
-						<p>id: <%= wall.id %></p>
-						<p>name: <input name="name" type="text" value="<%- wall.name %>"></p>
-						<p>difficulty: <input name="difficulty" type="text" value="<%- wall.difficulty %>"></p>
-						<p>location: <input name="location" type="text" value="<%- wall.location %>"></p>
-						<p>date: <input name="date" type="date" value="<%= wall.date.toISOString().slice(0,10) %>"></p>
-						<p>setter: <input name="setter" type="text" value="<%- wall.setter %>"></p>
-						<p>color: <input name="color" type="text" value="<%- wall.color %>"></p>
-						<p>active: <input name="active" type="checkbox" <%= wall.active ? 'checked' : '' %>></p>
-						<input type="submit">
-					</form>
-					<p>climbed: <input class="wall-climbed-checkbox" type="checkbox" <%= climbedWalls.indexOf(wall.id) !== -1 ? 'checked ' : '' %></p>
-				</div>
-				<br>
-			<% } %>
-		<% } else { %>
-			<% for (var wall of walls) { %>
-				<div class="wall" data-wall-id="<%= wall.id %>">
-					<p>id: <%= wall.id %></p>
-					<p>name: <%= wall.name %></p>
-					<p>difficulty: <%= wall.difficulty %></p>
-					<p>location: <%= wall.location %></p>
-					<p>date: <%= wall.date %></p>
-					<p>setter: <%= wall.setter %></p>
-					<p>color: <%= wall.color %></p>
-					<p>status: <%= wall.active ? 'active' : 'retired' %></p>
-					<p>climbed: <input class="wall-climbed-checkbox" type="checkbox" <%= climbedWalls.indexOf(wall.id) !== -1 ? 'checked ' : '' %></p>
-				</div>
-				<br>
-			<% } %>
+			<a id="edit-anchor" href="/gym/<%= gym.path %>/edit">Edit</a>
+		<% } %>
+		<% for (var wall of walls) { %>
+			<div class="wall" data-wall-id="<%= wall.id %>">
+				<p>id: <%= wall.id %></p>
+				<p>name: <%= wall.name %></p>
+				<p>difficulty: <%= wall.difficulty %></p>
+				<p>location: <%= wall.location %></p>
+				<p>date: <%= wall.date %></p>
+				<p>setter: <%= wall.setter %></p>
+				<p>color: <%= wall.color %></p>
+				<p>status: <%= wall.active ? 'active' : 'retired' %></p>
+				<p>climbed: <input class="wall-climbed-checkbox" type="checkbox" <%= climbedWalls.indexOf(wall.id) !== -1 ? 'checked ' : '' %></p>
+			</div>
+			<br>
 		<% } %>
 	</div>
 </body>

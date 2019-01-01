@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= gym.name %></title>
+	<%- include('head.ejs') %>
+	<script type="text/javascript" src="/gym_edit.js"></script>
+	<link rel="stylesheet" type="text/css" href="/gym.css">
+</head>
+<body>
+	<%- include('signin.ejs') %>
+	<a href="/">Home</a>
+	<div><%= gym.name %></div>
+	<div><%= gym.description %></div>
+	<br>
+	<div>
+		<p>Walls</p>
+		<br>
+        <form class="new-wall-form">
+            <p>New Wall</p>
+            <p>name: <input name="name" type="text"></p>
+            <p>difficulty: <input name="difficulty" type="text"></p>
+            <p>location: <input name="location" type="text"></p>
+            <p>date: <input name="date" type="date"></p>
+            <p>setter: <input name="setter" type="text"></p>
+            <p>color: <input name="color" type="text"></p>
+            <p>active: <input name="active" type="checkbox"></p>
+            <input type="submit">
+        </form>
+
+        <% for (var wall of walls) { %>
+            <div class="wall" data-wall-id="<%= wall.id %>">
+                <form class="wall-update-form">
+                    <p>id: <%= wall.id %></p>
+                    <p>name: <input name="name" type="text" value="<%- wall.name %>"></p>
+                    <p>difficulty: <input name="difficulty" type="text" value="<%- wall.difficulty %>"></p>
+                    <p>location: <input name="location" type="text" value="<%- wall.location %>"></p>
+                    <p>date: <input name="date" type="date" value="<%= wall.date.toISOString().slice(0,10) %>"></p>
+                    <p>setter: <input name="setter" type="text" value="<%- wall.setter %>"></p>
+                    <p>color: <input name="color" type="text" value="<%- wall.color %>"></p>
+                    <p>active: <input name="active" type="checkbox" <%= wall.active ? 'checked' : '' %>></p>
+                    <input type="submit">
+                </form>
+            </div>
+            <br>
+		<% } %>
+	</div>
+</body>
+</html>
