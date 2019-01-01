@@ -16,4 +16,15 @@ $(document).ready(function() {
         $.post(endpoint, $(this).serialize(), (function() { $(this).css('border-color', ''); }).bind(this));
         return false;
     });
+
+    $('form.new-wall-form').submit(function(e) {
+        var endpoint = location.href+'/new';
+        $(this).css('border-color', 'yellow');
+        $.post(endpoint, $(this).serialize(), refresh);
+        return false;
+    });
+
+    var dateParts = new Date().toLocaleDateString('en-US').split('/');
+    var today = dateParts[2]+'-'+dateParts[0]+'-'+dateParts[1];
+    $('form.new-wall-form input[name=date]').val(today);
 });

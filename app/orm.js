@@ -52,7 +52,7 @@ class Orm {
 	}
 
 	getWalls(gymPath, callback) {
-		this.query(callback, 'SELECT * FROM walls WHERE gym_path = ?', [gymPath]);
+		this.query(callback, 'SELECT * FROM walls WHERE gym_path = ? ORDER BY id DESC', [gymPath]);
 	}
 
 	getClimbedWalls(gymPath, callback) {
@@ -104,6 +104,13 @@ class Orm {
 		this.update(
 			'UPDATE walls SET name = ?, difficulty = ?, location = ?, date = ?, setter = ?, color = ?, active = ? WHERE gym_path = ? and id = ?',
 			[name, difficulty, location, date, setter, color, active, gymPath, wallId]
+		);
+	}
+
+	createWall(gymPath, name, difficulty, location, date, setter, color, active) {
+		this.update(
+			'INSERT INTO walls (gym_path, name, difficulty, location, date, setter, color, active) VALUES (?,?,?,?,?,?,?,?)',
+			[gymPath, name, difficulty, location, date, setter, color, active]
 		);
 	}
 }
