@@ -34,7 +34,7 @@
                     <p>name: <input name="name" type="text" value="<%- wall.name %>"></p>
                     <p>difficulty: <input name="difficulty" type="text" value="<%- wall.difficulty %>"></p>
                     <p>location: <input name="location" type="text" value="<%- wall.location %>"></p>
-                    <p>date: <input name="date" type="date" value="<%= wall.date.toISOString().slice(0,10) %>"></p>
+                    <p>date: <input name="date" type="date" value="<%= wall.date._toDateString() %>"></p>
                     <p>setter: <input name="setter" type="text" value="<%- wall.setter %>"></p>
                     <p>color: <input name="color" type="text" value="<%- wall.color %>"></p>
                     <p>active: <input name="active" type="checkbox" <%= wall.active ? 'checked' : '' %>></p>

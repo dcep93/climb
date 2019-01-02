@@ -24,7 +24,7 @@
 				<p>name: <%= wall.name %></p>
 				<p>difficulty: <%= wall.difficulty %></p>
 				<p>location: <%= wall.location %></p>
-				<p>date: <%= wall.date %></p>
+				<p>date: <%= wall.date._toDateString() %></p>
 				<p>setter: <%= wall.setter %></p>
 				<p>color: <%= wall.color %></p>
 				<p>status: <%= wall.active ? 'active' : 'retired' %></p>

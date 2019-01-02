@@ -6,6 +6,8 @@ var config = require('./config');
 
 var app = express.Router();
 
+Date.prototype._toDateString = function() { return this.toISOString().slice(0, 10); };
+
 app.use(function(req, res, next) {
 	res.locals.common = {
 		google_signin_client_id: config.google_signin_client_id,
