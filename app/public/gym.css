@@ -1,4 +1,12 @@
-.wall-update-form {
+.update-form {
     border: solid 10px green;
     margin:10px;
+}
+
+.update-form[status=edited] {
+    border-color: red;
+}
+
+.update-form[status=updating] {
+    border-color: yellow;
 }

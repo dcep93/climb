@@ -1,13 +1,12 @@
 $(document).ready(function() {
-    $('form.wall-update-form').bind('input', function() {
-        $(this).css('border-color', 'red');
+    $('.update-form').bind('input', function() {
+        $(this).attr('status', 'edited');
     });
 
-    $('form.wall-update-form').submit(function(e) {
-        var wall_id = $(this).closest('.wall').attr('data-wall-id');
-        var endpoint = 'wall/'+wall_id;
-        $(this).css('border-color', 'yellow');
-        $.post(endpoint, $(this).serialize(), (function() { $(this).css('border-color', ''); }).bind(this));
+    $('.update-form').submit(function(e) {
+        var endpoint = $(this).attr('action');
+        $(this).attr('status', 'updating');
+        $.post(endpoint, $(this).serialize(), (function() { $(this).removeAttr('status'); }).bind(this));
         return false;
     });
 

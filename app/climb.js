@@ -91,6 +91,14 @@ app.get('/gym/:gym_path/edit', function(req, res, next) {
 	});
 });
 
+app.post('/gym/:gym_path/edit', function(req, res, next) {
+	var gymPath = req.params.gym_path;
+	if (!res.locals.common.user.is_verified) return res.redirect('/gym/'+gymPath);
+	var name = req.body.name;
+	var description = req.body.description;
+	orm(req, res, next).updateGym(gymPath, name, description);
+});
+
 app.post('/gym/:gym_path/:wall_id/climb', function(req, res, next) {
 	var gymPath = req.params.gym_path;
 	var wallId = req.params.wall_id;

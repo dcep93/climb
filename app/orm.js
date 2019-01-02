@@ -151,6 +151,10 @@ class Orm {
 		this.errF = errF;
 		return this;
 	}
+
+	updateGym(gymPath, name, description) {
+		this.update('UPDATE gyms SET name = ?, description = ? WHERE path = ?', [name, description, gymPath]);
+	}
 }
 
 connect();
