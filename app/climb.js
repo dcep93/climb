@@ -52,6 +52,22 @@ app.post('/logout', function(req, res) {
 	res.sendStatus(200);
 });
 
+app.post('/new_gym', function(req, res, next) {
+	if (!res.locals.common.user.is_admin) return res.redirect('/');
+	var path = req.body.path;
+	var name = req.body.name;
+	var description = req.body.description;
+	orm(req, res, next)
+		.setErrF(function(q, err) {
+			if (err.code === 'ER_DUP_ENTRY') {
+				res.status(400).send(`path "${path}" already exists`);
+			} else {
+				this.err(q, err);
+			}
+		})
+		.newGym(path, name, description, () => res.send(`/gym/${path}`));
+});
+
 app.get('/gym/:gym_path', function(req, res, next) {
 	var gymPath = req.params.gym_path;
 	orm(req, res, next).getGym(gymPath, function (gym) {
@@ -99,7 +115,7 @@ app.post('/gym/:gym_path/edit/wall/:wall_id', function(req, res, next) {
 	);
 });
 
-app.post('/gym/:gym_path/edit/new_wall', function(req, res, next) {
+app.post('/gym/:gym_path/new_wall', function(req, res, next) {
 	if (!res.locals.common.user.is_verified) return res.sendStatus(403);
 	var gymPath = req.params.gym_path;
 	orm(req, res, next).createWall(

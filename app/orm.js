@@ -24,19 +24,32 @@ class Orm {
 	query(callback, q, params, useSingleRow, useSingleCol) {
 		var thisOrm = this;
 		conn.query(q, params, function(err, results, fields) {
-			if (err) {
-				console.error(q);
-				return thisOrm.next(err);
-			}
+			if (thisOrm.err(q, err)) return;
 			if (useSingleCol && fields.length > 0) results = results.map((row) => row[fields[0].name]);
 			if (useSingleRow) results = results[0];
 			try {
 				callback.bind(thisOrm)(results);
 			} catch (e) {
-				console.error(q);
-				return thisOrm.next(e);
+				thisOrm.next(err);
 			}
 		});
+	}
+
+	err(q, err) {
+		var errF = this.errF;
+		this.errF = undefined;
+
+		if (err) {
+			if (errF !== undefined) {
+				errF.bind(this)(q, err);
+			} else {
+				console.error(q);
+				this.next(err);
+			}
+			return true;
+		}
+
+		return false
 	}
 
 	update(q, params) {
@@ -128,6 +141,15 @@ class Orm {
 		var q = updateStrings.join(', ')
 		parameters.push(userId);
 		this.update('UPDATE users SET '+q+' WHERE id = ?', parameters);
+	}
+
+	newGym(path, name, description, callback) {
+		this.query(callback, 'INSERT INTO gyms (path, name, description) VALUES (?,?,?)', [path, name, description]);
+	}
+
+	setErrF(errF) {
+		this.errF = errF;
+		return this;
 	}
 }
 
