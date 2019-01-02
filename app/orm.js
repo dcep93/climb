@@ -2,16 +2,30 @@ var mysql = require('mysql');
 
 var config = require('./config');
 
+var dbConfig = {
+	host: config.mysql_host || '127.0.0.1',
+	database: config.mysql_database || 'climb',
+	user: 'root',
+	password: config.mysql_password,
+};
 var conn;
 
 function connect() {
-	conn = mysql.createConnection({
-		host: config.mysql_host || '127.0.0.1',
-		database: config.mysql_database || 'climb',
-		user: 'root',
-		password: config.mysql_password,
+	conn = mysql.createConnection(dbConfig);
+	conn.connect(function(err) {
+		if (err) {
+			console.error('db connection error', err);
+			setTimeout(connect, 1000);
+		}
 	});
-	conn.connect();
+	conn.on('error', function(err) {
+		console.error('db error', err);
+		if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+			setTimeout(connect, 1000);
+		} else {
+			throw err;
+		}
+	});
 }
 
 class Orm {
