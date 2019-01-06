@@ -117,7 +117,7 @@ app.post("/gym/:gym_path/:wall_id/climb", function(req, res, next) {
   orm(req, res, next).setClimbed(gymPath, wallId, climbed);
 });
 
-app.post("/gym/:gym_path/edit/wall/:wall_id", function(req, res, next) {
+app.post("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
   if (!res.locals.common.user.is_verified) return res.sendStatus(403);
   var gymPath = req.params.gym_path;
   var wallId = req.params.wall_id;
