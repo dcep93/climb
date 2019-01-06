@@ -4,4 +4,8 @@ $(document).ready(function() {
         var endpoint = location.href+'/'+wall_id+'/climb';
         $.post(endpoint, { climbed: this.checked });
     });
+
+    $('.wall').attr('href', function() { 
+        return location.href+'/wall/'+$(this).attr('data-wall-id');
+    });
 });
