@@ -190,7 +190,7 @@ app.get("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
     if (wall === undefined) return res.sendStatus(404);
     this.getGym(gymPath, function(gym) {
       this.getWallMedia(wallId, function(media) {
-        // var newVideoFormAction = `:${req.port}${req.path}/upload`;
+        var newVideoFormAction = `:${req.port}${req.path}/upload`;
         res.render("wall.ejs", { wall, gym, media, newVideoFormAction });
       });
     });
@@ -198,26 +198,26 @@ app.get("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
 });
 
 app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
-	var gymPath = req.params.gym_path;
-	var wallId = req.params.wall_id;
+  var gymPath = req.params.gym_path;
+  var wallId = req.params.wall_id;
 
-	var form = new formidable.IncomingForm();
+  var form = new formidable.IncomingForm();
 
   form.parse(req);
 
   form.on('fileBegin', function (name, file) {
-  file.now = Date.now();
-  file.id = `${file.now}_${gymPath}_${wallId}`;
-  console.log(`Uploading ${file.name} ${file.id}`);
-      file.path = __dirname + '/uploads/' + file.id;
+    file.now = Date.now();
+    file.id = `${file.now}_${gymPath}_${wallId}`;
+    console.log(`Uploading ${file.name} ${file.id}`);
+    file.path = __dirname + '/uploads/' + file.id;
   });
 
   form.on('file', function (name, file) {
-  var duration = (Date.now() - file.now) / 1000;
-      console.log(`Uploaded ${file.name} ${file.id} ${duration}`);
-	});
-	
-	res.sendStatus(501);
+    var duration = (Date.now() - file.now) / 1000;
+    console.log(`Uploaded ${file.name} ${file.id} ${duration}`);
+  });
+
+  res.sendStatus(501);
 });
 
 module.exports = app;
