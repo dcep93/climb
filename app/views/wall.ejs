@@ -19,5 +19,17 @@
         <p>color: <%= wall.color %></p>
         <p>status: <%= wall.active ? 'active' : 'retired' %></p>
     </div>
+
+    <div>
+        Media
+        <div>
+            <% for (var m of media) { %>
+                <p>id: <%= m.id %></p>
+                <p>url: <%= m.url %></p>
+                <p>status: <%= m.status %></p>
+                <p>media_type: <%= m.media_type %></p>
+            <% } %>
+        </div>
+    </div>
 </body>
 </html>

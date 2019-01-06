@@ -176,9 +176,11 @@ app.get('/gym/:gym_path/wall/:wall_id', function(req, res, next) {
 	var wallId = req.params.wall_id;
 	orm(req, res, next).getWall(gymPath, wallId, function (wall) {
 		if (wall === undefined) return res.sendStatus(404);
-		this.getGym(gymPath, (gym) =>
-			res.render('wall.ejs', { wall, gym })
-		);
+		this.getGym(gymPath, function (gym) {
+			this.getWallMedia(wallId, function(media) {
+				res.render('wall.ejs', { wall, gym, media });
+			});
+		});
 	});
 });
 

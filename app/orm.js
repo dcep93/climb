@@ -172,7 +172,11 @@ class Orm {
 
 	getWall(gymPath, wallId, callback) {
 		this.query(callback, 'SELECT * FROM walls WHERE gym_path = ? and id = ?', [gymPath, wallId], true);
-	} 
+	}
+
+	getWallMedia(wallId, callback) {
+		this.query(callback, 'SELECT * FROM wall_media WHERE wall_id = ?', [wallId]);
+	}
 }
 
 connect();

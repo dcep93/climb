@@ -34,7 +34,8 @@ CREATE TABLE walls (
     active BOOL NOT NULL,
     color VARCHAR(32) NOT NULL,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (gym_path, id)
+    PRIMARY KEY (id),
+    KEY gym_path (gym_path)
 );
 
 CREATE TABLE climbed_walls (
@@ -46,4 +47,16 @@ CREATE TABLE climbed_walls (
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY gym_path_wall_id_user_id (gym_path, wall_id, user_id)
+);
+
+CREATE TABLE wall_media (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    wall_id INT UNSIGNED NOT NULL,
+    media_type VARCHAR(16) NOT NULL,
+    url VARCHAR(512) NOT NULL,
+    status VARCHAR(16) NOT NULL,
+    other TEXT,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY wall_id (wall_id),
 );
