@@ -31,7 +31,7 @@
         </form>
 
         <% for (var wall of walls) { %>
-            <form action="wall/<%= wall.id %>" class="wall-update-form update-form">
+            <form action="wall/<%= wall.id %>/edit" class="wall-update-form update-form">
                 <p>id: <%= wall.id %></p>
                 <p>name: <input name="name" type="text" value="<%- wall.name %>"></p>
                 <p>difficulty: <input name="difficulty" type="text" value="<%- wall.difficulty %>"></p>

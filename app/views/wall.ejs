@@ -3,8 +3,6 @@
 <head>
 	<title><%= gym.name %> | <%= wall.name || wall.id %></title>
 	<%- include('head.ejs') %>
-	<script type="text/javascript" src="/wall.js"></script>
-	<link rel="stylesheet" type="text/css" href="/gym.css">
 </head>
 <body>
     <%- include('signin.ejs') %>
@@ -25,7 +23,7 @@
         <br>
         <div>
             <p>New Video</p>
-            <form id="new-video-form" enctype="multipart/form-data" method="post">
+            <form action="<%= newVideoFormAction %>" enctype="multipart/form-data" method="post">
                 <input type="file" name="upload">
                 <input type="submit">
             </form>
