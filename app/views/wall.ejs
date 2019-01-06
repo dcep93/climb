@@ -3,7 +3,7 @@
 <head>
 	<title><%= gym.name %> | <%= wall.name || wall.id %></title>
 	<%- include('head.ejs') %>
-	<script type="text/javascript" src="/gym.js"></script>
+	<script type="text/javascript" src="/wall.js"></script>
 	<link rel="stylesheet" type="text/css" href="/gym.css">
 </head>
 <body>
@@ -21,13 +21,23 @@
     </div>
 
     <div>
-        Media
+        <p>Videos</p>
+        <br>
+        <div>
+            <p>New Video</p>
+            <form id="new-video-form" enctype="multipart/form-data" method="post">
+                <input type="file" name="upload">
+                <input type="submit">
+            </form>
+        </div>
         <div>
             <% for (var m of media) { %>
-                <p>id: <%= m.id %></p>
-                <p>url: <%= m.url %></p>
-                <p>status: <%= m.status %></p>
-                <p>media_type: <%= m.media_type %></p>
+                <div>
+                    <p>id: <%= m.id %></p>
+                    <p>url: <%= m.url %></p>
+                    <p>status: <%= m.status %></p>
+                    <p>media_type: <%= m.media_type %></p>
+                </div>
             <% } %>
         </div>
     </div>

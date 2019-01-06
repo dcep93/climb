@@ -53,6 +53,7 @@ CREATE TABLE wall_media (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     wall_id INT UNSIGNED NOT NULL,
     media_type VARCHAR(16) NOT NULL,
+    file_path VARCHAR(64) NOT NULL,
     url VARCHAR(512) NOT NULL,
     status VARCHAR(16) NOT NULL,
     other TEXT,

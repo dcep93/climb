@@ -1,4 +1,5 @@
 var express = require("express");
+var formidable = require('formidable');
 var OAuth2Client = require("google-auth-library").OAuth2Client;
 
 var orm = require("./orm");
@@ -193,6 +194,29 @@ app.get("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
       });
     });
   });
+});
+
+app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
+	var gymPath = req.params.gym_path;
+	var wallId = req.params.wall_id;
+
+	var form = new formidable.IncomingForm();
+
+    form.parse(req);
+
+    form.on('fileBegin', function (name, file) {
+		file.now = Date.now();
+		file.id = `${file.now}_${gymPath}_${wallId}`;
+		console.log(`Uploading ${file.name} ${file.id}`);
+        file.path = __dirname + '/uploads/' + file.id;
+    });
+
+    form.on('file', function (name, file) {
+		var duration = (Date.now() - file.now) / 1000;
+        console.log(`Uploaded ${file.name} ${file.id} ${duration}`);
+	});
+	
+	res.sendStatus(501);
 });
 
 module.exports = app;
