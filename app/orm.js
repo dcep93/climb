@@ -169,6 +169,10 @@ class Orm {
 	updateGym(gymPath, name, description) {
 		this.update('UPDATE gyms SET name = ?, description = ? WHERE path = ?', [name, description, gymPath]);
 	}
+
+	getWall(gymPath, wallId, callback) {
+		this.query(callback, 'SELECT * FROM walls WHERE gym_path = ? and id = ?', [gymPath, wallId], true);
+	} 
 }
 
 connect();

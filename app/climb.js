@@ -169,6 +169,17 @@ app.post('/user/:user_id/edit', function(req, res, next) {
 		return res.sendStatus(400);
 	}
 	orm(req, res, next).updateUserStatus(userId, isAdmin, isVerified);
-})
+});
+
+app.get('/gym/:gym_path/wall/:wall_id', function(req, res, next) {
+	var gymPath = req.params.gym_path;
+	var wallId = req.params.wall_id;
+	orm(req, res, next).getWall(gymPath, wallId, function (wall) {
+		if (wall === undefined) return res.sendStatus(404);
+		this.getGym(gymPath, (gym) =>
+			res.render('wall.ejs', { wall, gym })
+		);
+	});
+});
 
 module.exports = app;

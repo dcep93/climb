@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= gym.name %> | <%= wall.name || wall.id %></title>
+	<%- include('head.ejs') %>
+	<script type="text/javascript" src="/gym.js"></script>
+	<link rel="stylesheet" type="text/css" href="/gym.css">
+</head>
+<body>
+    <%- include('signin.ejs') %>
+
+    <div>
+        <p>id: <%= wall.id %></p>
+        <p>name: <%= wall.name %></p>
+        <p>difficulty: <%= wall.difficulty %></p>
+        <p>location: <%= wall.location %></p>
+        <p>date: <%= wall.date._toDateString() %></p>
+        <p>setter: <%= wall.setter %></p>
+        <p>color: <%= wall.color %></p>
+        <p>status: <%= wall.active ? 'active' : 'retired' %></p>
+    </div>
+</body>
+</html>
