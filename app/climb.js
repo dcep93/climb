@@ -1,5 +1,5 @@
 var express = require("express");
-var formidable = require('formidable');
+var formidable = require("formidable");
 var OAuth2Client = require("google-auth-library").OAuth2Client;
 
 var orm = require("./orm");
@@ -209,8 +209,8 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   form.on('fileBegin', function (name, file) {
     file.now = Date.now();
     file.id = `${file.now}_${gymPath}_${wallId}`;
-    console.log(`Uploading ${file.name} ${file.id}`);
     file.path = __dirname + '/uploads/' + file.id;
+    console.log(`Uploading ${file.name} ${file.path}`);
   });
 
   form.on('file', function (name, file) {
