@@ -13,7 +13,8 @@ Date.prototype._toDateString = function() {
 
 app.use(function(req, res, next) {
   res.locals.common = {
-    google_signin_client_id: config.google_signin_client_id
+    path: req.path,
+    google_signin_client_id: config.google_signin_client_id,
   };
   var userId = req.session.userId;
   if (userId !== undefined) {
@@ -190,8 +191,7 @@ app.get("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
     if (wall === undefined) return res.sendStatus(404);
     this.getGym(gymPath, function(gym) {
       this.getWallMedia(wallId, function(media) {
-        newVideoFormAction = `${wallId}/upload`;
-        res.render("wall.ejs", { wall, gym, media, newVideoFormAction });
+        res.render("wall.ejs", { wall, gym, media });
       });
     });
   });
