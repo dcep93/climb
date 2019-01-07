@@ -14,12 +14,12 @@ function connect() {
 	conn = mysql.createConnection(dbConfig);
 	conn.connect(function(err) {
 		if (err) {
-			console.error('db connection error', err);
+			console.log('db connection error', err);
 			setTimeout(connect, 1000);
 		}
 	});
 	conn.on('error', function(err) {
-		console.error('db error', err);
+		console.log('db error', err);
 		if (err.code === 'PROTOCOL_CONNECTION_LOST') {
 			setTimeout(connect, 1000);
 		} else {
