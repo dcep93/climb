@@ -18,8 +18,6 @@ var config = require('./config');
 
 var app = express();
 
-app.set('trust proxy', 1); // trust first proxy
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
