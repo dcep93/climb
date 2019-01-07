@@ -190,7 +190,7 @@ app.get("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
     if (wall === undefined) return res.sendStatus(404);
     this.getGym(gymPath, function(gym) {
       this.getWallMedia(wallId, function(media) {
-        var newVideoFormAction = `:${req.port}${req.path}/upload`;
+        newVideoFormAction = `${wallId}/upload`;
         res.render("wall.ejs", { wall, gym, media, newVideoFormAction });
       });
     });
@@ -198,6 +198,7 @@ app.get("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
 });
 
 app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
+  console.log('received!');
   var gymPath = req.params.gym_path;
   var wallId = req.params.wall_id;
 
