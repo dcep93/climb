@@ -177,6 +177,21 @@ class Orm {
 	getWallMedia(wallId, callback) {
 		this.query(callback, 'SELECT * FROM wall_media WHERE wall_id = ?', [wallId]);
 	}
+
+	createWallMedia(wallId, fileId, status, name, callback) {
+		this.query(callback, 'INSERT INTO wall_media (wall_id, file_id, status, name) VALUES (?,?,?,?)', [wallId, fileId, status, name]);
+		callback();
+	}
+
+	updateWallMedia(wallId, fileId, fields, callback) {
+		var setsString = [];
+		var setsVars = [];
+		for (var field in fields) {
+			setsString.push(`${field}=?`);
+			setsVars.push(fields[field]);
+		}
+		this.query(callback, `UPDATE wall_media SET ${setsString} WHERE wall_id = ? and file_id = ?`, setsVars.concat(wallId, fileId))
+	}
 }
 
 connect();

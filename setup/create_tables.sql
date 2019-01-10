@@ -52,12 +52,11 @@ CREATE TABLE climbed_walls (
 CREATE TABLE wall_media (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     wall_id INT UNSIGNED NOT NULL,
-    media_type VARCHAR(16) NOT NULL,
-    file_path VARCHAR(64) NOT NULL,
-    url VARCHAR(512) NOT NULL,
+    file_id VARCHAR(64) NOT NULL,
     status VARCHAR(16) NOT NULL,
-    other TEXT,
+    name VARCHAR(128) NOT NULL,
+    url VARCHAR(512),
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY wall_id (wall_id),
+    KEY wall_id (wall_id)
 );

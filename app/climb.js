@@ -1,6 +1,8 @@
 var express = require("express");
 var formidable = require("formidable");
 var OAuth2Client = require("google-auth-library").OAuth2Client;
+var exec = require("child_process").exec;
+var fs = require("fs");
 
 var orm = require("./orm");
 var config = require("./config");
@@ -197,8 +199,14 @@ app.get("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
   });
 });
 
+function waitGroup(n, f) {
+  return function() {
+    if (--n === 0) f();
+  }
+}
+
 app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
-  console.log('received!');
+  console.log('upload', 'received!');
   var gymPath = req.params.gym_path;
   var wallId = req.params.wall_id;
 
@@ -206,19 +214,49 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
 
   form.parse(req);
 
+  var o = orm(req, res, next);
+
+  var finishUpload = waitGroup(2, function() {
+    o.updateWallMedia(wallId, form.fileId, {status: 'received'}, function() {
+      exec(`bash ${__dirname}/scripts/upload_to_google_photos.sh ${form.fileId}`, function(err, stdout, stderr) {
+        if (err) return console.log(['upload', 'upload_to_google_photos', form.fileId, stderr]);
+        if (!stdout) {
+          o.updateWallMedia(wallId, form.fileId, {status: 'pending_youtube'}, function() {
+            exec(`bash ${__dirname}/scripts/upload_to_youtube.sh ${form.fileId}`, function(err, stdout, stderr) {
+              if (err) return console.log('upload', 'upload_to_youtube', form.fileId, stderr);
+              var url = stdout.replace('\n', '');
+              o.updateWallMedia(wallId, form.fileId, {status: 'youtube', url}, function() {
+                fs.unlinkSync(form.filePath);
+              });
+            });
+          });
+        } else {
+          var url = stdout.replace('\n', '');
+          o.updateWallMedia(wallId, form.fileId, {status: 'google_photos', url}, function() {
+            fs.unlinkSync(form.filePath);
+          });
+        }
+      });
+      res.sendStatus(200);
+    });
+  });
+
   form.on('fileBegin', function (name, file) {
     file.now = Date.now();
-    file.id = `${file.now}_${gymPath}_${wallId}`;
-    file.path = __dirname + '/uploads/' + file.id;
-    console.log(`Uploading ${file.name} ${file.path}`);
+    form.fileId = `${file.now}_${gymPath}_${wallId}`;
+    file.path = __dirname + '/uploads/' + form.fileId;
+    form.filePath = file.path;
+    console.log('upload', `Uploading ${name} ${file.path}`);
+    o.createWallMedia(wallId, form.fileId, 'begin', name, finishUpload);
   });
 
   form.on('file', function (name, file) {
-    var duration = (Date.now() - file.now) / 1000;
-    console.log(`Uploaded ${file.name} ${file.id} ${duration}`);
+    form.duration = (Date.now() - file.now) / 1000;
+    console.log('upload', `Uploaded ${file.name} ${form.fileId} ${form.duration}`);
+    finishUpload();
   });
 
-  res.sendStatus(501);
+  form.on('error', next);
 });
 
 module.exports = app;
