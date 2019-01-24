@@ -18,9 +18,6 @@ which jq || apt-get install -y jq
 # write app config
 if [[ ! -f "$DIR/../app/config.json" ]]; then bash $DIR/setup_config_json.sh $DIR; fi
 
-# enable photo uploading
-if [[ ! -f "$DIR/../creds.json" ]]; then bash $DIR/setup_photos.sh $DIR; fi
-
 # install mysql
 which mysql || bash $DIR/setup_mysql.sh $DIR
 

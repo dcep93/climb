@@ -220,24 +220,14 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
 
   var finishUpload = waitGroup(2, function() {
     o.updateWallMedia(wallId, form.fileId, {status: 'received'}, function() {
-      exec(`bash ${__dirname}/scripts/upload_to_google_photos.sh ${form.fileId}`, function(err, stdout, stderr) {
-        if (err) return console.log('upload', 'upload_to_google_photos', form.fileId, '\n'+stderr);
-        if (!stdout) {
-          o.updateWallMedia(wallId, form.fileId, {status: 'pending_youtube'}, function() {
-            exec(`bash ${__dirname}/scripts/upload_to_youtube.sh ${form.fileId}`, function(err, stdout, stderr) {
-              if (err) return console.log('upload', 'upload_to_youtube', form.fileId, '\n'+stderr);
-              var url = stdout.replace('\n', '');
-              o.updateWallMedia(wallId, form.fileId, {status: 'youtube', url}, function() {
-                fs.unlinkSync(form.filePath);
-              });
-            });
-          });
-        } else {
-          var url = stdout.replace('\n', '');
-          o.updateWallMedia(wallId, form.fileId, {status: 'google_photos', url}, function() {
-            fs.unlinkSync(form.filePath);
-          });
-        }
+      exec(`bash ${__dirname}/upload_to_facebook.sh ${form.fileId}`, function(err, stdout, stderr) {
+        if (err) return console.log('upload', 'upload_to_facebook', form.fileId, '\n'+stderr);
+        var output = JSON.parse(stdout);
+        var status = output.status;
+        var url = output.url;
+        o.updateWallMedia(wallId, form.fileId, {status, url}, function() {
+          fs.unlinkSync(form.filePath);
+        });
       });
       res.sendStatus(200);
     });
