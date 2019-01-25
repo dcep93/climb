@@ -40,10 +40,11 @@ function upload_video() {
 }
 
 function upload_image() {
-    UPLOAD_RESPONSE=$(curl -s -X POST "https://graph.facebook.com/v3.2/me/photos" \
-        -F "access_token=$TOKEN" \
-        -F "source=@$FILE" \
-    ); echo
+    # UPLOAD_RESPONSE=$(curl -s -X POST "https://graph.facebook.com/v3.2/me/photos" \
+    #     -F "access_token=$TOKEN" \
+    #     -F "source=@$FILE" \
+    # ); echo
+    UPLOAD_RESPONSE='{"id":"1656931191280272","post_id":"1656557151317676_1656931191280272"}'
     IMAGE_ID=$(echo "$UPLOAD_RESPONSE" | jq -r .id)
     if [[ "$IMAGE_ID" == "null" ]]; then
         echo "failed upload"
