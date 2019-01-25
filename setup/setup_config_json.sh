@@ -14,8 +14,10 @@ echo -n "mysql password: "
 read -s MYSQL_PASSWORD
 
 echo "Follow instructions at http://meanandroid.com/latestposts/how-never-expiring-facebook-access-token/"
+echo "You need `manage_pages` and `publish_pages` permissions"
+
 echo -n "facebook page access token: "
-read -S FACEBOOK_PAGE_ACCESS_TOKEN
+read -s FACEBOOK_PAGE_ACCESS_TOKEN
 
 cat <<END > $DIR/../app/config.json
 {
