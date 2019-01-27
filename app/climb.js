@@ -224,12 +224,18 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
 
   var form = new formidable.IncomingForm();
 
+  form.maxFileSize = 500 * 1024 * 1024;
+
+  form.on('progress', console.log);
+  form.on('error', console.log);
+
   form.parse(req);
 
   var o = orm(req, res, next);
 
   var finishUpload = waitGroup(2, function() {
     o.updateWallMedia(wallId, form.fileId, {status: 'received'}, function() {
+      console.log('uploading to facebook');
       exec(`bash ${__dirname}/upload_to_facebook.sh ${form.fileId}`, function(err, stdout, stderr) {
         o.next = console.error;
         if (err) {
