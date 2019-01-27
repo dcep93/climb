@@ -66,7 +66,7 @@ app.post("/logout", function(req, res) {
 });
 
 app.post("/new_gym", function(req, res, next) {
-  if (!res.locals.common.user.is_admin) return res.redirect("/");
+  if (!res.locals.common.user.is_admin) return res.sendStatus(403);
   var path = req.body.path;
   var name = req.body.name;
   var description = req.body.description;
@@ -108,7 +108,7 @@ app.get("/gym/:gym_path/edit", function(req, res, next) {
 app.post("/gym/:gym_path/edit", function(req, res, next) {
   var gymPath = req.params.gym_path;
   if (!res.locals.common.user.is_verified)
-    return res.redirect("/gym/" + gymPath);
+    return res.sendStatus(403);
   var name = req.body.name;
   var description = req.body.description;
   orm(req, res, next).updateGym(gymPath, name, description);
