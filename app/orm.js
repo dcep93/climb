@@ -116,8 +116,8 @@ class Orm {
 		this.query((packet) => callback.bind(this)(packet.insertId), q, params);
 	}
 
-	upsertUser(googleId, name, image, callback) {
-		this.insert(callback, 'INSERT INTO users (google_id, name, image) VALUES (?,?,?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=?, image=?', [googleId, name, image, name, image]);
+	upsertUser(googleId, email, name, image, callback) {
+		this.insert(callback, 'INSERT INTO users (google_id, email, name, image) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=?, image=?', [googleId, email, name, image, name, image]);
 	}
 
 	getUser(userId, callback) {

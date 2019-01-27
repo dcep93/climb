@@ -48,8 +48,10 @@ app.post("/login", function(req, res, next) {
     })
     .then(function(ticket) {
       var payload = ticket.getPayload();
+      console.log(payload);
       orm(req, res, next).upsertUser(
         payload["sub"],
+        payload["email"],
         payload["name"],
         payload["picture"],
         function(userId) {

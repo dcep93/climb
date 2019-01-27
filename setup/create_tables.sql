@@ -6,6 +6,7 @@ CREATE TABLE users (
     google_id VARCHAR(32) NOT NULL,
     is_admin BOOL NOT NULL DEFAULT FALSE,
     is_verified BOOL NOT NULL DEFAULT FALSE,
+    email VARCHAR(128),
     name TEXT,
     image TEXT,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
