@@ -226,8 +226,7 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
 
   form.maxFileSize = 500 * 1024 * 1024;
 
-  form.on('progress', console.log);
-  form.on('error', console.log);
+  form.on('error', console.error);
 
   form.parse(req);
 
