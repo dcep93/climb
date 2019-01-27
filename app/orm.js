@@ -192,6 +192,10 @@ class Orm {
 		}
 		this.query(callback, `UPDATE wall_media SET ${setsString} WHERE wall_id = ? and file_id = ?`, setsVars.concat(wallId, fileId))
 	}
+
+	getLatestUsers(callback) {
+		this.query(callback, 'SELECT * FROM users ORDER BY id DESC LIMIT 100');
+	}
 }
 
 connect();

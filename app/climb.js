@@ -188,6 +188,13 @@ app.post("/user/:user_id/edit", function(req, res, next) {
   orm(req, res, next).updateUserStatus(userId, isAdmin, isVerified);
 });
 
+app.get("/admin/user/latest", function(req, res, next) {
+  if (!res.locals.common.user.is_admin) return res.redirect('/');
+  orm(req, res, next).getLatestUsers(function(users) {
+    res.render("user_latest.ejs", { users });
+  });
+});
+
 app.get("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
   var gymPath = req.params.gym_path;
   var wallId = req.params.wall_id;

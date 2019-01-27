@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Latest <%= users.length %> users</title>
+	<%- include('head.ejs') %>
+</head>
+<body>
+    <%- include('signin.ejs') %>
+    <div>
+        <% for (var user of users) { %>
+            <div>
+                <p>id: <%= user.id %></p>
+                <p>name: <%- user.name %></p>
+                <p><a href="/user/<%= user.id %>">Profile</a></p>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
