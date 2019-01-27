@@ -215,6 +215,7 @@ function waitGroup(n, f) {
 }
 
 app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
+  if (!res.locals.common.user.is_verified) return res.sendStatus(403);
   console.log('upload', 'received!');
   var gymPath = req.params.gym_path;
   var wallId = req.params.wall_id;
@@ -250,7 +251,7 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
     file.path = __dirname + '/uploads/' + form.fileId;
     form.filePath = file.path;
     console.log('upload', `Uploading ${file.name} ${file.path}`);
-    o.createWallMedia(wallId, form.fileId, 'begin', file.name, finishUpload);
+    o.createWallMedia(wallId, form.fileId, res.locals.common.user.id, 'begin', file.name, finishUpload);
   });
 
   form.on('file', function (name, file) {
