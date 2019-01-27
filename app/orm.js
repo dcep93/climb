@@ -39,6 +39,7 @@ class Orm {
 		var thisOrm = this;
 		conn.query(q, params, function(err, results, fields) {
 			if (thisOrm.err(q, err)) return;
+			if (callback === undefined) return;
 			if (useSingleCol && fields.length > 0) results = results.map((row) => row[fields[0].name]);
 			if (useSingleRow) results = results[0];
 			try {
@@ -180,7 +181,6 @@ class Orm {
 
 	createWallMedia(wallId, fileId, status, name, callback) {
 		this.query(callback, 'INSERT INTO wall_media (wall_id, file_id, status, name) VALUES (?,?,?,?)', [wallId, fileId, status, name]);
-		callback();
 	}
 
 	updateWallMedia(wallId, fileId, fields, callback) {

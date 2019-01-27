@@ -53,9 +53,9 @@ CREATE TABLE wall_media (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     wall_id INT UNSIGNED NOT NULL,
     file_id VARCHAR(64) NOT NULL,
-    status VARCHAR(16) NOT NULL,
     name VARCHAR(128) NOT NULL,
-    url VARCHAR(512),
+    status VARCHAR(16) NOT NULL,
+    info TEXT,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     KEY wall_id (wall_id)

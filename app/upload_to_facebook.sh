@@ -35,7 +35,7 @@ function upload_video() {
     OUTPUT=$(jq -n \
         --arg html "$EMBED_HTML" \
         --arg mime "$MIME" \
-        '{html: $html, mime: $mime, type: "video"}' \
+        '{info: $html, mime: $mime, type: "video"}' \
         )
 }
 
@@ -64,7 +64,7 @@ function upload_image() {
     OUTPUT=$(jq -n \
         --arg image_url "$IMAGE_URL" \
         --arg mime "$MIME" \
-        '{image_url: $image_url, mime: $mime, type: "image"}' \
+        '{info: $image_url, mime: $mime, type: "image"}' \
         )
 }
 
