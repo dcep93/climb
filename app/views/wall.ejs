@@ -21,6 +21,7 @@
     <div>
         <p>Videos</p>
         <br>
+        <% if (common.user.is_verified) { %>
         <div>
             <p>New Video</p>
             <form action="<%= common.path %>/upload" enctype="multipart/form-data" method="post">
@@ -28,13 +29,20 @@
                 <input type="submit">
             </form>
         </div>
+        <% } %>
         <div>
             <% for (var m of media) { %>
                 <div>
                     <p>id: <%= m.id %></p>
-                    <p>url: <%= m.url %></p>
+                    <p>name: <%- m.name %></p>
                     <p>status: <%= m.status %></p>
-                    <p>media_type: <%= m.media_type %></p>
+                    <% if (m.status === 'video') { %>
+                        <%- m.info %>
+                    <% } else if (m.status === 'image') { %>
+                        <img src="<%= m.info %>">
+                    <% } else { %>
+                        <pre><%- m.info %></pre>
+                    <% } %>
                 </div>
             <% } %>
         </div>

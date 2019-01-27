@@ -228,6 +228,7 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   var finishUpload = waitGroup(2, function() {
     o.updateWallMedia(wallId, form.fileId, {status: 'received'}, function() {
       exec(`bash ${__dirname}/upload_to_facebook.sh ${form.fileId}`, function(err, stdout, stderr) {
+        o.next = console.error;
         if (err) {
           o.updateWallMedia(wallId, form.field, {status: "failed", info: stderr });
           return console.log('upload', 'upload_to_facebook', form.fileId, '\n'+stderr);
@@ -248,8 +249,8 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
     form.fileId = `${file.now}_${gymPath}_${wallId}`;
     file.path = __dirname + '/uploads/' + form.fileId;
     form.filePath = file.path;
-    console.log('upload', `Uploading ${name} ${file.path}`);
-    o.createWallMedia(wallId, form.fileId, 'begin', name, finishUpload);
+    console.log('upload', `Uploading ${file.name} ${file.path}`);
+    o.createWallMedia(wallId, form.fileId, 'begin', file.name, finishUpload);
   });
 
   form.on('file', function (name, file) {

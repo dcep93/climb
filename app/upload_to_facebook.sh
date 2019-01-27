@@ -6,13 +6,15 @@ set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+FILE_PATH="$DIR/uploads/$FILE"
+
 TOKEN=$(jq -r .facebook_page_access_token $DIR/config.json)
-MIME=$(file -b --mime-type $FILE)
+MIME=$(file -b --mime-type $FILE_PATH)
 
 function upload_video() {
     # UPLOAD_RESPONSE=$(curl -s -X POST "https://graph-video.facebook.com/v3.2/me/videos" \
     #     -F "access_token=$TOKEN" \
-    #     -F "source=@$FILE" \
+    #     -F "source=@$FILE_PATH" \
     # ); echo
     UPLOAD_RESPONSE='{"id":"748844575486014"}'
     VIDEO_ID=$(echo "$UPLOAD_RESPONSE" | jq -r .id)
@@ -42,7 +44,7 @@ function upload_video() {
 function upload_image() {
     # UPLOAD_RESPONSE=$(curl -s -X POST "https://graph.facebook.com/v3.2/me/photos" \
     #     -F "access_token=$TOKEN" \
-    #     -F "source=@$FILE" \
+    #     -F "source=@$FILE_PATH" \
     # ); echo
     UPLOAD_RESPONSE='{"id":"1656931191280272","post_id":"1656557151317676_1656931191280272"}'
     IMAGE_ID=$(echo "$UPLOAD_RESPONSE" | jq -r .id)
