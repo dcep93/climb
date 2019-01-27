@@ -233,12 +233,12 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   var o = orm(req, res, next);
 
   var finishUpload = waitGroup(2, function() {
-    o.updateWallMedia(wallId, form.fileId, {status: 'received'}, function() {
+    o.updateWallMedia(wallId, form.fileId, {status: 'received'}, function() { // todo update on primary key
       console.log('uploading to facebook');
       exec(`bash ${__dirname}/upload_to_facebook.sh ${form.fileId}`, function(err, stdout, stderr) {
         o.next = console.error;
         if (err) {
-          o.updateWallMedia(wallId, form.fieldId, {status: "failed", info: stderr });
+          o.updateWallMedia(wallId, form.fileId, {status: "failed", info: stderr });
           return console.log('upload', 'upload_to_facebook', form.fileId, '\n'+stderr);
         }
         var output = JSON.parse(stdout);
