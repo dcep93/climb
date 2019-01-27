@@ -238,7 +238,7 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
       exec(`bash ${__dirname}/upload_to_facebook.sh ${form.fileId}`, function(err, stdout, stderr) {
         o.next = console.error;
         if (err) {
-          o.updateWallMedia(wallId, form.field, {status: "failed", info: stderr });
+          o.updateWallMedia(wallId, form.fieldId, {status: "failed", info: stderr });
           return console.log('upload', 'upload_to_facebook', form.fileId, '\n'+stderr);
         }
         var output = JSON.parse(stdout);
