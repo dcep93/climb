@@ -37,14 +37,13 @@
             <% for (var m of media) { %>
                 <div>
                     <p>id: <%= m.id %></p>
-                    <p>name: <%- m.name %></p>
-                    <p>status: <%= m.status %></p>
-                    <% if (m.status === 'video') { %>
-                        <%- m.info %>
-                    <% } else if (m.status === 'image') { %>
-                        <img src="<%= m.info %>">
+                    <p>mime: <%= m.mime %></p>
+                    <% if (m.mime === 'video') { %>
+                        <%- m.data %>
+                    <% } else if (m.mime === 'image') { %>
+                        <img src="<%= m.data %>">
                     <% } else { %>
-                        <pre><%- m.info %></pre>
+                        <pre><%- m.data %></pre>
                     <% } %>
                 </div>
             <% } %>

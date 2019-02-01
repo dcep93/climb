@@ -237,12 +237,12 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   var endpoint;
   var uploadField;
   var getField;
-  var getResponseToUrl;
+  var getResponseToData;
   if (mime === "image") {
     endpoint = "https://graph.facebook.com/v3.2/me/photos";
     uploadField = "url";
     getField = "images";
-    getResponseToUrl = function(response) {
+    getResponseToData = function(response) {
       var images = response.images;
       if (!images) return null;
       var firstImage = images[0];
@@ -253,7 +253,7 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
     endpoint = "https://graph-video.facebook.com/v3.2/me/videos"
     upload_field = "file_url";
     getField = "embed_html";
-    getResponseToUrl = function(response) {
+    getResponseToData = function(response) {
       return response.embed_html;
     }
   } else {
@@ -270,9 +270,9 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
       access_token: accessToken,
       fields: getField,
     }, function(getResponse) {
-      var url = getResponseToUrl(getResponse);
-      if (!url) return next(getResponse);
-      orm(req, res, next).createWallMedia(wallId, gcsPath, res.locals.common.user.id, mime);
+      var data = getResponseToData(getResponse);
+      if (data) return next(getResponse);
+      orm(req, res, next).createWallMedia(wallId, gcsPath, res.locals.common.user.id, mime, data);
     }, next);
   }, next)
 });

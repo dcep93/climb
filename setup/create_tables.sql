@@ -56,6 +56,7 @@ CREATE TABLE wall_media (
     gcs_path VARCHAR(128) NOT NULL,
     user_id INT UNSIGNED NOT NULL,
     mime VARCHAR(16) NOT NULL,
+    data TEXT,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
