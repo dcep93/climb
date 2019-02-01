@@ -268,14 +268,20 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
     if (error) return next(new Error(error));
     var mediaId = JSON.parse(uploadBody).id;
     if (!mediaId) return next(new Error(uploadBody));
-    request.get(`https://graph.facebook.com/v3.2/${mediaId}`, {
-      access_token: accessToken,
-      fields: getField,
+    request({
+      uri: `https://graph.facebook.com/v3.2/${mediaId}`,
+      method: 'GET',
+      qs: {
+        access_token: accessToken,
+        fields: getField,
+      }
     }, function(error, _response, getBody) {
       if (error) return next(new Error(error));
       var data = getResponseToData(JSON.parse(getBody));
-      if (data) return next(new Error(getBody));
-      orm(req, res, next).createWallMedia(wallId, gcsId, res.locals.common.user.id, mime, data);
+      if (!data) return next(new Error(getBody));
+      orm(req, res, next).createWallMedia(wallId, gcsId, res.locals.common.user.id, mime, data, function() {
+        res.sendStatus(501); // delete from gcs
+      });
     });
   });
 });
