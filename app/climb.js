@@ -224,8 +224,10 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   var accessToken = config.facebook_page_access_token;
 
   var gcsId = req.body.gcs_id;
-  var gcsUrl = req.body.gcs_url;
+  var gcsPath = req.body.gcs_path;
   var fullMime = req.body.mime;
+
+  var gcsUrl = `https://storage.googleapis.com/${config.gcs_bucket_id}/${gcsPath}`;
 
   var mime = fullMime.split("/")[0];
 
@@ -255,23 +257,27 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
     return res.sendStatus(400);
   }
 
-  request.post(endpoint, {
-    access_token: accessToken,
-    [uploadField]: gcsUrl,
+  request({
+    uri: endpoint,
+    method: 'POST',
+    qs: {
+      access_token: accessToken,
+      [uploadField]: gcsUrl,
+    }
   }, function(error, _response, uploadBody) {
-    if (error) return next(error);
-    var mediaId = uploadBody.id;
-    if (!mediaId) return next(uploadBody);
-    get(`https://graph.facebook.com/v3.2/${mediaId}`, {
+    if (error) return next(new Error(error));
+    var mediaId = JSON.parse(uploadBody).id;
+    if (!mediaId) return next(new Error(uploadBody));
+    request.get(`https://graph.facebook.com/v3.2/${mediaId}`, {
       access_token: accessToken,
       fields: getField,
     }, function(error, _response, getBody) {
-      if (error) return next(error);
-      var data = getResponseToData(getBody);
-      if (data) return next(getBody);
+      if (error) return next(new Error(error));
+      var data = getResponseToData(JSON.parse(getBody));
+      if (data) return next(new Error(getBody));
       orm(req, res, next).createWallMedia(wallId, gcsId, res.locals.common.user.id, mime, data);
     });
-  })
+  });
 });
 
 module.exports = app;

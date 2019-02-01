@@ -1,6 +1,6 @@
 function submit() {
     var form = $(this);
-    var file = form.find('input[type=file]').get()[0].files[0];
+    var file = form.find('input[name=upload]').get()[0].files[0];
 
     var reader = new FileReader();
     reader.onload = function(e) {
@@ -16,10 +16,10 @@ function submit() {
                     // 'Content-Length': file.size,
                 },
                 data: fileData,
+                processData: false,
                 success: function(data) {
-                    console.log(data);
                     $.post(form.attr('action'), {
-                        gcs_url: data.selfLink,
+                        gcs_path: data.name,
                         gcs_id: data.id,
                         mime: file.type,
                     }, function() { location.href = location.href; })
@@ -27,7 +27,7 @@ function submit() {
             });
         });
     }
-    reader.readAsDataURL(file);
+    reader.readAsArrayBuffer(file);
 }
 
 $(document).ready(function() {
