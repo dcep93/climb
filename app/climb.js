@@ -216,58 +216,65 @@ function waitGroup(n, f) {
   }
 }
 
+app.get("/get_gcs_key", function(req, res, next) {
+  if (!res.locals.common.user.is_verified) return res.sendStatus(403);
+  res.sendStatus(501);
+});
+
 app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   if (!res.locals.common.user.is_verified) return res.sendStatus(403);
-  console.log('upload', 'received!');
   var gymPath = req.params.gym_path;
   var wallId = req.params.wall_id;
 
-  var form = new formidable.IncomingForm();
+  var accessToken = config.facebook_page_access_token;
 
-  form.maxFileSize = 500 * 1024 * 1024;
+  var gcsPath = req.body.gcs_path;
+  var gcsUrl = req.body.gcs_url;
+  var fullMime = req.body.mime;
 
-  form.on('error', console.error);
+  var mime = fullMime.split("/")[0];
 
-  form.parse(req);
+  var endpoint;
+  var uploadField;
+  var getField;
+  var getResponseToUrl;
+  if (mime === "image") {
+    endpoint = "https://graph.facebook.com/v3.2/me/photos";
+    uploadField = "url";
+    getField = "images";
+    getResponseToUrl = function(response) {
+      var images = response.images;
+      if (!images) return null;
+      var firstImage = images[0];
+      if (!firstImage) return null;
+      return firstImage.source;
+    }
+  } else if (mime === "video") {
+    endpoint = "https://graph-video.facebook.com/v3.2/me/videos"
+    upload_field = "file_url";
+    getField = "embed_html";
+    getResponseToUrl = function(response) {
+      return response.embed_html;
+    }
+  } else {
+    return res.sendStatus(400);
+  }
 
-  var o = orm(req, res, next);
-
-  var finishUpload = waitGroup(2, function() {
-    o.updateWallMedia(wallId, form.fileId, {status: 'received'}, function() { // todo update on primary key
-      console.log('uploading to facebook');
-      exec(`bash ${__dirname}/upload_to_facebook.sh ${form.fileId}`, function(err, stdout, stderr) {
-        o.next = console.error;
-        if (err) {
-          o.updateWallMedia(wallId, form.fileId, {status: "failed", info: stderr });
-          return console.log('upload', 'upload_to_facebook', form.fileId, '\n'+stderr);
-        }
-        var output = JSON.parse(stdout);
-        var status = output.type;
-        var info = output.info;
-        o.updateWallMedia(wallId, form.fileId, {status, info}, function() {
-          fs.unlinkSync(form.filePath);
-        });
-      });
-      res.sendStatus(200);
-    });
-  });
-
-  form.on('fileBegin', function (name, file) {
-    file.now = Date.now();
-    form.fileId = `${file.now}_${gymPath}_${wallId}`;
-    file.path = __dirname + '/uploads/' + form.fileId;
-    form.filePath = file.path;
-    console.log('upload', `Uploading ${file.name} ${file.path}`);
-    o.createWallMedia(wallId, form.fileId, res.locals.common.user.id, 'begin', file.name, finishUpload);
-  });
-
-  form.on('file', function (name, file) {
-    form.duration = (Date.now() - file.now) / 1000;
-    console.log('upload', `Uploaded ${file.name} ${form.fileId} ${form.duration}`);
-    finishUpload();
-  });
-
-  form.on('error', next);
+  post(endpoint, {
+    access_token: accessToken,
+    [uploadField]: gcsUrl,
+  }, function(uploadResponse) {
+    var mediaId = uploadResponse.id;
+    if (!mediaId) return next(uploadResponse);
+    get(`https://graph.facebook.com/v3.2/${mediaId}`, {
+      access_token: accessToken,
+      fields: getField,
+    }, function(getResponse) {
+      var url = getResponseToUrl(getResponse);
+      if (!url) return next(getResponse);
+      orm(req, res, next).createWallMedia(wallId, gcsPath, res.locals.common.user.id, mime);
+    }, next);
+  }, next)
 });
 
 module.exports = app;

@@ -22,9 +22,10 @@
         <p>Videos</p>
         <br>
         <% if (common.user.is_verified) { %>
+        <script type="text/javascript" src="/upload_media.js"></script>
         <div>
-            <p>New Video</p>
-            <form action="<%= common.path %>/upload" enctype="multipart/form-data" method="post">
+            <p>New Media</p>
+            <form id="upload_form" action="<%= common.path %>/upload">
                 <input type="file" name="upload">
                 <input type="submit">
             </form>
