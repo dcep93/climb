@@ -213,7 +213,7 @@ app.get("/get_gcs_key", function(req, res, next) {
   if (!res.locals.common.user.is_verified) return res.sendStatus(403);
   exec(`GOOGLE_APPLICATION_CREDENTIALS=${__dirname}/creds.json gcloud auth application-default print-access-token`, function(err, stdout, stderr) {
     if (err) return next(err);
-    res.send(stdout);
+    res.send({folder: res.locals.common.user.id, token: stdout, bucket: config.gcs_bucket_id});
   });
 });
 
@@ -223,7 +223,7 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
 
   var accessToken = config.facebook_page_access_token;
 
-  var gcsPath = req.body.gcs_path;
+  var gcsId = req.body.gcs_id;
   var gcsUrl = req.body.gcs_url;
   var fullMime = req.body.mime;
 
@@ -258,18 +258,18 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   request.post(endpoint, {
     access_token: accessToken,
     [uploadField]: gcsUrl,
-  }, function(error, uploadResponse, body) {
+  }, function(error, _response, uploadBody) {
     if (error) return next(error);
-    var mediaId = uploadResponse.id;
-    if (!mediaId) return next(uploadResponse);
+    var mediaId = uploadBody.id;
+    if (!mediaId) return next(uploadBody);
     get(`https://graph.facebook.com/v3.2/${mediaId}`, {
       access_token: accessToken,
       fields: getField,
-    }, function(error, getResponse, body) {
+    }, function(error, _response, getBody) {
       if (error) return next(error);
-      var data = getResponseToData(getResponse);
-      if (data) return next(getResponse);
-      orm(req, res, next).createWallMedia(wallId, gcsPath, res.locals.common.user.id, mime, data);
+      var data = getResponseToData(getBody);
+      if (data) return next(getBody);
+      orm(req, res, next).createWallMedia(wallId, gcsId, res.locals.common.user.id, mime, data);
     });
   })
 });
