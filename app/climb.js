@@ -1,8 +1,7 @@
 var express = require("express");
-var formidable = require("formidable");
 var OAuth2Client = require("google-auth-library").OAuth2Client;
 var exec = require("child_process").exec;
-var fs = require("fs");
+var request = require("request");
 
 var orm = require("./orm");
 var config = require("./config");
@@ -210,20 +209,16 @@ app.get("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
   });
 });
 
-function waitGroup(n, f) {
-  return function() {
-    if (--n === 0) f();
-  }
-}
-
 app.get("/get_gcs_key", function(req, res, next) {
   if (!res.locals.common.user.is_verified) return res.sendStatus(403);
-  res.sendStatus(501);
+  exec(`GOOGLE_APPLICATION_CREDENTIALS=${__dirname}/creds.json gcloud auth application-default print-access-token`, function(err, stdout, stderr) {
+    if (err) return next(err);
+    res.send(stdout);
+  });
 });
 
 app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   if (!res.locals.common.user.is_verified) return res.sendStatus(403);
-  var gymPath = req.params.gym_path;
   var wallId = req.params.wall_id;
 
   var accessToken = config.facebook_page_access_token;
@@ -260,21 +255,23 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
     return res.sendStatus(400);
   }
 
-  post(endpoint, {
+  request.post(endpoint, {
     access_token: accessToken,
     [uploadField]: gcsUrl,
-  }, function(uploadResponse) {
+  }, function(error, uploadResponse, body) {
+    if (error) return next(error);
     var mediaId = uploadResponse.id;
     if (!mediaId) return next(uploadResponse);
     get(`https://graph.facebook.com/v3.2/${mediaId}`, {
       access_token: accessToken,
       fields: getField,
-    }, function(getResponse) {
+    }, function(error, getResponse, body) {
+      if (error) return next(error);
       var data = getResponseToData(getResponse);
       if (data) return next(getResponse);
       orm(req, res, next).createWallMedia(wallId, gcsPath, res.locals.common.user.id, mime, data);
-    }, next);
-  }, next)
+    });
+  })
 });
 
 module.exports = app;
