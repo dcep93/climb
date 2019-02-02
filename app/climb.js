@@ -286,9 +286,9 @@ function uploadToFacebook(wallMediaId, mime, gcsPath, o) {
   }
 
   var getMediaTries = 100;
-  function finish(data, height, width, callback) {
+  function finish(data, height, width) {
     o.updateWallMedia(wallMediaId, {mime: mime, data: data, height: height, width: width}, function() {
-      if (callback !== undefined) callback();
+      if (this.res) this.res.sendStatus(200);
       deleteFromGCS();
       console.log(`finished ${mime} ${mediaId} ${getMediaTries}`);
     });
@@ -312,9 +312,7 @@ function uploadToFacebook(wallMediaId, mime, gcsPath, o) {
       var height = response.height;
       var width = response.width;
       if (!height || !width) return fail(`bad dimensions - ${width}x${height}`, rawResponse);
-      finish(imgSource, height, width, function() {
-        this.res.sendStatus(200);
-      });
+      finish(imgSource, height, width);
     }
   } else if (mime === "video") {
     o.res.sendStatus(200);
