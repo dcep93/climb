@@ -248,7 +248,7 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
     }
   } else if (mime === "video") {
     endpoint = "https://graph-video.facebook.com/v3.2/me/videos"
-    upload_field = "file_url";
+    uploadField = "file_url";
     getField = "embed_html";
     getResponseToData = function(response) {
       return response.embed_html;
