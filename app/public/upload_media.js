@@ -1,8 +1,13 @@
 function submit() {
     var form = $(this);
+
     var file = form.find('input[name=upload]').get()[0].files[0];
 
-    // check file mime
+    var mime = file.type.split("/")[0];
+
+    var acceptableMedia = ["image", "video"];
+
+    if (acceptableMedia.indexOf(mime) === -1) return alert('invalid file');
 
     $.get('/get_gcs_key', function(response) {
         var name = response.folder+'/'+(new Date().getTime())+'_'+file.name;
@@ -21,6 +26,7 @@ function submit() {
                     gcs_path: data.name,
                     gcs_id: data.id,
                     mime: file.type,
+                    size: file.size,
                 }, refresh);
             }
         });

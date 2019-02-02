@@ -176,7 +176,7 @@ class Orm {
 	}
 
 	getWallMedia(wallId, callback) {
-		this.query(callback, 'SELECT * FROM wall_media WHERE wall_id = ?', [wallId]);
+		this.query(callback, 'SELECT * FROM wall_media WHERE wall_id = ? ORDER BY id DESC', [wallId]);
 	}
 
 	createWallMedia(wallId, gcsPath, userId, mime, data, callback) {

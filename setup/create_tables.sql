@@ -57,6 +57,8 @@ CREATE TABLE wall_media (
     user_id INT UNSIGNED NOT NULL,
     mime VARCHAR(16) NOT NULL,
     data TEXT,
+    width INT UNSIGNED,
+    height INT UNSIGNED,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );

@@ -39,7 +39,7 @@
                     <p>id: <%= m.id %></p>
                     <p>mime: <%= m.mime %></p>
                     <% if (m.mime === 'video') { %>
-                        <%- m.data %>
+                        <iframe src="https://www.facebook.com/plugins/video.php?href=<%- encodeURIComponent(`https://www.facebook.com${m.data}`) %>" width="<%= m.width %>" height="<%= m.height %>" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>
                     <% } else if (m.mime === 'image') { %>
                         <img src="<%= m.data %>">
                     <% } else { %>

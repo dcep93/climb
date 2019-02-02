@@ -226,6 +226,7 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   var gcsId = req.body.gcs_id;
   var gcsPath = req.body.gcs_path;
   var fullMime = req.body.mime;
+  var fileSize = req.body.size;
 
   var gcsUrl = `https://storage.googleapis.com/${config.gcs_bucket_id}/${gcsPath}`;
 
@@ -233,13 +234,13 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
 
   var endpoint;
   var uploadField;
-  var getField;
-  var getResponseToData;
+  var fieldToGet;
+  var handleGetResponse;
   if (mime === "image") {
     endpoint = "https://graph.facebook.com/v3.2/me/photos";
     uploadField = "url";
-    getField = "images";
-    getResponseToData = function(response) {
+    fieldToGet = "images";
+    handleGetResponse = function(response) {
       var images = response.images;
       if (!images) return null;
       var firstImage = images[0];
@@ -249,9 +250,9 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   } else if (mime === "video") {
     endpoint = "https://graph-video.facebook.com/v3.2/me/videos"
     uploadField = "file_url";
-    getField = "embed_html";
-    getResponseToData = function(response) {
-      return response.embed_html;
+    fieldToGet = "permalink_url,format,status";
+    handleGetResponse = function(response) {
+      return response.permalink_url;
     }
   } else {
     return res.sendStatus(400);
@@ -273,14 +274,14 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
       method: 'GET',
       qs: {
         access_token: accessToken,
-        fields: getField,
+        fields: fieldToGet,
       }
     }, function(error, _response, getBody) {
       if (error) return next(new Error(error));
-      var data = getResponseToData(JSON.parse(getBody));
+      var data = handleGetResponse(JSON.parse(getBody));
       if (!data) return next(new Error(getBody));
       orm(req, res, next).createWallMedia(wallId, gcsId, res.locals.common.user.id, mime, data, function() {
-        res.sendStatus(501); // delete from gcs
+        res.sendStatus(200); // delete from gcs
       });
     });
   });
