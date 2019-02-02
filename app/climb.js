@@ -321,13 +321,13 @@ function uploadToFacebook(wallMediaId, mime, gcsPath, o) {
     uploadField = "file_url";
     fieldsToGet = "permalink_url,format,status";
     handleGetResponse = function(rawResponse, response) {
+      var permaLink = response.permalink_url;
+      if (!permaLink) return fail('no permalink', rawResponse);
       var status = response.status;
       if (!status) return fail('no status', rawResponse);
       var videoStatus = status.video_status;
       if (!videoStatus) return fail('no video status', rawResponse);
       if (videoStatus === 'ready') {
-        var permaLink = response.permalink_url;
-        if (!permaLink) return fail('no permalink', rawResponse);
         var formats = response.format;
         if (!formats) return fail('no formats', rawResponse);
         var lastFormat = formats[formats.length-1];
@@ -339,7 +339,7 @@ function uploadToFacebook(wallMediaId, mime, gcsPath, o) {
       } else if (videoStatus === 'processing') {
         var processingProgress = status.processing_progress;
         if (processingProgress === undefined) return fail('undefined progress', rawResponse);
-        o.updateWallMedia(wallMediaId, {mime: `${mime} - processing ${processingProgress}%`, data: rawResponse}, function() {
+        o.updateWallMedia(wallMediaId, {mime: `${mime} - processing ${processingProgress}%`, data: permaLink}, function() {
           if (--getMediaTries === 0) return fail('no more retries');
           console.log(`processing ${processingProgress}% ${mediaId} ${getMediaTries}`);
           setTimeout(getMedia, 3000)
