@@ -221,70 +221,140 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   if (!res.locals.common.user.is_verified) return res.sendStatus(403);
   var wallId = req.params.wall_id;
 
-  var accessToken = config.facebook_page_access_token;
-
-  var gcsId = req.body.gcs_id;
+  // var gcsId = req.body.gcs_id;
   var gcsPath = req.body.gcs_path;
   var fullMime = req.body.mime;
   var fileSize = req.body.size;
 
-  var gcsUrl = `https://storage.googleapis.com/${config.gcs_bucket_id}/${gcsPath}`;
-
   var mime = fullMime.split("/")[0];
 
+  var acceptableMedia = ["image", "video"];
+
+  if (acceptableMedia.indexOf(mime) === -1) return res.sendStatus(400);
+
+  orm(req, res, next).createWallMedia(wallId, gcsPath, res.locals.common.user.id, fileSize, mime, function(id) {
+    uploadToFacebook(id, mime, gcsPath, this);
+  });
+});
+
+function uploadToFacebook(wallMediaId, mime, gcsPath, o) {
   var endpoint;
   var uploadField;
-  var fieldToGet;
+  var fieldsToGet;
   var handleGetResponse;
-  if (mime === "image") {
-    endpoint = "https://graph.facebook.com/v3.2/me/photos";
-    uploadField = "url";
-    fieldToGet = "images";
-    handleGetResponse = function(response) {
-      var images = response.images;
-      if (!images) return null;
-      var firstImage = images[0];
-      if (!firstImage) return null;
-      return firstImage.source;
-    }
-  } else if (mime === "video") {
-    endpoint = "https://graph-video.facebook.com/v3.2/me/videos"
-    uploadField = "file_url";
-    fieldToGet = "permalink_url,format,status";
-    handleGetResponse = function(response) {
-      return response.permalink_url;
-    }
-  } else {
-    return res.sendStatus(400);
+  var mediaId;
+
+  var accessToken = config.facebook_page_access_token;
+
+  var gcsUrl = `https://storage.googleapis.com/${config.gcs_bucket_id}/${gcsPath}`;
+
+  function uploadMedia() {
+    request({
+      uri: endpoint,
+      method: 'POST',
+      qs: {
+        access_token: accessToken,
+        [uploadField]: gcsUrl,
+      }
+    }, function(error, _response, uploadBody) {
+      if (error) return fail('post', error);
+      mediaId = JSON.parse(uploadBody).id;
+      if (!mediaId) return fail('no media id', uploadBody);
+      getMedia();
+    });
   }
 
-  request({
-    uri: endpoint,
-    method: 'POST',
-    qs: {
-      access_token: accessToken,
-      [uploadField]: gcsUrl,
-    }
-  }, function(error, _response, uploadBody) {
-    if (error) return next(new Error(error));
-    var mediaId = JSON.parse(uploadBody).id;
-    if (!mediaId) return next(new Error(uploadBody));
+  function getMedia() {
     request({
       uri: `https://graph.facebook.com/v3.2/${mediaId}`,
       method: 'GET',
       qs: {
         access_token: accessToken,
-        fields: fieldToGet,
+        fields: fieldsToGet,
       }
     }, function(error, _response, getBody) {
-      if (error) return next(new Error(error));
-      var data = handleGetResponse(JSON.parse(getBody));
-      if (!data) return next(new Error(getBody));
-      orm(req, res, next).createWallMedia(wallId, gcsId, res.locals.common.user.id, mime, data, function() {
-        res.sendStatus(200); // delete from gcs
-      });
+      if (error) return fail('get', error);
+      handleGetResponse(getBody, JSON.parse(getBody));
     });
-  });
-});
+  }
+
+  function fail(mimeExtension, error) {
+    if (!error) error = mimeExtension;
+    o.updateWallMedia(wallMediaId, {mime: `${mime} - ${mimeExtension}`, data: error}, function() {
+      console.error(new Error(error));
+    });
+  }
+
+  var getMediaTries = 100;
+  function finish(data, height, width, callback) {
+    o.updateWallMedia(wallMediaId, {mime: mime, data: data, height: height, width: width}, function() {
+      if (callback !== undefined) callback();
+      deleteFromGCS();
+      console.log(`finished ${mime} ${mediaId} ${getMediaTries}`);
+    });
+  }
+
+  function deleteFromGCS() {
+    // TODO
+  }
+
+  if (mime === "image") {
+    endpoint = "https://graph.facebook.com/v3.2/me/photos";
+    uploadField = "url";
+    fieldsToGet = "images,width,height";
+    handleGetResponse = function(rawResponse, response) {
+      var images = response.images;
+      if (!images) return fail('no images', rawResponse);
+      var firstImage = images[0];
+      if (!firstImage) return fail('no first image', rawResponse);
+      var imgSource = firstImage.source;
+      if (!imgSource) return fail('no source', rawResponse);
+      var height = response.height;
+      var width = response.width;
+      if (!height || !width) return fail(`bad dimensions - ${width}x${height}`, rawResponse);
+      finish(imgSource, height, width, function() {
+        this.res.sendStatus(200);
+      });
+    }
+  } else if (mime === "video") {
+    o.res.sendStatus(200);
+    o = orm(null, null, console.error);
+    endpoint = "https://graph-video.facebook.com/v3.2/me/videos"
+    uploadField = "file_url";
+    fieldsToGet = "permalink_url,format,status";
+    handleGetResponse = function(rawResponse, response) {
+      var status = response.status;
+      if (!status) return fail('no status', rawResponse);
+      var videoStatus = status.video_status;
+      if (!videoStatus) return fail('no video status', rawResponse);
+      if (videoStatus === 'ready') {
+        var permaLink = response.permalink_url;
+        if (!permaLink) return fail('no permalink', rawResponse);
+        var formats = response.format;
+        if (!formats) return fail('no formats', rawResponse);
+        var lastFormat = formats[formats.length-1];
+        if (!lastFormat) return fail('no last format', rawResponse);
+        var height = lastFormat.height;
+        var width = lastFormat.width;
+        if (!height || !width) return fail(`bad dimensions - ${width}x${height}`, rawResponse);
+        finish(permaLink, height, width);
+      } else if (videoStatus === 'processing') {
+        var processingProgress = status.processing_progress;
+        if (processingProgress === undefined) return fail('undefined progress', rawResponse);
+        o.updateWallMedia(wallMediaId, {mime: `${mime} - processing ${processingProgress}%`, data: rawResponse}, function() {
+          if (--getMediaTries === 0) return fail('no more retries');
+          console.log(`processing ${processingProgress}% ${mediaId} ${getMediaTries}`);
+          setTimeout(getMedia, 3000)
+        });
+      } else {
+        return fail(`bad video status ${videoStatus}`, rawResponse);
+      }
+    }
+  } else {
+    throw new DeveloperException("should never get here");
+  }
+
+  uploadMedia();
+}
 
 module.exports = app;

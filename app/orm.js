@@ -179,8 +179,21 @@ class Orm {
 		this.query(callback, 'SELECT * FROM wall_media WHERE wall_id = ? ORDER BY id DESC', [wallId]);
 	}
 
-	createWallMedia(wallId, gcsPath, userId, mime, data, callback) {
-		this.query(callback, 'INSERT INTO wall_media (wall_id, gcs_path, user_id, mime, data) VALUES (?,?,?,?,?)', [wallId, gcsPath, userId, mime, data]);
+	createWallMedia(wallId, gcsPath, userId, fileSize, mime, callback) {
+		this.insert(callback, 'INSERT INTO wall_media (wall_id, gcs_path, user_id, file_size, mime) VALUES (?,?,?,?,?)', [wallId, gcsPath, userId, fileSize, mime]);
+	}
+
+	updateWallMedia(id, updates, callback) {
+		var updateStringParts = [];
+		var params = [];
+		for (var key in updates) {
+			updateStringParts.push(`${key}=?`);
+			params.push(updates[key]);
+		}
+		var updateString = updateStringParts.join(',');
+		params.push(id);
+		var q = `UPDATE wall_media SET ${updateString} WHERE id = ?`;
+		this.query(callback, q, params);
 	}
 
 	getLatestUsers(callback) {
