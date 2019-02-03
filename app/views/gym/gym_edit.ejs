@@ -2,12 +2,12 @@
 <html>
 <head>
 	<title><%= gym.name %></title>
-	<%- include('head.ejs') %>
+	<%- include('../head.ejs') %>
 	<script type="text/javascript" src="/gym/gym_edit.js"></script>
 	<link rel="stylesheet" type="text/css" href="/gym/gym.css">
 </head>
 <body>
-	<%- include('signin.ejs') %>
+	<%- include('../signin.ejs') %>
     <a href="/">Home</a>
     <form action="" class="update-form">
         <p>name: <input name="name" type="text" value="<%- gym.name %>"></p>

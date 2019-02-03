@@ -2,11 +2,11 @@
 <html>
 <head>
 	<title><%= user.name %></title>
-	<%- include('head.ejs') %>
+	<%- include('../head.ejs') %>
 	<script type="text/javascript" src="/user/user.js"></script>
 </head>
 <body>
-	<%- include('signin.ejs') %>
+	<%- include('../signin.ejs') %>
     <a href="/">Home</a>
     <div id="user" path="<%= common.path %>">
         <p><%- user.name %></p>
