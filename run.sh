@@ -7,15 +7,10 @@ NAME=climb
 
 LOG_FILE=/var/log/$NAME.log
 
-INDEX=$1
-
-if [ -z "$INDEX" ]; then
-	echo "usage: $0 <index_path>" | tee -a $LOG_FILE
-	exit 1
-fi
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 echo "$(date) startup" | tee -a $LOG_FILE
 
-screen -S $NAME -Dm bash -c "set -x; cd $(dirname $INDEX); if [[ -f env.sh ]]; then source env.sh; fi; nodemon --delay 1 $INDEX; sh"
+screen -S $NAME -Dm bash -c "set -x; if [[ -f env.sh ]]; then source env.sh; fi; nodemon --delay 1 app/index.js; sh"
 
 echo "$(date) success" | tee -a $LOG_FILE

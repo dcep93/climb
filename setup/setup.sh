@@ -11,15 +11,15 @@ set -o pipefail
 
 apt-get update
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$( dirname "${BASH_SOURCE[0]}"
 
 which jq || apt-get install -y jq
 
 # write app config
-if [[ ! -f "$DIR/../app/config.json" ]]; then bash $DIR/setup_config_json.sh $DIR; fi
+if [[ ! -f "../app/config.json" ]]; then bash setup_config_json.sh; fi
 
 # install mysql
-which mysql || bash $DIR/setup_mysql.sh $DIR
+which mysql || bash setup_mysql.sh
 
 # install nodejs
 which node || ( curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -y nodejs )
@@ -27,12 +27,9 @@ which node || ( curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-ge
 # install nodemon
 which nodemon || npm install --global nodemon
 
-if [ ! -d $DIR/app/node_modules ]; then
-	( cd $DIR/../app && npm install )
+if [ ! -d app/node_modules ]; then
+	( cd app && npm install )
 fi
-
-STARTUP_SCRIPT=$DIR/../run.sh
-INDEX=$DIR/../app/index.js
 
 # server service
 cat <<END > /etc/systemd/system/climb.service
@@ -42,7 +39,7 @@ After=local-fs.target
 Wants=local-fs.target
 
 [Service]
-ExecStart=/bin/bash $STARTUP_SCRIPT $INDEX
+ExecStart=/bin/bash $(pwd)/../run.sh
 Type=simple
 
 [Install]
