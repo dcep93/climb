@@ -138,10 +138,6 @@ class Orm {
 		);
 	}
 
-	getUserNumClimbedWalls(userId, callback) {
-		this.query(callback, 'SELECT COUNT(*) FROM climbed_walls WHERE active and user_id = ?', [userId], true, true);
-	}
-
 	updateUserStatus(userId, isAdmin, isVerified) {
 		var updateStrings = [];
 		var parameters = [];

@@ -1,16 +1,11 @@
 var express = require("express");
 var OAuth2Client = require("google-auth-library").OAuth2Client;
 var exec = require("child_process").exec;
-var request = require("request");
 
 var orm = require("./orm");
 var config = require("./config");
 
 var app = express.Router();
-
-Date.prototype._toDateString = function() {
-  return this.toISOString().slice(0, 10);
-};
 
 app.use(function(req, res, next) {
   res.locals.common = {
@@ -31,9 +26,7 @@ app.use(function(req, res, next) {
 
 app.get("/", function(req, res, next) {
   orm(req, res, next).getAllGyms(function(gyms) {
-    res.render("index.ejs", {
-      gyms: gyms
-    });
+    res.render("index.ejs", { gyms });
   });
 });
 
@@ -47,7 +40,6 @@ app.post("/login", function(req, res, next) {
     })
     .then(function(ticket) {
       var payload = ticket.getPayload();
-      console.log(payload);
       orm(req, res, next).upsertUser(
         payload["sub"],
         payload["email"],
@@ -58,6 +50,8 @@ app.post("/login", function(req, res, next) {
           res.sendStatus(200);
         }
       );
+    }, function(error) {
+      console.log(error);
     });
 });
 
@@ -142,9 +136,7 @@ app.get("/user/:user_id", function(req, res, next) {
   var userId = req.params.user_id;
   orm(req, res, next).getUser(userId, function(user) {
     if (user == undefined) return res.sendStatus(404);
-    this.getUserNumClimbedWalls(userId, function(numClimbedWalls) {
-      res.render("user.ejs", { user, numClimbedWalls });
-    });
+    res.render("user.ejs", { user });
   });
 });
 
@@ -164,7 +156,7 @@ app.get("/gym/:gym_path/wall/:wall_id", function(req, res, next) {
 app.get("/get_gcs_key", function(req, res, next) {
   if (!res.locals.common.user.is_verified) return res.sendStatus(403);
   exec(`GOOGLE_APPLICATION_CREDENTIALS=${__dirname}/creds.json gcloud auth application-default print-access-token`, function(err, stdout, stderr) {
-    if (err) return next(err);
+    if (err) return next(new Error(err));
     res.send({folder: res.locals.common.user.id, token: stdout, bucket: config.gcs_bucket_id});
   });
 });
@@ -177,6 +169,7 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   var gcsPath = req.body.gcs_path;
   var fullMime = req.body.mime;
   var fileSize = req.body.size;
+  var gcsKey = req.body.gcs_key;
 
   var mime = fullMime.split("/")[0];
 
@@ -185,126 +178,8 @@ app.post("/gym/:gym_path/wall/:wall_id/upload", function(req, res, next) {
   if (acceptableMedia.indexOf(mime) === -1) return res.sendStatus(400);
 
   orm(req, res, next).createWallMedia(wallId, gcsPath, res.locals.common.user.id, fileSize, mime, function(id) {
-    uploadToFacebook(id, mime, gcsPath, this);
+    uploadToFacebook(id, mime, gcsPath, gcsKey, this);
   });
 });
-
-function uploadToFacebook(wallMediaId, mime, gcsPath, o) {
-  var endpoint;
-  var uploadField;
-  var fieldsToGet;
-  var handleGetResponse;
-  var mediaId;
-
-  var accessToken = config.facebook_page_access_token;
-
-  var gcsUrl = `https://storage.googleapis.com/${config.gcs_bucket_id}/${gcsPath}`;
-
-  function uploadMedia() {
-    request({
-      uri: endpoint,
-      method: 'POST',
-      qs: {
-        access_token: accessToken,
-        [uploadField]: gcsUrl,
-      }
-    }, function(error, _response, uploadBody) {
-      if (error) return fail('post', error);
-      mediaId = JSON.parse(uploadBody).id;
-      if (!mediaId) return fail('no media id', uploadBody);
-      getMedia();
-    });
-  }
-
-  function getMedia() {
-    request({
-      uri: `https://graph.facebook.com/v3.2/${mediaId}`,
-      method: 'GET',
-      qs: {
-        access_token: accessToken,
-        fields: fieldsToGet,
-      }
-    }, function(error, _response, getBody) {
-      if (error) return fail('get', error);
-      handleGetResponse(getBody, JSON.parse(getBody));
-    });
-  }
-
-  function fail(mimeExtension, error) {
-    if (!error) error = mimeExtension;
-    o.updateWallMedia(wallMediaId, {mime: `${mime} - ${mimeExtension}`, data: error}, function() {
-      console.error(new Error(error));
-    });
-  }
-
-  var getMediaTries = 100;
-  function finish(data, height, width) {
-    o.updateWallMedia(wallMediaId, {mime: mime, data: data, height: height, width: width}, function() {
-      if (this.res) this.res.sendStatus(200);
-      deleteFromGCS();
-      console.log(`finished ${mime} ${mediaId} ${getMediaTries}`);
-    });
-  }
-
-  function deleteFromGCS() {
-    // TODO
-  }
-
-  if (mime === "image") {
-    endpoint = "https://graph.facebook.com/v3.2/me/photos";
-    uploadField = "url";
-    fieldsToGet = "images,width,height";
-    handleGetResponse = function(rawResponse, response) {
-      var images = response.images;
-      if (!images) return fail('no images', rawResponse);
-      var firstImage = images[0];
-      if (!firstImage) return fail('no first image', rawResponse);
-      var imgSource = firstImage.source;
-      if (!imgSource) return fail('no source', rawResponse);
-      var height = response.height;
-      var width = response.width;
-      if (!height || !width) return fail(`bad dimensions - ${width}x${height}`, rawResponse);
-      finish(imgSource, height, width);
-    }
-  } else if (mime === "video") {
-    o.res.sendStatus(200);
-    o = orm(null, null, console.error);
-    endpoint = "https://graph-video.facebook.com/v3.2/me/videos"
-    uploadField = "file_url";
-    fieldsToGet = "permalink_url,format,status";
-    handleGetResponse = function(rawResponse, response) {
-      var permaLink = response.permalink_url;
-      if (!permaLink) return fail('no permalink', rawResponse);
-      var status = response.status;
-      if (!status) return fail('no status', rawResponse);
-      var videoStatus = status.video_status;
-      if (!videoStatus) return fail('no video status', rawResponse);
-      if (videoStatus === 'ready') {
-        var formats = response.format;
-        if (!formats) return fail('no formats', rawResponse);
-        var lastFormat = formats[formats.length-1];
-        if (!lastFormat) return fail('no last format', rawResponse);
-        var height = lastFormat.height;
-        var width = lastFormat.width;
-        if (!height || !width) return fail(`bad dimensions - ${width}x${height}`, rawResponse);
-        finish(permaLink, height, width);
-      } else if (videoStatus === 'processing') {
-        var processingProgress = status.processing_progress;
-        if (processingProgress === undefined) return fail('undefined progress', rawResponse);
-        o.updateWallMedia(wallMediaId, {mime: `${mime} - processing ${processingProgress}%`, data: permaLink}, function() {
-          if (--getMediaTries === 0) return fail('no more retries');
-          console.log(`processing ${processingProgress}% ${mediaId} ${getMediaTries}`);
-          setTimeout(getMedia, 3000)
-        });
-      } else {
-        return fail(`bad video status ${videoStatus}`, rawResponse);
-      }
-    }
-  } else {
-    throw new DeveloperException("should never get here");
-  }
-
-  uploadMedia();
-}
 
 module.exports = app;

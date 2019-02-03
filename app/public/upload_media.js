@@ -10,12 +10,16 @@ function submit() {
     if (acceptableMedia.indexOf(mime) === -1) return alert('invalid file');
 
     $.get('/get_gcs_key', function(response) {
-        var name = response.folder+'/'+(new Date().getTime())+'_'+file.name;
-        var endpoint = 'https://www.googleapis.com/upload/storage/v1/b/'+response.bucket+'/o?uploadType=media&name='+name;
+        var gcsKey = response.token;
+        var folder = response.folder;
+        var bucket = response.bucket;
+
+        var name = folder+'/'+(new Date().getTime())+'_'+file.name;
+        var endpoint = 'https://www.googleapis.com/upload/storage/v1/b/'+bucket+'/o?uploadType=media&name='+name;
         $.post({
             url: endpoint,
             headers: {
-                'Authorization': 'Bearer '+response.token,
+                'Authorization': 'Bearer '+gcsKey,
                 'Content-Type': file.type,
                 // 'Content-Length': file.size,
             },
@@ -27,6 +31,7 @@ function submit() {
                     gcs_id: data.id,
                     mime: file.type,
                     size: file.size,
+                    gcs_key: gcsKey,
                 }, refresh);
             }
         });

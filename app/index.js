@@ -7,6 +7,10 @@ console.log = function() {
 	log(...arr);
 };
 
+Date.prototype._toDateString = function() {
+  return this.toISOString().slice(0, 10);
+};
+
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
