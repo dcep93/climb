@@ -11,7 +11,7 @@ app.get("/", function(req, res, next) {
         if (wall === undefined) return res.sendStatus(404);
         this.getGym(gymPath, function(gym) {
             this.getWallMedia(wallId, function(media) {
-                res.render("wall.ejs", { wall, gym, media });
+                res.render("wall/wall.ejs", { wall, gym, media });
             });
         });
     });

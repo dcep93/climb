@@ -8,7 +8,7 @@ app.get("/", function(req, res, next) {
     var userId = req.params.user_id;
     orm(req, res, next).getUser(userId, function(user) {
         if (user == undefined) return res.sendStatus(404);
-        res.render("user.ejs", { user });
+        res.render("user/user.ejs", { user });
     });
 });
 

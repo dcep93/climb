@@ -14,7 +14,7 @@ app.get("/", function(req, res, next) {
         if (gym === undefined) return res.sendStatus(404);
         this.getWalls(gymPath, function(walls) {
             this.getClimbedWalls(gymPath, function(climbedWalls) {
-                res.render("gym.ejs", { gym, walls, climbedWalls });
+                res.render("gym/gym.ejs", { gym, walls, climbedWalls });
             });
         });
     });
@@ -26,7 +26,7 @@ app.get("/edit", function(req, res, next) {
     orm(req, res, next).getGym(gymPath, function(gym) {
         if (gym === undefined) return res.sendStatus(404);
         this.getWalls(gymPath, function(walls) {
-            res.render("gym_edit.ejs", { gym, walls });
+            res.render("gym/gym_edit.ejs", { gym, walls });
         });
     });
 });
