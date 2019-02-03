@@ -2,7 +2,7 @@ function onSignIn(googleUser) {
     if (loggedIn()) return;
     var id_token = googleUser.getAuthResponse().id_token;
     var refreshLock = lock(refresh, 2);
-    $.post('/login', {id_token: id_token}, refreshLock);
+    $.post('/auth/login', {id_token: id_token}, refreshLock);
     refreshLock();
 }
 
@@ -19,7 +19,7 @@ function refresh() {
 
 function signOut() {
     var refreshLock = lock(refresh, 2);
-    $.post('/logout', undefined, refreshLock);
+    $.post('/auth/logout', undefined, refreshLock);
     gapi.auth2.getAuthInstance().signOut();
     refreshLock();
 }
