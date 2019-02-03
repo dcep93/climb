@@ -30,9 +30,9 @@ app.use(cookieSession({
 	secret: config.cookie_secret || '*'
 }));
 
-app.use(climb);
-
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(climb);
 
 app.use(function(err, req, res, next) {
 	console.error(err.stack);
