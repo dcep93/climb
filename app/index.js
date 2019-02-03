@@ -29,7 +29,7 @@ app.use(cookieSession({
 
 app.use(climb);
 
-app.use(admin);
+app.use("/admin", admin);
 
 app.use(express.static(path.join(__dirname, 'public')));
 

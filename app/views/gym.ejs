@@ -19,7 +19,7 @@
 			<a id="edit-anchor" href="/gym/<%= gym.path %>/edit">Edit</a>
 		<% } %>
 		<% for (var wall of walls) { %>
-			<a class="wall" data-wall-id="<%= wall.id %>">
+			<a class="wall" href="<%= common.path %>/wall/<%= wall.id %>" data-wall-id="<%= wall.id %>">
 				<p>id: <%= wall.id %></p>
 				<p>name: <%= wall.name %></p>
 				<p>difficulty: <%= wall.difficulty %></p>

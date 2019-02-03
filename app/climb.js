@@ -66,22 +66,6 @@ app.post("/logout", function(req, res) {
   res.sendStatus(200);
 });
 
-app.post("/new_gym", function(req, res, next) {
-  if (!res.locals.common.user.is_admin) return res.sendStatus(403);
-  var path = req.body.path;
-  var name = req.body.name;
-  var description = req.body.description;
-  orm(req, res, next)
-    .setErrF(function(q, err) {
-      if (err.code === "ER_DUP_ENTRY") {
-        res.status(400).send(`path "${path}" already exists`);
-      } else {
-        this.err(q, err);
-      }
-    })
-    .newGym(path, name, description, () => res.send(`/gym/${path}`));
-});
-
 app.get("/gym/:gym_path", function(req, res, next) {
   var gymPath = req.params.gym_path;
   orm(req, res, next).getGym(gymPath, function(gym) {
@@ -161,38 +145,6 @@ app.get("/user/:user_id", function(req, res, next) {
     this.getUserNumClimbedWalls(userId, function(numClimbedWalls) {
       res.render("user.ejs", { user, numClimbedWalls });
     });
-  });
-});
-
-app.post("/user/:user_id/edit", function(req, res, next) {
-  if (!res.locals.common.user.is_admin) return res.sendStatus(403);
-  var userId = req.params.user_id;
-  if (userId == res.locals.common.user.id) return res.sendStatus(409);
-  if (userId == 1) return res.sendStatus(403);
-  var field = req.body.field;
-  var value = req.body.value === "true";
-  var isAdmin;
-  var isVerified;
-  if (field === "admin") {
-    isAdmin = value;
-    if (isAdmin) {
-      isVerified = true;
-    }
-  } else if (field === "verified") {
-    isVerified = value;
-    if (!isVerified) {
-      isAdmin = false;
-    }
-  } else {
-    return res.sendStatus(400);
-  }
-  orm(req, res, next).updateUserStatus(userId, isAdmin, isVerified);
-});
-
-app.get("/admin/user/latest", function(req, res, next) {
-  if (!res.locals.common.user.is_admin) return res.redirect('/');
-  orm(req, res, next).getLatestUsers(function(users) {
-    res.render("user_latest.ejs", { users });
   });
 });
 
