@@ -7,17 +7,19 @@ var orm = require("./orm");
 
 var locals = require("./routes/locals");
 
+var admin = require("./routes/admin");
+var auth = require("./routes/auth");
 var gym = require("./routes/gym");
 var user = require("./routes/user");
-var auth = require("./routes/auth");
 
 var app = express.Router();
 
 app.use(locals);
 
+app.use("/admin", admin);
+app.use("/auth", auth);
 app.use("/gym/:gym_path", gym);
 app.use("/user/:user_id", user);
-app.use("/auth", auth);
 
 app.get("/", function(req, res, next) {
     orm(req, res, next).getAllGyms(function(gyms) {

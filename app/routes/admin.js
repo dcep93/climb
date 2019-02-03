@@ -1,19 +1,15 @@
 var express = require('express');
-var exec = require('child_process').exec;
 
-var orm = require("./orm");
+var orm = require("../orm");
+var adminNodemon = require("./admin_nodemon");
 
 var app = express.Router();
+
+app.use(adminNodemon);
 
 app.use(function(req, res, next) {
 	if (!res.locals.common.user.is_admin) return res.sendStatus(403);
 	next();
-});
-
-app.get("/user/latest", function(req, res, next) {
-	orm(req, res, next).getLatestUsers(function(users) {
-		res.render("user_latest.ejs", { users });
-	});
 });
 
 app.post("/new_gym", function(req, res, next) {
@@ -29,6 +25,12 @@ app.post("/new_gym", function(req, res, next) {
       }
     })
     .newGym(path, name, description, () => res.send(`/gym/${path}`));
+});
+
+app.get("/user/latest", function(req, res, next) {
+	orm(req, res, next).getLatestUsers(function(users) {
+		res.render("user_latest.ejs", { users });
+	});
 });
 
 app.post("/user/:user_id/edit", function(req, res, next) {
@@ -53,26 +55,6 @@ app.post("/user/:user_id/edit", function(req, res, next) {
     return res.sendStatus(400);
   }
   orm(req, res, next).updateUserStatus(userId, isAdmin, isVerified);
-});
-
-app.use("/pull", function(req, res) {
-	exec(`git -C ${__dirname} pull -f`, function(err, stdout, stderr) {
-		var sendString;
-		if (err) {
-			console.log(stderr);
-			res.status(500);
-			sendString = stderr;
-		} else {
-			console.info(stdout);
-			sendString = stdout;
-		}
-		res.send(`<pre>${sendString}</pre>`);
-	});
-});
-
-app.use("/rs", function(req, res) {
-	res.sendStatus(200);
-	process.kill(process.pid, 'SIGUSR2');
 });
 
 module.exports = app;

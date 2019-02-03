@@ -17,7 +17,6 @@ var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session');
 
 var climb = require('./climb');
-var admin = require('./admin');
 var config = require('./config');
 
 var app = express();
@@ -32,8 +31,6 @@ app.use(cookieSession({
 }));
 
 app.use(climb);
-
-app.use("/admin", admin);
 
 app.use(express.static(path.join(__dirname, 'public')));
 

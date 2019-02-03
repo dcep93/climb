@@ -4,28 +4,6 @@ var orm = require("../orm");
 
 var app = express.Router({mergeParams: true});
 
-app.post("/upload", function(req, res, next) {
-    if (!res.locals.common.user.is_verified) return res.sendStatus(403);
-    var wallId = req.params.wall_id;
-
-    // var gcsId = req.body.gcs_id;
-    var gcsPath = req.body.gcs_path;
-    var fullMime = req.body.mime;
-    var fileSize = req.body.size;
-    var gcsKey = req.body.gcs_key;
-
-    var mime = fullMime.split("/")[0];
-
-    var acceptableMedia = ["image", "video"];
-
-    if (acceptableMedia.indexOf(mime) === -1) return res.sendStatus(400);
-
-    orm(req, res, next).createWallMedia(wallId, gcsPath, res.locals.common.user.id, fileSize, mime, function(id) {
-        uploadToFacebook(id, mime, gcsPath, gcsKey, this);
-    });
-});
-
-
 app.get("/", function(req, res, next) {
     var gymPath = req.params.gym_path;
     var wallId = req.params.wall_id;
@@ -61,6 +39,27 @@ app.post("/edit", function(req, res, next) {
         req.body.color,
         req.body.active === "on"
     );
+});
+
+app.post("/upload", function(req, res, next) {
+    if (!res.locals.common.user.is_verified) return res.sendStatus(403);
+    var wallId = req.params.wall_id;
+
+    // var gcsId = req.body.gcs_id;
+    var gcsPath = req.body.gcs_path;
+    var fullMime = req.body.mime;
+    var fileSize = req.body.size;
+    var gcsKey = req.body.gcs_key;
+
+    var mime = fullMime.split("/")[0];
+
+    var acceptableMedia = ["image", "video"];
+
+    if (acceptableMedia.indexOf(mime) === -1) return res.sendStatus(400);
+
+    orm(req, res, next).createWallMedia(wallId, gcsPath, res.locals.common.user.id, fileSize, mime, function(id) {
+        uploadToFacebook(id, mime, gcsPath, gcsKey, this);
+    });
 });
 
 module.exports = app;
