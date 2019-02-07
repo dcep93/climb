@@ -16,8 +16,8 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session');
 
-var climb = require('./climb');
-var config = require('./config');
+var climb = require('./climb/climb');
+var config = require('./climb/config');
 
 var app = express();
 
@@ -43,7 +43,7 @@ app.use(function(req, res, next) {
 	res.sendStatus(404);
 });
 
-var port = process.env.PORT || 8080;
+var port = config.port || 8080;
 
 app.listen(port, function() {
 	console.log(`listening on port ${port}`);

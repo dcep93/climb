@@ -5,12 +5,12 @@ var config = require("./config");
 
 var orm = require("./orm");
 
-var locals = require("./routes/locals");
+var locals = require("../routes/locals");
 
-var admin = require("./routes/admin");
-var auth = require("./routes/auth");
-var gym = require("./routes/gym");
-var user = require("./routes/user");
+var admin = require("../routes/admin");
+var auth = require("../routes/auth");
+var gym = require("../routes/gym");
+var user = require("../routes/user");
 
 var app = express.Router();
 

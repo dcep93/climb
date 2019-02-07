@@ -1,6 +1,5 @@
-var config = require("../config");
-
-var orm = require("../orm");
+var config = require("../climb/config");
+var orm = require("../climb/orm");
 
 function locals(req, res, next) {
     res.locals.common = {

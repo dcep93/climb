@@ -1,6 +1,6 @@
 var express = require("express");
 
-var orm = require("../orm");
+var orm = require("../climb/orm");
 
 var app = express.Router({mergeParams: true});
 

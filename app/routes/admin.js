@@ -1,6 +1,6 @@
 var express = require('express');
 
-var orm = require("../orm");
+var orm = require("../climb/orm");
 var adminNodemon = require("./admin_nodemon");
 
 var app = express.Router();
