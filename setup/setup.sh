@@ -11,12 +11,12 @@ set -o pipefail
 
 apt-get update
 
-cd "$( dirname "${BASH_SOURCE[0]}"
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 which jq || apt-get install -y jq
 
 # write app config
-if [[ ! -f "../app/config.json" ]]; then bash setup_config_json.sh; fi
+bash setup_config_json.sh; fi
 
 # install mysql
 which mysql || bash setup_mysql.sh
@@ -27,9 +27,8 @@ which node || ( curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-ge
 # install nodemon
 which nodemon || npm install --global nodemon
 
-if [ ! -d app/node_modules ]; then
-	( cd app && npm install )
-fi
+( cd app && npm install )
+( cd app/client && npm install )
 
 # server service
 cat <<END > /etc/systemd/system/climb.service

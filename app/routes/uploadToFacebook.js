@@ -1,6 +1,6 @@
 var request = require("request");
 
-var config = require("../climb/config");
+var config = require("../config");
 
 var GET_MEDIA_INTERVAL = 3000;
 var MAX_MEDIA_TRIES = 100;

@@ -17,7 +17,7 @@ var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session');
 
 var climb = require('./climb/climb');
-var config = require('./climb/config');
+var config = require("./config");
 
 var app = express();
 
@@ -32,7 +32,7 @@ app.use(cookieSession({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(climb);
+app.use('/api', climb);
 
 app.use(function(err, req, res, next) {
 	console.error(err.stack);

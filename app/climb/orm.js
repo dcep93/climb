@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-var config = require('./config');
+var config = require('../config');
 
 var dbConfig = {
 	host: config.mysql_host || '127.0.0.1',

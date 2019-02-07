@@ -2,7 +2,14 @@ set -e
 set -x
 set -o pipefail
 
-cd "$( dirname "${BASH_SOURCE[0]}"
+cd "$( dirname "${BASH_SOURCE[0]}" )"
+
+CONFIG_PATH=$(bash get_config_path.sh)
+
+if [[ -f "$CONFIG_PATH" ]]; then
+    echo "config already created"
+    exit 0
+fi
 
 echo -n "admin google id (sub): "
 read ADMIN_GOOGLE_ID
@@ -26,7 +33,7 @@ echo "You need `manage_pages` and `publish_pages` permissions"
 echo -n "facebook page access token: "
 read -s FACEBOOK_PAGE_ACCESS_TOKEN
 
-cat <<END > ../app/config.json
+cat <<END > $CONFIG_PATH
 {
     "admin_google_id": "$ADMIN_GOOGLE_ID",
     "mysql_password": "$MYSQL_PASSWORD",

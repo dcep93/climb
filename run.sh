@@ -11,6 +11,6 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 echo "$(date) startup" | tee -a $LOG_FILE
 
-screen -S $NAME -Dm bash -c "set -x; nodemon --delay 1 app/index.js; sh"
+screen -S $NAME -Dm bash -c "cd app && npm start; sh"
 
 echo "$(date) success" | tee -a $LOG_FILE

@@ -2,10 +2,12 @@ set -e
 set -x
 set -o pipefail
 
-cd "$( dirname "${BASH_SOURCE[0]}"
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-MYSQL_PASSWORD=$(jq -r .mysql_password ../app/config.json)
-ADMIN_GOOGLE_ID=$(jq -r .admin_google_id ../app/config.json)
+CONFIG_PATH=$(bash get_config_path.sh)
+
+MYSQL_PASSWORD=$(jq -r .mysql_password $CONFIG_PATH)
+ADMIN_GOOGLE_ID=$(jq -r .admin_google_id $CONFIG_PATH)
 
 apt-get install -y mysql-server
 
