@@ -24,7 +24,6 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.set('views', path.join(__dirname, 'views'));
 app.use(cookieSession({
 	name: 'session',
 	secret: config.cookie_secret || '*'
