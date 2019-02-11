@@ -4,6 +4,9 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 
+// extends react.Component
+// probably shouldnt do this
+// BUT WHOS GONNA STOP ME
 import './globals';
 
 import App from './components/App';

@@ -7,7 +7,7 @@ class MainAdmin extends Component {
     }
 
     submit = (event) => {
-      window.req('/api/admin/new_gym', 'POST', this.state)
+      this.dReq('/api/admin/new_gym', 'POST', this.state)
         .then(response => response.text())
         .then(console.log);
       event.preventDefault();
@@ -21,9 +21,9 @@ class MainAdmin extends Component {
       return (
         <form onSubmit={this.submit}>
             <p>New Gym</p>
-            <p>path: <input name="path" type="text" value={this.state.path} onChange={this.handleChange}/></p>
-            <p>name: <input name="name" type="text" value={this.state.name} onChange={this.handleChange}/></p>
-            <p>description: <textarea name="description" value={this.state.description} onChange={this.handleChange} /></p>
+            <p>path: <input type="text" {...this.dInput(this, "path")}/></p>
+            <p>name: <input type="text" {...this.dInput(this, "name")}/></p>
+            <p>description: <textarea {...this.dInput(this, "descrption")}/></p>
             <input type="submit" />
         </form>
       );

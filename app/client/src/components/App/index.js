@@ -8,7 +8,7 @@ class App extends Component {
   }
 
   refresh = () => {
-    window.req('/api')
+    this.dReq('/api')
       .then((response) => response.json())
       .then((response) => this.setState(response));
   }
@@ -17,7 +17,7 @@ class App extends Component {
     if (!this.state) return null;
     return (
       <div>
-        <Auth state={this.state.common} refresh={this.refresh}/>
+        <Auth {...this.state.common} refresh={this.refresh}/>
         <Main state={this.state}/>
       </div>
     );

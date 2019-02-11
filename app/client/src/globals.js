@@ -1,4 +1,6 @@
-window.req = (url, method, body) => {
+import { Component } from 'react';
+
+Component.prototype.dReq = (url, method, body) => {
     return fetch(url, {
         method,
         body: JSON.stringify(body),
@@ -8,3 +10,11 @@ window.req = (url, method, body) => {
     })
         .catch(console.error);
 }
+
+Component.prototype.dInput = (c, name) => {
+    return {
+      name,
+      value: c.state[name],
+      onChange: c.handleChange,
+    };
+  }
