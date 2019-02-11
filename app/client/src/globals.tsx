@@ -33,4 +33,6 @@ const input = (c: Component<object, Readonly<any>>, name: string): any => {
   }
 
 export default { req, input };
+
+// @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
 export { commonType, gymType };
