@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 
 import MainAdmin from './MainAdmin';
 
-class Main extends Component {
+import * as gt from '../../../globals';
+
+class Main extends Component<{gyms: gt.gymType[], common: gt.commonType}> {
     render() {
       return (
         <div>
           <div>The Climbing App</div>
-          {this.props.state.gyms.map((gym, index) => 
+          {this.props.gyms.map((gym) => 
             <p key={gym.id}><a href={`/gym/${gym.path}`}>{gym.name} | {gym.description}</a></p>
           )}
-          {this.props.state.common.user.is_admin && <MainAdmin />}
+          {this.props.common.user.is_admin && <MainAdmin />}
         </div>
       );
     }

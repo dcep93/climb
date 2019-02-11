@@ -1,10 +1,25 @@
 import React, { Component } from 'react';
 
-class Auth extends Component {
-    constructor(props) {
+import g from '../../globals';
+
+declare global {
+    interface Window {
+        onSignIn(_: any): void;
+        gapi: any;
+    }
+}
+
+interface Props {
+    refresh(): void,
+    user: any,
+    google_signin_client_id: string,
+}
+
+class Auth extends Component<Props> {
+    constructor(props: any) {
         super(props);
 
-        var preload = document.getElementById('google-platform-preload');
+        var preload = document.getElementById('google-platform-preload') as HTMLLinkElement;
         var script = document.createElement('script');
         script.src = preload.href;
         document.head.appendChild(script);
@@ -12,26 +27,26 @@ class Auth extends Component {
         window.onSignIn = this.login;
     }
 
-    login = (response) => {
+    login = (response: any): void => {
         if (this.loggedIn()) return;
         var id_token = response.Zi.id_token;
-        this.dReq('/api/auth/login', 'POST', { id_token })
+        g.req('/api/auth/login', 'POST', { id_token })
             .then(this.props.refresh);
     }
 
-    logout = () => {
+    logout = (): void => {
         var googlePromise = window.gapi.auth2.getAuthInstance().signOut();
-        var reqPromise = this.dReq('/api/auth/logout', 'POST');
+        var reqPromise = g.req('/api/auth/logout', 'POST');
 
         Promise.all([googlePromise, reqPromise])
             .then(this.props.refresh);
     }
 
-    loggedIn() {
+    loggedIn(): boolean {
         return this.props.user.id !== undefined;
     }
 
-    render() {
+    render(): any {
         return (
         <div>
             <meta name="google-signin-client_id" content={this.props.google_signin_client_id}></meta>
