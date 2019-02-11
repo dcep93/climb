@@ -14,6 +14,11 @@ var user = require("../routes/user");
 
 var app = express.Router();
 
+app.use(function(req, res, next) {
+    console.log(req.path);
+    next();
+});
+
 app.use(locals);
 
 app.use("/admin", admin);

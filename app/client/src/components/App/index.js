@@ -4,11 +4,11 @@ import Main from './Main';
 
 class App extends Component {
   componentDidMount() {
-    this.fetch();
+    this.refresh();
   }
 
-  fetch() {
-    fetch('/api')
+  refresh = () => {
+    window.req('/api')
       .then((response) => response.json())
       .then((response) => this.setState(response));
   }
@@ -17,7 +17,7 @@ class App extends Component {
     if (!this.state) return null;
     return (
       <div>
-        <Auth state={this.state.common} fetch={this.fetch.bind(this)}/>
+        <Auth state={this.state.common} refresh={this.refresh}/>
         <Main state={this.state}/>
       </div>
     );
