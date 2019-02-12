@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 
 import g from '../../../globals';
+import * as gt from '../../../globals';
 
 const initialState = {path: "", name: "", description: ""};
 type State = Readonly<typeof initialState>
 
-class MainAdmin extends Component<object, State> {
+class GymsAdmin extends Component<object, State> {
     constructor(props: any) {
       super(props);
       this.state = initialState;
@@ -22,8 +23,9 @@ class MainAdmin extends Component<object, State> {
       return (
         <form onSubmit={this.submit}>
             <p>New Gym</p>
-            <p>path: <input type="text" {...g.input(this, "path")}/></p>
-            <p>name: <input type="text" {...g.input(this, "name")}/></p>
+            <p>path: <input {...g.input(this, "path", gt.InputType.Text)}/></p>
+            <p>name: <input {...g.input(this, "name", gt.InputType.Text)}/></p>
+            // @ts-ignore Type 'HTMLTextAreaElement' is missing the following properties from type 'HTMLInputElement': accept, align, alt, checked, and 23 more.  TS2322
             <p>description: <textarea {...g.input(this, "descrption")}/></p>
             <input type="submit" />
         </form>
@@ -31,4 +33,4 @@ class MainAdmin extends Component<object, State> {
     }
   }
 
-export default MainAdmin;
+export default GymsAdmin;

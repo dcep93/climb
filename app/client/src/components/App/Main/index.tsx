@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
+import { Switch, Route } from 'react-router';
 
-import MainAdmin from './MainAdmin';
+import Gyms from './Gyms';
+import Profile from './Profile';
 
 import * as gt from '../../../globals';
 
-class Main extends Component<{gyms: gt.gymType[], common: gt.commonType}> {
+class Main extends Component<any> {
     render() {
       return (
-        <div>
-          <div>The Climbing App</div>
-          {this.props.gyms.map((gym) => 
-            <p key={gym.id}><a href={`/gym/${gym.path}`}>{gym.name} | {gym.description}</a></p>
-          )}
-          {this.props.common.user.is_admin && <MainAdmin />}
-        </div>
+        <Switch>
+          // @ts-ignore TS2739
+          <Route exact path='/' {...this.props} render={() => <Gyms {...this.props}/>}/>
+          <Route path='/user/:user_id' render={() => <Profile {...this.props.common.user}/>}/>
+        </Switch>
       );
     }
   }

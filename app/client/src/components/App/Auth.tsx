@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import g from '../../globals';
 
@@ -55,7 +56,7 @@ class Auth extends Component<Props> {
             {this.loggedIn() && (
                 <div>
                     <button onClick={this.logout}>Sign out</button><br />
-                    <a href={`/user/${this.props.user.id}`}>Profile</a><br />
+                    <Link to={`/user/${this.props.user.id}`}>Profile</Link>
                 </div>
             )}
         </div>
