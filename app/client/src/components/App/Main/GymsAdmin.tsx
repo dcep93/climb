@@ -4,9 +4,8 @@ import g from '../../../globals';
 import * as gt from '../../../globals';
 
 const initialState = {path: "", name: "", description: ""};
-type State = Readonly<typeof initialState>
 
-class GymsAdmin extends Component<object, State> {
+class GymsAdmin extends Component<object, Readonly<typeof initialState>> {
     constructor(props: any) {
       super(props);
       this.state = initialState;

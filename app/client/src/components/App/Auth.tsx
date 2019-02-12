@@ -10,13 +10,7 @@ declare global {
     }
 }
 
-interface Props {
-    refresh(): void,
-    user: any,
-    google_signin_client_id: string,
-}
-
-class Auth extends Component<Props> {
+class Auth extends Component<{user: any, google_signin_client_id: string}> {
     constructor(props: any) {
         super(props);
 
@@ -32,7 +26,7 @@ class Auth extends Component<Props> {
         if (this.loggedIn()) return;
         var id_token = response.Zi.id_token;
         g.req('/api/auth/login', 'POST', { id_token })
-            .then(this.props.refresh);
+            .then(g.refresh);
     }
 
     logout = (): void => {
@@ -40,7 +34,7 @@ class Auth extends Component<Props> {
         var reqPromise = g.req('/api/auth/logout', 'POST');
 
         Promise.all([googlePromise, reqPromise])
-            .then(this.props.refresh);
+            .then(g.refresh);
     }
 
     loggedIn(): boolean {

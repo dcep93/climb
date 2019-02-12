@@ -4,24 +4,21 @@ import Main from './Main';
 
 import g, * as gt from '../../globals';
 
-type State = Readonly<{common: gt.commonType, gyms: gt.gymType[]}>
-
-class App extends Component<object, State> {
-  componentDidMount(): void {
-    this.refresh();
+class App extends Component<object, Readonly<{common: gt.commonType, gyms: gt.gymType[]}>> {
+  constructor(props: {}) {
+    super(props);
+    g.setApp(this);
   }
 
-  refresh = (): void => {
-    g.req('/api')
-      .then((response) => response.json())
-      .then((response) => this.setState(response));
+  componentDidMount(): void {
+    g.refresh();
   }
 
   render(): any {
     if (!this.state) return null;
     return (
       <div>
-        <Auth {...this.state.common} refresh={this.refresh}/>
+        <Auth {...this.state.common}/>
         <Main {...this.state}/>
       </div>
     );

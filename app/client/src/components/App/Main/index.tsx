@@ -4,8 +4,6 @@ import { Switch, Route } from 'react-router';
 import Gyms from './Gyms';
 import Profile from './Profile';
 
-import * as gt from '../../../globals';
-
 class Main extends Component<any> {
     render() {
       return (

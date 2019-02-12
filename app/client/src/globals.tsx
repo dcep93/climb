@@ -71,7 +71,23 @@ const input = (c: Component<object, Readonly<any>>, name: string, type?: InputTy
 
 const err = console.error;
 
-export default { req, input, err };
+interface App {
+  setState(_: any): void
+}
+
+var app: App;
+
+const refresh = () => {
+  req('/api')
+    .then((response) => response.json())
+    .then((response) => app.setState(response));
+}
+
+const setApp = (_app: App) => {
+  app = _app;
+}
+
+export default { req, input, err, refresh, setApp };
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
 export { commonType, userType, gymType, InputType };
