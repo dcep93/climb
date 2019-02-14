@@ -22,7 +22,18 @@ interface gymType {
   id: number,
   path: string,
   name: string,
-  description: string
+  description: string,
+};
+
+interface wallType {
+  id: number,
+  name: string,
+  difficulty: string,
+  location: string,
+  date: string,
+  setter: string,
+  active: boolean,
+  color: string,
 };
 
 class ReqError extends Error {}
@@ -84,4 +95,4 @@ const setRefresh = (_refreshF: typeof refreshF) => {
 export default { req, input, err, refresh, setRefresh };
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
-export { commonType, userType, gymType, InputType };
+export { commonType, userType, gymType, wallType, InputType };

@@ -8,7 +8,7 @@ var app = express.Router();
 app.use(adminNodemon);
 
 app.use(function(req, res, next) {
-	if (!res.locals.common.user.is_admin) return res.sendStatus(403);
+	if (!res.common.user.is_admin) return res.sendStatus(403);
 	next();
 });
 
@@ -35,7 +35,7 @@ app.get("/user/latest", function(req, res, next) {
 
 app.post("/user/:user_id/edit", function(req, res, next) {
   var userId = req.params.user_id;
-  if (userId == res.locals.common.user.id) return res.sendStatus(409);
+  if (userId == res.common.user.id) return res.sendStatus(409);
   if (userId == 1) return res.sendStatus(403);
   var field = req.body.field;
   var value = req.body.value === "true";

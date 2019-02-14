@@ -12,7 +12,7 @@ app.get("/", function(req, res, next) {
         if (wall === undefined) return res.sendStatus(404);
         this.getGym(gymPath, function(gym) {
             this.getWallMedia(wallId, function(media) {
-                res.render("wall/wall.ejs", { wall, gym, media });
+                res.data({ wall, gym, media });
             });
         });
     });
@@ -26,7 +26,7 @@ app.post("/climb", function(req, res, next) {
 });
 
 app.post("/edit", function(req, res, next) {
-    if (!res.locals.common.user.is_verified) return res.sendStatus(403);
+    if (!res.common.user.is_verified) return res.sendStatus(403);
     var gymPath = req.params.gym_path;
     var wallId = req.params.wall_id;
     orm(req, res, next).editWall(
@@ -43,7 +43,7 @@ app.post("/edit", function(req, res, next) {
 });
 
 app.post("/upload", function(req, res, next) {
-    if (!res.locals.common.user.is_verified) return res.sendStatus(403);
+    if (!res.common.user.is_verified) return res.sendStatus(403);
     var wallId = req.params.wall_id;
 
     // var gcsId = req.body.gcs_id;
@@ -58,7 +58,7 @@ app.post("/upload", function(req, res, next) {
 
     if (acceptableMedia.indexOf(mime) === -1) return res.sendStatus(400);
 
-    orm(req, res, next).createWallMedia(wallId, gcsPath, res.locals.common.user.id, fileSize, mime, function(id) {
+    orm(req, res, next).createWallMedia(wallId, gcsPath, res.common.user.id, fileSize, mime, function(id) {
         uploadToFacebook(id, mime, gcsPath, gcsKey, this);
     });
 });

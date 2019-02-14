@@ -20,10 +20,9 @@ class App extends Component<RouteComponentProps, Readonly<{ready: boolean, commo
   }
 
   refreshApi = (): void => {
-    console.log('refresh');
-    console.log(this.props.history.location.pathname);
+    console.log('refresh', this.props.history.location.pathname);
     this.setState({ready: false});
-    g.req('/api')
+    g.req(`/api${this.props.history.location.pathname}`)
       .then((response) => response.json())
       .then((response) => this.setState(Object.assign({ready: true}, response)));
   }

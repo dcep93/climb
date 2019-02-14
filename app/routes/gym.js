@@ -14,7 +14,7 @@ app.get("/", function(req, res, next) {
         if (gym === undefined) return res.sendStatus(404);
         this.getWalls(gymPath, function(walls) {
             this.getClimbedWalls(gymPath, function(climbedWalls) {
-                res.render("gym/gym.ejs", { gym, walls, climbedWalls });
+                res.data({ gym, walls, climbedWalls });
             });
         });
     });
@@ -22,7 +22,7 @@ app.get("/", function(req, res, next) {
 
 app.get("/edit", function(req, res, next) {
     var gymPath = req.params.gym_path;
-    if (!res.locals.common.user.is_verified) return res.redirect("/gym/" + gymPath);
+    if (!res.common.user.is_verified) return res.redirect("/gym/" + gymPath);
     orm(req, res, next).getGym(gymPath, function(gym) {
         if (gym === undefined) return res.sendStatus(404);
         this.getWalls(gymPath, function(walls) {
@@ -33,14 +33,14 @@ app.get("/edit", function(req, res, next) {
 
 app.post("/edit", function(req, res, next) {
     var gymPath = req.params.gym_path;
-    if (!res.locals.common.user.is_verified) return res.sendStatus(403);
+    if (!res.common.user.is_verified) return res.sendStatus(403);
     var name = req.body.name;
     var description = req.body.description;
     orm(req, res, next).updateGym(gymPath, name, description);
 });
 
 app.post("/new_wall", function(req, res, next) {
-    if (!res.locals.common.user.is_verified) return res.sendStatus(403);
+    if (!res.common.user.is_verified) return res.sendStatus(403);
     var gymPath = req.params.gym_path;
     orm(req, res, next).createWall(
         gymPath,

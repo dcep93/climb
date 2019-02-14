@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import GymsAdmin from './GymsAdmin';
 
@@ -10,7 +11,7 @@ class Gyms extends Component<{gyms: gt.gymType[], common: gt.commonType}> {
         <div>
           <div>The Climbing App</div>
           {this.props.gyms.map((gym) => 
-            <p key={gym.id}><a href={`/gym/${gym.path}`}>{gym.name} | {gym.description}</a></p>
+            <p key={gym.id}><Link to={`/gym/${gym.path}`}>{gym.name} | {gym.description}</Link></p>
           )}
           {this.props.common.user.is_admin && <GymsAdmin />}
         </div>
