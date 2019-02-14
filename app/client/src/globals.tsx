@@ -36,6 +36,18 @@ interface wallType {
   color: string,
 };
 
+interface mediaType {
+  id: number,
+  wall_id: number,
+  gcs_path: string,
+  user_id: number,
+  fils_size: number,
+  mime: string,
+  data: string,
+  width: number,
+  height: number,
+};
+
 class ReqError extends Error {}
 
 function req(url: string, method?: string, body?: any): Promise<Response> {
@@ -95,4 +107,4 @@ const setRefresh = (_refreshF: typeof refreshF) => {
 export default { req, input, err, refresh, setRefresh };
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
-export { commonType, userType, gymType, wallType, InputType };
+export { commonType, userType, gymType, wallType, mediaType, InputType };
