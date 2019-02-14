@@ -6,6 +6,11 @@ import GymsAdmin from './GymsAdmin';
 import * as gt from '../../../globals';
 
 class Gyms extends Component<{gyms: gt.gymType[], common: gt.commonType}> {
+  constructor(props: any) {
+      super(props);
+      this.state = Object.assign({}, props);
+  }
+
     render() {
       return (
         <div>

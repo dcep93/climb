@@ -5,11 +5,16 @@ import g from '../../../../../globals';
 import * as gt from '../../../../../globals';
 
 class EditWall extends Component<object, gt.wallType> {
+    constructor(props: any) {
+        super(props);
+        this.state = Object.assign({}, props);
+    }
+
     render() {
       return (
         <form>
             <p>New Wall</p>
-            <p>name: <input {...g.input(this, "namex")} /></p>
+            <p>name: <input {...g.input(this, "name")} /></p>
             <p>difficulty: <input {...g.input(this, "difficulty")} /></p>
             <p>location: <input {...g.input(this, "location")} /></p>
             <p>date: <input {...g.input(this, "date")} /></p>

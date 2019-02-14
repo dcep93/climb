@@ -4,6 +4,11 @@ import g from '../../../globals';
 import * as gt from '../../../globals';
 
 class GymsAdmin extends Component<object, gt.gymType> {
+  constructor(props: any) {
+      super(props);
+      this.state = Object.assign({}, props);
+  }
+
     submit = (event: React.FormEvent): void => {
       g.req('/api/admin/new_gym', 'POST', this.state)
         .then(response => response.text())
