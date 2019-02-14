@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import g from '../../../globals';
 import * as gt from '../../../globals';
 
-class Profile extends Component<gt.userType, gt.userType> {
+class Profile extends Component<gt.userType, {is_admin: boolean, is_verified: boolean}> {
     constructor(props: any) {
       super(props);
       this.state = {is_admin: props.is_admin, is_verified: props.is_verified};

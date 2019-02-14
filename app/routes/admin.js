@@ -29,7 +29,7 @@ app.post("/new_gym", function(req, res, next) {
 
 app.get("/user/latest", function(req, res, next) {
 	orm(req, res, next).getLatestUsers(function(users) {
-		res.render("admin/user_latest.ejs", { users });
+		res.data({ users });
 	});
 });
 

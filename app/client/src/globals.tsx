@@ -5,11 +5,12 @@ window.addEventListener('unhandledrejection', function(event) {
 });
 
 interface userType {
-  id?: number,
-  is_admin?: boolean,
-  is_verified?: boolean,
-  name?: string,
-  image?: string,
+  id: number,
+  is_admin: boolean,
+  is_verified: boolean,
+  name: string,
+  image: string,
+  timestamp: number,
 };
 
 interface commonType {
