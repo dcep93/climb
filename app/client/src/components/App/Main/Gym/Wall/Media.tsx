@@ -68,6 +68,7 @@ class Media extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.
                     gcs_key: gcsKey,
                 })
             )
+            .then(g.refresh)
     }
 
     mediaData(m: gt.mediaType) {
@@ -75,7 +76,7 @@ class Media extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.
             return <p>received - handling</p>;
         } else if (m.mime === 'video') {
             var href = encodeURIComponent(`https://www.facebook.com${m.data}`);
-            return <iframe src={`https://www.facebook.com/plugins/video.php?href=${href}`} width={m.width} height={m.height} style={{border:'none',overflow:'hidden'}} scrolling="no" allowTransparency={true} allowFullScreen={true}></iframe>;
+            return <iframe src={`https://www.facebook.com/plugins/video.php?href=${href}`} width={m.width} height={m.height} style={{border:'none',overflow:'hidden'}} scrolling="no" allowFullScreen={true}></iframe>;
         } else if (m.mime === 'image') {
             return <img src={m.data}></img>;
         } else {
