@@ -1,6 +1,7 @@
 var request = require("request");
 
 var config = require("../config");
+var orm = require('../climb/orm');
 
 var GET_MEDIA_INTERVAL = 3000;
 var MAX_MEDIA_TRIES = 100;
