@@ -26,7 +26,7 @@ app.get("/edit", function(req, res, next) {
     orm(req, res, next).getGym(gymPath, function(gym) {
         if (gym === undefined) return res.sendStatus(404);
         this.getWalls(gymPath, function(walls) {
-            res.render("gym/gym_edit.ejs", { gym, walls });
+            res.data({ gym, walls });
         });
     });
 });

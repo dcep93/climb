@@ -79,6 +79,7 @@ const inputTypeToField = {
 };
 
 const input = (c: Component<object, Readonly<any>>, name: string, type?: InputType) => {
+    if (c.state === null) c.state = {};
     var field = (type === undefined) ? "value" : inputTypeToField[type];
     return {
       name,

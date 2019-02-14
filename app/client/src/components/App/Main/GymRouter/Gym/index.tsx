@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import g from '../../../../globals';
-import * as gt from '../../../../globals';
+import g from '../../../../../globals';
+import * as gt from '../../../../../globals';
 
 class Gym extends Component<{climbedWalls: number[], gym: gt.gymType, walls: gt.wallType[], common: gt.commonType}, any> {
-    constructor(props: any) {
-        super(props);
-        this.state = {};
-    }
-
     checkboxProps(id: number) {
         var originalState = Object.assign({}, this.state);
         var gProps = g.input(this, id.toString(), gt.InputType.Checkbox);

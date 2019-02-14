@@ -3,14 +3,7 @@ import React, { Component } from 'react';
 import g from '../../../globals';
 import * as gt from '../../../globals';
 
-const initialState = {path: "", name: "", description: ""};
-
-class GymsAdmin extends Component<object, Readonly<typeof initialState>> {
-    constructor(props: any) {
-      super(props);
-      this.state = initialState;
-    }
-
+class GymsAdmin extends Component<object, gt.gymType> {
     submit = (event: React.FormEvent): void => {
       g.req('/api/admin/new_gym', 'POST', this.state)
         .then(response => response.text())
