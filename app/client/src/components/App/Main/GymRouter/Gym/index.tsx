@@ -5,13 +5,21 @@ import g from '../../../../../globals';
 import * as gt from '../../../../../globals';
 
 class Gym extends Component<{climbedWalls: number[], gym: gt.gymType, walls: gt.wallType[], common: gt.commonType}, any> {
+    constructor(props: any) {
+        super(props);
+        var state: {[id: number]: boolean} = {};
+        props.walls.forEach((wall: gt.wallType) => {
+            state[wall.id] = props.climbedWalls.indexOf(wall) !== -1;
+        });
+        this.state = state;
+    }
+
     checkboxProps(id: number) {
-        var originalState = Object.assign({}, this.state);
         var gProps = g.input(this, id.toString(), gt.InputType.Checkbox);
         var originalOnChange = gProps.onChange;
-        var checked = this.props.climbedWalls.indexOf(id) !== -1;
         var onChange: typeof originalOnChange = (event) => {
             event.preventDefault();
+            var originalState = Object.assign({}, this.state);
             var stateChange = originalOnChange(event);
             g.req(`/api/${this.props.common.path}/wall/${id}/climb`, 'POST', {climbed: stateChange[id]})
                 .catch((err) => {
@@ -20,7 +28,7 @@ class Gym extends Component<{climbedWalls: number[], gym: gt.gymType, walls: gt.
                 });
             return stateChange;
         };
-        return Object.assign(gProps, {onChange, checked});
+        return Object.assign(gProps, {onChange});
     }
 
     render() {

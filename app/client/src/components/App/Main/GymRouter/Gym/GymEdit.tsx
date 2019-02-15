@@ -10,12 +10,12 @@ import * as gt from '../../../../../globals';
 class GymEdit extends Component<{climbedWalls: number[], gym: gt.gymType, walls: gt.wallType[], common: gt.commonType}, any> {
     constructor(props: any) {
         super(props);
-        this.state = Object.assign({}, this.props);
+        this.state = Object.assign({}, props.gym);
     }
 
     getTextArea = () => {
       // @ts-ignore Type 'HTMLTextAreaElement' is missing the following properties from type 'HTMLInputElement': accept, align, alt, checked, and 23 more.  TS2322
-      return <textarea {...g.input(this, "descrption")}/>;
+      return <textarea {...g.input(this, "description")}/>;
     }
 
     render() {

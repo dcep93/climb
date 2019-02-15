@@ -79,6 +79,7 @@ const inputTypeToField = {
 };
 
 const input = (c: Component<object, Readonly<any>>, name: string, type?: InputType) => {
+    if (c.state[name] === undefined) throw new Error(`bad name - ${name} - ${JSON.stringify(c.state)}`);
     var field = (type === undefined) ? "value" : inputTypeToField[type];
     return {
       name,

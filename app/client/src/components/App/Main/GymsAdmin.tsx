@@ -6,7 +6,7 @@ import * as gt from '../../../globals';
 class GymsAdmin extends Component<object, gt.gymType> {
   constructor(props: any) {
       super(props);
-      this.state = Object.assign({}, props);
+      this.state = {id: 0, name: "", path: "", description: ""};
   }
 
     submit = (event: React.FormEvent): void => {
@@ -18,7 +18,7 @@ class GymsAdmin extends Component<object, gt.gymType> {
 
     getTextArea = () => {
       // @ts-ignore Type 'HTMLTextAreaElement' is missing the following properties from type 'HTMLInputElement': accept, align, alt, checked, and 23 more.  TS2322
-      return <textarea {...g.input(this, "descrption")}/>;
+      return <textarea {...g.input(this, "description")}/>;
     }
 
     render(): any {

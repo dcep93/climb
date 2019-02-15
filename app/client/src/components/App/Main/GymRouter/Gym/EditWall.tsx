@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import g from '../../../../../globals';
 import * as gt from '../../../../../globals';
 
-class EditWall extends Component<gt.wallType> {
+class EditWall extends Component<gt.wallType, gt.wallType> {
     constructor(props: any) {
         super(props);
-        this.state = Object.assign({}, this.props);
+        this.state = Object.assign({}, props);
     }
 
     render() {
