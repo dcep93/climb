@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component, FormEvent } from 'react';
 
 import g from '../../../../../globals';
 import * as gt from '../../../../../globals';
@@ -10,12 +9,19 @@ class EditWall extends Component<gt.wallType, gt.wallType> {
         this.state = Object.assign({}, props);
     }
 
+    submit = (event: FormEvent<HTMLFormElement>): void => {
+        event.preventDefault();
+        var gymPath = 'dogpatch_boulders'; // TODO
+        g.req(`/api/gym/${gymPath}/wall/${this.props.id}/edit`, 'POST', this.state)
+            .then(g.refresh);
+    }
+
     render() {
       return (
-        <form action={`wall/${this.props.id}/edit`}>
+        <form onSubmit={this.submit}>
             <p>id: {this.props.id}</p>
             <p>name: <input {...g.input(this, "name")} /></p>
-            <p>difficulty: <input {...g.input(this, "name")} /></p>
+            <p>difficulty: <input {...g.input(this, "difficulty")} /></p>
             <p>location: <input {...g.input(this, "location")} /></p>
             <p>date: <input {...g.input(this, "date")} /></p>
             <p>setter: <input {...g.input(this, "setter")} /></p>

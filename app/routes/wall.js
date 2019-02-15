@@ -35,7 +35,7 @@ app.post("/edit", function(req, res, next) {
         req.body.name,
         req.body.difficulty,
         req.body.location,
-        req.body.date || new Date(),
+        new Date(req.body.date),
         req.body.setter,
         req.body.color,
         req.body.active === "on"
