@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import g from '../../../globals';
 import * as gt from '../../../globals';
 
-class Profile extends Component<gt.userType, {is_admin: boolean, is_verified: boolean}> {
+class Profile extends Component<{user: gt.userType}, gt.userType> {
     constructor(props: any) {
       super(props);
-      this.state = {is_admin: props.is_admin, is_verified: props.is_verified};
+      this.state = Object.assign({}, props.user);
     }
 
     checkboxProps(name: string) {
@@ -17,7 +17,7 @@ class Profile extends Component<gt.userType, {is_admin: boolean, is_verified: bo
         var disabled = !this.state.is_admin;
         var onChange: typeof originalOnChange = (event) => {
             var stateChange = originalOnChange(event);
-            g.req(`/api/admin/user/${this.props.id}/edit`, 'POST', stateChange)
+            g.req(`/api/admin/user/${this.props.user.id}/edit`, 'POST', stateChange)
                 .then((response) => response.json())
                 .catch((err) => {
                     this.setState(originalState);
@@ -33,8 +33,8 @@ class Profile extends Component<gt.userType, {is_admin: boolean, is_verified: bo
           <div>
             <Link to={'/'}>Home</Link>
             <div>
-                <p>{this.props.name}</p>
-                <img src={this.props.image} /><br />
+                <p>{this.props.user.name}</p>
+                <img src={this.props.user.image} /><br />
                 <p>is admin: <input {...this.checkboxProps("is_admin")} /></p>
                 <p>is verified: <input {...this.checkboxProps("is_verified")} /></p>
             </div>

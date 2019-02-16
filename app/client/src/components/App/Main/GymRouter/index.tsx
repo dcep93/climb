@@ -5,16 +5,13 @@ import Gym from './Gym';
 import GymEdit from './Gym/GymEdit';
 import Wall from './Wall';
 
-class GymRouter extends Component<any> {
+class GymRouter extends Component<{gym: any, wall: any}> {
     render() {
       return (
         <Switch>
-            // @ts-ignore TS2739
-            <Route exact path='/gym/:gym_id' render={() => <Gym {...this.props}/>}/>
-            // @ts-ignore TS2739
-            <Route exact path='/gym/:gym_id/edit' render={() => <GymEdit {...this.props}/>}/>
-            // @ts-ignore TS2739
-            <Route path='/gym/:gym_id/wall/:wall_id' render={() => <Wall {...this.props}/>}/>
+            <Route exact path='/gym/:gym_id' render={() => <Gym {...this.props.gym}/>}/>
+            <Route exact path='/gym/:gym_id/edit' render={() => <GymEdit {...this.props.gym}/>}/>
+            <Route path='/gym/:gym_id/wall/:wall_id' render={() => <Wall {...this.props.wall}/>}/>
         </Switch>
       );
     }

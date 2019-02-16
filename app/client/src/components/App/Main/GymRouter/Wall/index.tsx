@@ -5,7 +5,7 @@ import Media from './Media';
 
 import * as gt from '../../../../../globals';
 
-class Wall extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.wallType, common: gt.commonType}, any> {
+class Wall extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.wallType, common: gt.commonType}> {
     render() {
       return (
           <div>

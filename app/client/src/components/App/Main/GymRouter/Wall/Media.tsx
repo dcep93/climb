@@ -1,10 +1,9 @@
 import React, { Component, RefObject, FormEvent } from 'react';
-import { Link } from 'react-router-dom';
 
 import g from '../../../../../globals';
 import * as gt from '../../../../../globals';
 
-class Media extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.wallType, common: gt.commonType}, any> {
+class Media extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.wallType, common: gt.commonType}> {
     newMediaRef: RefObject<HTMLInputElement>;
     constructor(props: any) {
         super(props);
@@ -12,9 +11,9 @@ class Media extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.
     }
 
     newMedia() {
-        if (this.props.common.user.id === undefined) {
+        if (g.common().user.id === undefined) {
             return <p>Create an account and become verified to upload media.</p>
-        } else if (!this.props.common.user.is_verified) {
+        } else if (!g.common().user.is_verified) {
             return <p>Email climb.nomorerice@gmail.com to become verified to upload media.</p>
         } else {
             return <div>
@@ -60,7 +59,7 @@ class Media extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.
             })
             .then((response) => response.json())
             .then((response) =>
-                g.req(`/api/${this.props.common.path}/upload`, 'POST', {
+                g.req(`/api/${g.common().path}/upload`, 'POST', {
                     gcs_path: response.name,
                     gcs_id: response.id,
                     mime: file.type,

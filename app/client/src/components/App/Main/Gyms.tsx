@@ -3,14 +3,10 @@ import { Link } from 'react-router-dom';
 
 import GymsAdmin from './GymsAdmin';
 
+import g from '../../../globals';
 import * as gt from '../../../globals';
 
-class Gyms extends Component<{gyms: gt.gymType[], common: gt.commonType}> {
-  constructor(props: any) {
-      super(props);
-      this.state = Object.assign({}, props);
-  }
-
+class Gyms extends Component<{gyms: gt.gymType[]}> {
     render() {
       return (
         <div>
@@ -18,7 +14,7 @@ class Gyms extends Component<{gyms: gt.gymType[], common: gt.commonType}> {
           {this.props.gyms.map((gym) => 
             <p key={gym.id}><Link to={`/gym/${gym.path}`}>{gym.name} | {gym.description}</Link></p>
           )}
-          {this.props.common.user.is_admin && <GymsAdmin />}
+          {g.common().user.is_admin && <GymsAdmin />}
         </div>
       );
     }

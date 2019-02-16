@@ -3,18 +3,17 @@ import React, { Component, FormEvent } from 'react';
 import g from '../../../../../globals';
 import * as gt from '../../../../../globals';
 
-var initialState = {id: 0, name: "", difficulty: "", location: "", date: "", setter: "", color: "", active: false};
 class NewWall extends Component<object, gt.wallType> {
     constructor(props: any) {
         super(props);
-        this.state = initialState;
+        this.state = gt.initialWall;
     }
 
     submit = (event: FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         var gymPath = 'dogpatch_boulders'; // TODO
         g.req(`/api/gym/${gymPath}/new_wall`, 'POST', this.state)
-            .then(() => this.setState(initialState))
+            .then(() => this.setState(gt.initialWall))
             .then(g.refresh);
     }
 

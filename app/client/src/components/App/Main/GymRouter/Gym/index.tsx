@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import g from '../../../../../globals';
 import * as gt from '../../../../../globals';
 
-class Gym extends Component<{climbedWalls: number[], gym: gt.gymType, walls: gt.wallType[], common: gt.commonType}, any> {
-    constructor(props: any) {
+interface PropsType {climbedWalls: number[], gym: gt.gymType, walls: gt.wallType[], common: gt.commonType};
+interface StateType {[id: number]: boolean};
+class Gym extends Component<PropsType, StateType> {
+    constructor(props: PropsType) {
         super(props);
-        var state: {[id: number]: boolean} = {};
+        var state: StateType = {};
         props.walls.forEach((wall: gt.wallType) => {
-            state[wall.id] = props.climbedWalls.indexOf(wall) !== -1;
+            state[wall.id] = props.climbedWalls.indexOf(wall.id) !== -1;
         });
         this.state = state;
     }
@@ -21,7 +23,7 @@ class Gym extends Component<{climbedWalls: number[], gym: gt.gymType, walls: gt.
             event.preventDefault();
             var originalState = Object.assign({}, this.state);
             var stateChange = originalOnChange(event);
-            g.req(`/api/${this.props.common.path}/wall/${id}/climb`, 'POST', {climbed: stateChange[id]})
+            g.req(`/api/${g.common().path}/wall/${id}/climb`, 'POST', {climbed: stateChange[id]})
                 .catch((err) => {
                     this.setState(originalState);
                     g.err(err);
@@ -41,9 +43,9 @@ class Gym extends Component<{climbedWalls: number[], gym: gt.gymType, walls: gt.
             <div>
                 <p>Walls</p>
                 <br />
-                {this.props.common.user.is_verified && <Link to={`${this.props.common.path}/edit`}>Edit</Link>}
+                {g.common().user.is_verified && <Link to={`${g.common().path}/edit`}>Edit</Link>}
                 {this.props.walls.map((wall) => 
-                    <Link key={wall.id} to={`${this.props.common.path}/wall/${wall.id}`}>
+                    <Link key={wall.id} to={`${g.common().path}/wall/${wall.id}`}>
                         <p>id: {wall.id}</p>
                         <p>name: {wall.name}</p>
                         <p>difficulty: {wall.difficulty}</p>

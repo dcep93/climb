@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import g from '../../globals';
+import g from '../../../globals';
 
 declare global {
     interface Window {
@@ -10,7 +10,7 @@ declare global {
     }
 }
 
-class Auth extends Component<{user: any, google_signin_client_id: string}> {
+class Auth extends Component {
     constructor(props: any) {
         super(props);
 
@@ -38,20 +38,23 @@ class Auth extends Component<{user: any, google_signin_client_id: string}> {
     }
 
     loggedIn(): boolean {
-        return this.props.user.id !== undefined;
+        return g.common().user.id !== undefined;
     }
 
     render(): any {
         return (
         <div>
-            <meta name="google-signin-client_id" content={this.props.google_signin_client_id}></meta>
+            <meta name="google-signin-client_id" content={g.common().google_signin_client_id}></meta>
             <div hidden={this.loggedIn()} id="sign-in-button" className="g-signin2" data-onsuccess="onSignIn"></div>
 
             {this.loggedIn() && (
                 <div>
                     <button onClick={this.logout}>Sign out</button><br />
-                    <Link to={`/user/${this.props.user.id}`}>Profile</Link>
+                    <Link to={`/user/${g.common().user.id}`}>Profile</Link>
                 </div>
+            )}
+            {g.common().user.is_admin && (
+                <Link to={'/admin/user/latest'}>Latest Users</Link>
             )}
         </div>
         );

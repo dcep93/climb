@@ -37,6 +37,8 @@ interface wallType {
   color: string,
 };
 
+const initialWall: wallType = {id: 0, name: "", difficulty: "", location: "", date: "", setter: "", color: "", active: false};
+
 interface mediaType {
   id: number,
   wall_id: number,
@@ -85,7 +87,7 @@ const input = (c: Component<object, Readonly<any>>, name: string, type?: InputTy
       name,
       type: type,
       [field]: c.state[name],
-      onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange: (event: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => {
         var t: any = event.target;
         var state = {[event.target.name]: t[field]};
         c.setState(state);
@@ -96,17 +98,21 @@ const input = (c: Component<object, Readonly<any>>, name: string, type?: InputTy
 
 const err = console.error;
 
-var refreshF: () => void;
+var app: {_refresh(): void, _common(): commonType};
 
-const refresh = (): void => {
-  refreshF();
+function setApp(_app: typeof app) {
+  app = _app;
 }
 
-const setRefresh = (_refreshF: typeof refreshF) => {
-  refreshF = _refreshF;
+function refresh() {
+  return app._refresh();
 }
 
-export default { req, input, err, refresh, setRefresh };
+function common() {
+  return app._common();
+}
+
+export default { req, input, err, refresh, common, setApp };
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
-export { commonType, userType, gymType, wallType, mediaType, InputType };
+export { commonType, userType, gymType, wallType, initialWall, mediaType, InputType };
