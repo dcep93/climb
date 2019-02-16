@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import NewWall from './NewWall';
 import EditWall from './EditWall';
 
-import g from '../../../../../globals';
-import * as gt from '../../../../../globals';
+import g from '../../../../globals';
+import * as gt from '../../../../globals';
 
 interface PropsType {gym: gt.gymType & {walls: gt.wallType[]}};
 class GymEdit extends Component<PropsType, gt.gymType> {

@@ -1,7 +1,7 @@
 import React, { Component, FormEvent } from 'react';
 
-import g from '../../../../../globals';
-import * as gt from '../../../../../globals';
+import g from '../../../../globals';
+import * as gt from '../../../../globals';
 
 class EditWall extends Component<gt.wallType, gt.wallType> {
     constructor(props: any) {

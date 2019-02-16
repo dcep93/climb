@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Media from './Media';
 
-import * as gt from '../../../../../globals';
+import * as gt from '../../../../globals';
 
 class Wall extends Component<{wall: gt.wallType & {media: gt.mediaType[]}}> {
     render() {
