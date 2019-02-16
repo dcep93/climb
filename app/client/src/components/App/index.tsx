@@ -13,18 +13,17 @@ class App extends Component<RouteComponentProps, {ready: boolean} & any> {
 
     g.setApp(this);
 
-    this.props.history.listen(() => {
-      this.setState({ready: false});
-      g.refresh();
-    });
+    this.props.history.listen(g.unready);
   }
 
   componentDidMount(): void {
-    g.refresh();
+    g.unready();
   }
 
-  _refresh = (): void => {
-    console.log('refresh', this.props.history.location.pathname);
+  _refresh = (_unready: any): void => {
+    var unready = _unready === g.unreadyO;
+    console.log('refresh', unready, this.props.history.location.pathname);
+    if (unready) this.setState({ready: false});
     g.req(`/api${this.props.history.location.pathname}`)
       .then((response) => response.json())
       .then((response) => this.setState(Object.assign({ready: true}, response)));

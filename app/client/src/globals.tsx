@@ -98,21 +98,27 @@ const input = (c: Component<object, Readonly<any>>, name: string, type?: InputTy
 
 const err = console.error;
 
-var app: {_refresh(): void, _common(): commonType};
+var app: {_refresh(_: any): void, _common(): commonType};
 
 function setApp(_app: typeof app) {
   app = _app;
 }
 
-function refresh() {
-  return app._refresh();
+function refresh(_?: any) {
+  return app._refresh(_);
 }
 
 function common() {
   return app._common();
 }
 
-export default { req, input, err, refresh, common, setApp };
+var unreadyO = Object();
+
+function unready() {
+  refresh(unreadyO);
+}
+
+export default { req, input, err, refresh, common, setApp, unready, unreadyO };
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
 export { commonType, userType, gymType, wallType, initialWall, mediaType, InputType };
