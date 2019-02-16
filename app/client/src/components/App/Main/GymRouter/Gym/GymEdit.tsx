@@ -7,7 +7,7 @@ import EditWall from './EditWall';
 import g from '../../../../../globals';
 import * as gt from '../../../../../globals';
 
-interface PropsType {climbedWalls: number[], gym: gt.gymType, walls: gt.wallType[], common: gt.commonType};
+interface PropsType {gym: gt.gymType & {walls: gt.wallType[]}};
 class GymEdit extends Component<PropsType, gt.gymType> {
     constructor(props: PropsType) {
         super(props);
@@ -27,7 +27,7 @@ class GymEdit extends Component<PropsType, gt.gymType> {
                 <p>Walls</p>
                 <br />
                 <NewWall />
-                {this.props.walls.map((wall) =>
+                {this.props.gym.walls.map((wall) =>
                     <EditWall key={wall.id} {...wall} />
                 )}
             </div>

@@ -5,7 +5,7 @@ import Media from './Media';
 
 import * as gt from '../../../../../globals';
 
-class Wall extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.wallType, common: gt.commonType}> {
+class Wall extends Component<{wall: gt.wallType & {media: gt.mediaType[]}}> {
     render() {
       return (
           <div>
@@ -20,7 +20,7 @@ class Wall extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.w
                 <p>color: {this.props.wall.color}</p>
                 <p>status: {this.props.wall.active ? 'active' : 'retired'}</p>
 
-                <Media {...this.props}/>
+                <Media media={this.props.wall.media}/>
             </div>
           </div>
       );

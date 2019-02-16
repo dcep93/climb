@@ -11,8 +11,10 @@ app.get("/", function(req, res, next) {
     orm(req, res, next).getWall(gymPath, wallId, function(wall) {
         if (wall === undefined) return res.sendStatus(404);
         this.getGym(gymPath, function(gym) {
+            wall.gym = gym;
             this.getWallMedia(wallId, function(media) {
-                res.data({ wall, gym, media });
+                wall.media = media;
+                res.data({ wall });
             });
         });
     });

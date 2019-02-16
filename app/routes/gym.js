@@ -13,8 +13,10 @@ app.get("/", function(req, res, next) {
     orm(req, res, next).getGym(gymPath, function(gym) {
         if (gym === undefined) return res.sendStatus(404);
         this.getWalls(gymPath, function(walls) {
+            gym.walls = walls;
             this.getClimbedWalls(gymPath, function(climbedWalls) {
-                res.data({ gym, walls, climbedWalls });
+                gym.climbedWalls = climbedWalls;
+                res.data({ gym });
             });
         });
     });
@@ -26,7 +28,8 @@ app.get("/edit", function(req, res, next) {
     orm(req, res, next).getGym(gymPath, function(gym) {
         if (gym === undefined) return res.sendStatus(404);
         this.getWalls(gymPath, function(walls) {
-            res.data({ gym, walls });
+            gym.walls = walls;
+            res.data({ gym });
         });
     });
 });

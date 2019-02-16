@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import g from '../../../../../globals';
 import * as gt from '../../../../../globals';
 
-interface PropsType {climbedWalls: number[], gym: gt.gymType, walls: gt.wallType[], common: gt.commonType};
+interface PropsType {gym: gt.gymType & {climbedWalls: number[], walls: gt.wallType[]}};
 interface StateType {[id: number]: boolean};
 class Gym extends Component<PropsType, StateType> {
     constructor(props: PropsType) {
         super(props);
         var state: StateType = {};
-        props.walls.forEach((wall: gt.wallType) => {
-            state[wall.id] = props.climbedWalls.indexOf(wall.id) !== -1;
+        props.gym.walls.forEach((wall: gt.wallType) => {
+            state[wall.id] = props.gym.climbedWalls.indexOf(wall.id) !== -1;
         });
         this.state = state;
     }
@@ -44,7 +44,7 @@ class Gym extends Component<PropsType, StateType> {
                 <p>Walls</p>
                 <br />
                 {g.common().user.is_verified && <Link to={`${g.common().path}/edit`}>Edit</Link>}
-                {this.props.walls.map((wall) => 
+                {this.props.gym.walls.map((wall) =>
                     <Link key={wall.id} to={`${g.common().path}/wall/${wall.id}`}>
                         <p>id: {wall.id}</p>
                         <p>name: {wall.name}</p>

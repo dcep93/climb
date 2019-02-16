@@ -3,7 +3,7 @@ import React, { Component, RefObject, FormEvent } from 'react';
 import g from '../../../../../globals';
 import * as gt from '../../../../../globals';
 
-class Media extends Component<{media: gt.mediaType[], gym: gt.gymType, wall: gt.wallType, common: gt.commonType}> {
+class Media extends Component<{media: gt.mediaType[]}> {
     newMediaRef: RefObject<HTMLInputElement>;
     constructor(props: any) {
         super(props);
