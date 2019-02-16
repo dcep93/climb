@@ -12,12 +12,12 @@ import Wall from './Wall';
 
 import g from '../../../globals';
 
-function props(path: string, render: (match?: RouteComponentProps<any, StaticContext, any>) => ReactNode) {
+function props(path: string, render: (params: {[param: string]: string}) => ReactNode) {
   return {
     exact: true,
     path,
-    render: (match: RouteComponentProps<any, StaticContext, any>) =>
-      g.common().path === match.location.pathname && render(match)
+    render: (rProps: RouteComponentProps<any, StaticContext, any>) =>
+      g.common().path === encodeURI(rProps.location.pathname) && render(rProps.match.params)
   }
 }
 

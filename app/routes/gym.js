@@ -50,7 +50,7 @@ app.post("/new_wall", function(req, res, next) {
         req.body.name,
         req.body.difficulty,
         req.body.location,
-        new Date(req.body.date),
+        new Date(req.body.date || null),
         req.body.setter,
         req.body.color,
         req.body.active === "on"

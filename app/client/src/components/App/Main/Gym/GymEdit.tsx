@@ -26,9 +26,9 @@ class GymEdit extends Component<PropsType, gt.gymType> {
             <div>
                 <p>Walls</p>
                 <br />
-                <NewWall />
+                <NewWall gymPath={this.props.gym.path} />
                 {this.props.gym.walls.map((wall) =>
-                    <EditWall key={wall.id} {...wall} />
+                    <EditWall gymPath={this.props.gym.path} key={wall.id} {...wall} />
                 )}
             </div>
           </div>

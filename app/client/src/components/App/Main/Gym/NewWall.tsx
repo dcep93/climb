@@ -3,7 +3,7 @@ import React, { Component, FormEvent } from 'react';
 import g from '../../../../globals';
 import * as gt from '../../../../globals';
 
-class NewWall extends Component<object, gt.wallType> {
+class NewWall extends Component<{gymPath: string}, gt.wallType> {
     constructor(props: any) {
         super(props);
         this.state = gt.initialWall;
@@ -11,8 +11,7 @@ class NewWall extends Component<object, gt.wallType> {
 
     submit = (event: FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        var gymPath = 'dogpatch_boulders'; // TODO
-        g.req(`/api/gym/${gymPath}/new_wall`, 'POST', this.state)
+        g.req(`/api/gym/${this.props.gymPath}/new_wall`, 'POST', this.state)
             .then(() => this.setState(gt.initialWall))
             .then(g.refresh);
     }
