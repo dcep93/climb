@@ -46,9 +46,9 @@ class Orm {
 		this.next = next;
 	}
 
-	select(options) {
-		var table = options.table;
-		var where = getWhere(options.where);
+	select(table, where, options) {
+		var where = getWhere(where);
+		var options = options || {};
 		var parts = [
 			'SELECT',
 			(options.columns || ['*']).join(','),

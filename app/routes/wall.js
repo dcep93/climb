@@ -9,13 +9,13 @@ app.get("/", function(req, res, next) {
     var gymPath = req.params.gym_path;
     var wallId = req.params.wall_id;
     var state = {};
-    orm(null, null, next).select({table: 'walls', where: {gym_path: gymPath, id: wallId}})
+    orm(null, null, next).select('walls', {gym_path: gymPath, id: wallId})
         .then((walls) => walls[0] || Promise.reject())
         .then((wall) => Object.assign(state, {wall}))
-        .then(() => orm(null, null, next).select({table: 'walls', where: {gym_path: gymPath}}))
+        .then(() => orm(null, null, next).select('walls', {gym_path: gymPath}))
         .then((gyms) => gyms[0] || Promise.reject())
         .then((gym) => Object.assign(state.wall, {gym}))
-        .then(() => orm(null, null, next).select({table: 'wall_media', where: {wall_id: wallId}}))
+        .then(() => orm(null, null, next).select('wall_media', {wall_id: wallId}))
         .then((media) => Object.assign(state.wall, {media}))
         .then(() => res.data(state))
         .catch(next);

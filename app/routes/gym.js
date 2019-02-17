@@ -11,12 +11,12 @@ app.use("/wall/:wall_id", wall);
 app.get("/", function(req, res, next) {
     var gymPath = req.params.gym_path;
     var state = {};
-    orm(null, null, next).select({table: 'gyms', where: {path: gymPath}})
+    orm(null, null, next).select('gyms', {path: gymPath})
         .then((gyms) => gyms[0] || Promise.reject())
         .then((gym) => Object.assign(state, {gym}))
-        .then(() => orm(null, null, next).select({table: 'walls', where: {gym_path: gymPath}, suffix: 'ORDER BY id DESC'}))
+        .then(() => orm(null, null, next).select('walls', {gym_path: gymPath}, {suffix: 'ORDER BY id DESC'}))
         .then((walls) => Object.assign(state.gym, {walls}))
-        .then(() => orm(null, null, next).select({table: 'climbed_walls', columns: ['wall_id'], where: {gym_path: gymPath, user_id: req.session.userId, active: true}}))
+        .then(() => orm(null, null, next).select('climbed_walls', {gym_path: gymPath, user_id: req.session.userId, active: true}, {columns: ['wall_id']}))
         .then((climbedWalls) => Object.assign(state.gym, {climbedWalls}))
         .then(() => res.data(state))
         .catch(next);
@@ -26,11 +26,11 @@ app.get("/edit", function(req, res, next) {
     var gymPath = req.params.gym_path;
     if (!res.common.user.is_verified) return res.redirect("/gym/" + gymPath);
     var state = {};
-    orm(null, null, next).select({table: 'gyms', where: {path: gymPath}})
+    orm(null, null, next).select('gyms', {path: gymPath})
         .then((gyms) => gyms[0])
         .then((gym) => gym || Promise.reject())
         .then((gym) => Object.assign(state, {gym}))
-        .then(() => orm(null, null, next).select({table: 'walls', where: {gym_path: gymPath}, suffix: 'ORDER BY id DESC'}))
+        .then(() => orm(null, null, next).select('walls', {gym_path: gymPath}, {suffix: 'ORDER BY id DESC'}))
         .then((walls) => Object.assign(state.gym, {walls}))
         .then(() => res.data(state));
 });

@@ -28,7 +28,7 @@ app.post("/new_gym", function(req, res, next) {
 });
 
 app.get("/user/latest", function(req, res, next) {
-  orm(null, null, next).select({table: 'users', suffix: 'ORDER BY id DESC LIMIT 100'})
+  orm(null, null, next).select('users', null, {suffix: 'ORDER BY id DESC LIMIT 100'})
     .then((users) => res.data({users}));
 });
 
