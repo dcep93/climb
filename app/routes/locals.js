@@ -9,10 +9,10 @@ function locals(req, res, next) {
     res.data = (json) => res.json(Object.assign({common: res.common}, json));
     var userId = req.session.userId;
     if (userId !== undefined) {
-        orm(req, res, next).getUser(userId, function(user) {
-            res.common.user = user;
-            next();
-        });
+        orm(null, null, next).select({table: 'users', where: {id: userId}})
+            .then((users) => users[0] || Promise.reject())
+            .then((user) => Object.assign(res.common, {user}))
+            .then(() => next());
     } else {
         res.common.user = {};
         next();

@@ -28,9 +28,8 @@ app.post("/new_gym", function(req, res, next) {
 });
 
 app.get("/user/latest", function(req, res, next) {
-	orm(req, res, next).getLatestUsers(function(users) {
-		res.data({ users });
-	});
+  orm(null, null, next).select({table: 'users', suffix: 'ORDER BY id DESC LIMIT 100'})
+    .then((users) => res.data({users}));
 });
 
 app.post("/user/:user_id/edit", function(req, res, next) {

@@ -28,6 +28,17 @@ function connect() {
 	});
 }
 
+function getWhere(where) {
+	if (!where) return {w: '', p: []};
+
+	var wk = Object.keys(where);
+	var ws = wk.map((key) => `${key}=?`);
+	var w = `WHERE ${ws.join(' AND ')}`;
+	var p = wk.map((key) => where[key]);
+
+	return {w,p};
+}
+
 class Orm {
 	constructor(req, res, next) {
 		this.req = req;
@@ -35,10 +46,34 @@ class Orm {
 		this.next = next;
 	}
 
+	select(options) {
+		var table = options.table;
+		var where = getWhere(options.where);
+		var parts = [
+			'SELECT',
+			(options.columns || ['*']).join(','),
+			'FROM',
+			table,
+			where.w,
+			options.suffix,
+		];
+		var q = parts.filter(Boolean).join(' ');
+		return new Promise((resolve, reject) => {
+			conn.query(q, where.p, function(err, results, fields) {
+				if (err) return reject(err);
+				resolve(results, fields);
+			});
+		})
+			.catch(this.next);
+	}
+
 	query(callback, q, params, useSingleRow, useSingleCol) {
 		var thisOrm = this;
 		conn.query(q, params, function(err, results, fields) {
-			if (thisOrm.err(q, err)) return;
+			if (err) {
+				console.log(err);
+				throw new Error(err);
+			}
 			if (callback === undefined) return;
 			if (useSingleCol && fields.length > 0) results = results.map((row) => row[fields[0].name]);
 			if (useSingleRow) results = results[0];
@@ -50,55 +85,8 @@ class Orm {
 		});
 	}
 
-	err(q, err) {
-		var errF = this.errF;
-		this.errF = undefined;
-
-		if (err) {
-			if (errF !== undefined) {
-				errF.bind(this)(q, err);
-			} else {
-				console.error(q);
-				this.next(err);
-			}
-			return true;
-		}
-
-		return false
-	}
-
 	update(q, params) {
 		this.query((results) => this.res.sendStatus(200), q, params);
-	}
-
-	getAllGyms(callback) {
-		this.query(callback, 'SELECT * FROM gyms');
-	}
-
-	getGym(gymPath, callback) {
-		this.query(callback, 'SELECT * FROM gyms WHERE path = ?', [gymPath], true);
-	}
-
-	getWalls(gymPath, callback) {
-		this.query(callback, 'SELECT * FROM walls WHERE gym_path = ? ORDER BY id DESC', [gymPath]);
-	}
-
-	getClimbedWalls(gymPath, callback) {
-		var userId = this.req.session.userId;
-		if (userId !== undefined) {
-			this.query(callback, 'SELECT wall_id FROM climbed_walls WHERE gym_path = ? AND user_id = ? AND active', [gymPath, userId], false, true);
-		} else {
-			var climbed = this.req.session.climbed;
-			if (climbed !== undefined) {
-				var walls = [];
-				for (var wallId in climbed) {
-					if (climbed[wallId]) walls.push(Number.parseInt(wallId));
-				}
-				callback(walls);
-			} else {
-				callback([]);
-			}
-		}
 	}
 
 	setClimbed(gymPath, wallId, active) {
@@ -118,10 +106,6 @@ class Orm {
 
 	upsertUser(googleId, email, name, image, callback) {
 		this.insert(callback, 'INSERT INTO users (google_id, email, name, image) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=?, image=?', [googleId, email, name, image, name, image]);
-	}
-
-	getUser(userId, callback) {
-		this.query(callback, 'SELECT * FROM users WHERE id = ?', [userId], true);
 	}
 
 	editWall(gymPath, wallId, name, difficulty, location, date, setter, color, active) {
@@ -158,21 +142,8 @@ class Orm {
 		this.query(callback, 'INSERT INTO gyms (path, name, description) VALUES (?,?,?)', [path, name, description]);
 	}
 
-	setErrF(errF) {
-		this.errF = errF;
-		return this;
-	}
-
 	updateGym(gymPath, name, description) {
 		this.update('UPDATE gyms SET name = ?, description = ? WHERE path = ?', [name, description, gymPath]);
-	}
-
-	getWall(gymPath, wallId, callback) {
-		this.query(callback, 'SELECT * FROM walls WHERE gym_path = ? and id = ?', [gymPath, wallId], true);
-	}
-
-	getWallMedia(wallId, callback) {
-		this.query(callback, 'SELECT * FROM wall_media WHERE wall_id = ? ORDER BY id DESC', [wallId]);
 	}
 
 	createWallMedia(wallId, gcsPath, userId, fileSize, mime, callback) {
@@ -190,10 +161,6 @@ class Orm {
 		params.push(id);
 		var q = `UPDATE wall_media SET ${updateString} WHERE id = ?`;
 		this.query(callback, q, params);
-	}
-
-	getLatestUsers(callback) {
-		this.query(callback, 'SELECT * FROM users ORDER BY id DESC LIMIT 100');
 	}
 }
 

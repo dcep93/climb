@@ -8,16 +8,17 @@ var app = express.Router({mergeParams: true});
 app.get("/", function(req, res, next) {
     var gymPath = req.params.gym_path;
     var wallId = req.params.wall_id;
-    orm(req, res, next).getWall(gymPath, wallId, function(wall) {
-        if (wall === undefined) return res.sendStatus(404);
-        this.getGym(gymPath, function(gym) {
-            wall.gym = gym;
-            this.getWallMedia(wallId, function(media) {
-                wall.media = media;
-                res.data({ wall });
-            });
-        });
-    });
+    var state = {};
+    orm(null, null, next).select({table: 'walls', where: {gym_path: gymPath, id: wallId}})
+        .then((walls) => walls[0] || Promise.reject())
+        .then((wall) => Object.assign(state, {wall}))
+        .then(() => orm(null, null, next).select({table: 'walls', where: {gym_path: gymPath}}))
+        .then((gyms) => gyms[0] || Promise.reject())
+        .then((gym) => Object.assign(state.wall, {gym}))
+        .then(() => orm(null, null, next).select({table: 'wall_media', where: {wall_id: wallId}}))
+        .then((media) => Object.assign(state.wall, {media}))
+        .then(() => res.data(state))
+        .catch(next);
 });
 
 app.post("/climb", function(req, res, next) {
