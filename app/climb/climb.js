@@ -5,7 +5,7 @@ var config = require("../config");
 
 var orm = require("./orm");
 
-var locals = require("../routes/locals");
+var common = require("../routes/common");
 
 var admin = require("../routes/admin");
 var auth = require("../routes/auth");
@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(locals);
+app.use(common);
 
 app.use("/admin", admin);
 app.use("/auth", auth);

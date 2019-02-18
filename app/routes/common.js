@@ -1,7 +1,7 @@
 var config = require("../config");
 var orm = require("../climb/orm");
 
-function locals(req, res, next) {
+function common(req, res, next) {
     res.common = {
         path: req.path,
         google_signin_client_id: config.google_signin_client_id,
@@ -19,4 +19,4 @@ function locals(req, res, next) {
     }
 }
 
-module.exports = locals;
+module.exports = common;
