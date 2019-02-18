@@ -40,22 +40,25 @@ app.post("/edit", function(req, res, next) {
     if (!res.common.user.is_verified) return res.sendStatus(403);
     var name = req.body.name;
     var description = req.body.description;
-    orm(req, res, next).updateGym(gymPath, name, description);
+
+    orm(null, null, next).update('gyms', {name, description}, {path: gymPath})
+        .then(() => res.sendStatus(200));
 });
 
 app.post("/new_wall", function(req, res, next) {
     if (!res.common.user.is_verified) return res.sendStatus(403);
     var gymPath = req.params.gym_path;
-    orm(req, res, next).createWall(
-        gymPath,
-        req.body.name,
-        req.body.difficulty,
-        req.body.location,
-        new Date(req.body.date || null),
-        req.body.setter,
-        req.body.color,
-        req.body.active === "on"
-    );
+
+    var name = req.body.name;
+    var difficulty = req.body.difficulty;
+    var location = req.body.location;
+    var date = new Date(req.body.date || null);
+    var setter = req.body.setter;
+    var color = req.body.color;
+    var active = req.body.active === "on";
+
+    orm(null, null, next).insert('walls', {gym_path: gymPath, name, difficulty, location, date, setter, color, active})
+        .then(() => res.sendStatus(200));
 });
 
 module.exports = app;

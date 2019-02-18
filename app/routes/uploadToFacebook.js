@@ -63,11 +63,13 @@ function uploadToFacebook(wallMediaId, mime, gcsPath, gcsKey, o) {
                 } else if (videoStatus === 'processing') {
                     var processingProgress = status.processing_progress;
                     if (processingProgress === undefined) return fail('undefined progress', rawResponse);
-                    o.updateWallMedia(wallMediaId, {mime: `${mime} - processing ${processingProgress}%`, data: permaLink}, function() {
-                        if (++getMediaTries === MAX_MEDIA_TRIES) return fail('max retries');
-                        if (getMediaTries % MEDIA_TRIES_PRINT_INTERVAL === 0) console.log(`processing ${processingProgress}% ${mediaId} ${getMediaTries}`);
-                        setTimeout(getMedia, GET_MEDIA_INTERVAL)
-                    });
+
+                    orm(null, null, next).update('wall_media', {mime: `${mime} - processing ${processingProgress}%`, data: permaLink}, {id: wallMediaId})
+                        .then(() => {
+                            if (++getMediaTries === MAX_MEDIA_TRIES) return fail('max retries');
+                            if (getMediaTries % MEDIA_TRIES_PRINT_INTERVAL === 0) console.log(`processing ${processingProgress}% ${mediaId} ${getMediaTries}`);
+                            setTimeout(getMedia, GET_MEDIA_INTERVAL)
+                        });
                 } else {
                     return fail(`bad video status ${videoStatus}`, rawResponse);
                 }
@@ -111,18 +113,16 @@ function uploadToFacebook(wallMediaId, mime, gcsPath, gcsKey, o) {
   
     function fail(mimeExtension, error) {
         if (!error) error = mimeExtension;
-        o.updateWallMedia(wallMediaId, {mime: `${mime} - ${mimeExtension}`, data: error}, function() {
-            o.next(new Error(error));
-        });
+
+        orm(null, null, next).update('wall_media', {mime: `${mime} - ${mimeExtension}`, data: error}, {id: wallMediaId})
+            .then(() => next(new Error(error)));
     }
   
     function finish(data, height, width) {
-        o.updateWallMedia(wallMediaId, { mime, data, height, width }, function() {
-            if (this.res) this.res.sendStatus(200);
-            deleteFromGCS(function() {
+        orm(null, null, next).update('wall_media', { mime, data, height, width }, {id: wallMediaId})
+            .then(() => deleteFromGCS(function() {
                 console.log(`finished ${mime} ${mediaId} ${getMediaTries}`);
-            });
-        });
+            }));
     }
   
     function deleteFromGCS(callback) {

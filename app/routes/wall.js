@@ -25,24 +25,35 @@ app.post("/climb", function(req, res, next) {
     var gymPath = req.params.gym_path;
     var wallId = req.params.wall_id;
     var climbed = req.body.climbed === "true";
-    orm(req, res, next).setClimbed(gymPath, wallId, climbed);
+
+    var userId = this.req.session.userId;
+    
+    var promise;
+    if (userId !== undefined) {
+        promise = orm(null, null, next).insert('climbed_walls', {active: climbed, 'gym_path': gymPath, 'wall_id': wallId, 'user_id': userId}, {q: 'ON DUPLICATE KEY UPDATE active = ?', p: [climbed]})
+    } else {
+        if (req.session.climbed === undefined) req.session.climbed = {};
+        req.session.climbed[wallId] = climbed;
+        promise = Promise.resolve();
+    }
+    promise.then(() => res.sendStatus(200));
 });
 
 app.post("/edit", function(req, res, next) {
     if (!res.common.user.is_verified) return res.sendStatus(403);
     var gymPath = req.params.gym_path;
     var wallId = req.params.wall_id;
-    orm(req, res, next).editWall(
-        gymPath,
-        wallId,
-        req.body.name,
-        req.body.difficulty,
-        req.body.location,
-        new Date(req.body.date),
-        req.body.setter,
-        req.body.color,
-        req.body.active === "on"
-    );
+
+    var name = req.body.name;
+    var difficulty = req.body.difficulty;
+    var location = req.body.location;
+    var date = new Date(req.body.date || null);
+    var setter = req.body.setter;
+    var color = req.body.color;
+    var active = req.body.active === "on";
+
+    orm(null, null, next).update('walls', {name, difficulty, location, date, setter, color, active}, {gym_path: gymPath, id: wallId})
+        .then(() => res.sendStatus(200));
 });
 
 app.post("/upload", function(req, res, next) {
@@ -61,9 +72,10 @@ app.post("/upload", function(req, res, next) {
 
     if (acceptableMedia.indexOf(mime) === -1) return res.sendStatus(400);
 
-    orm(req, res, next).createWallMedia(wallId, gcsPath, res.common.user.id, fileSize, mime, function(id) {
-        uploadToFacebook(id, mime, gcsPath, gcsKey, this);
-    });
+    orm(null, null, next).insert('wall_media', {wall_id: wallId, gcs_path: gcsPath, user_id: res.common.user.id, file_size: fileSize, mime})
+        .then((id) => uploadToFacebook(id, mime, gcsPath, gcsKey))
+        .then(() => res.sendStatus(200))
+        .catch(next);
 });
 
 module.exports = app;

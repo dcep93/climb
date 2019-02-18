@@ -16,16 +16,17 @@ app.post("/login", function(req, res, next) {
         })
         .then(function(ticket) {
             var payload = ticket.getPayload();
-            orm(req, res, next).upsertUser(
-                payload["sub"],
-                payload["email"],
-                payload["name"],
-                payload["picture"],
-                function(userId) {
-                    req.session.userId = userId;
-                    res.sendStatus(200);
-                }
-            );
+            orm(null, null, next).insert('users', {
+                    google_id: payload["sub"],
+                    email: payload["email"],
+                    name: payload["name"],
+                    image: payload["picture"]
+                }, {
+                    q: 'ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=?, image=?',
+                    p: [name, image]
+                })
+                    .then((userId) => Object.assign(req.session, {userId}))
+                    .then(() => res.sendStatus(200));
         }, next);
 });
 

@@ -16,15 +16,9 @@ app.post("/new_gym", function(req, res, next) {
   var path = req.body.path;
   var name = req.body.name;
   var description = req.body.description;
-  orm(req, res, next)
-    .setErrF(function(q, err) {
-      if (err.code === "ER_DUP_ENTRY") {
-        res.status(400).send(`path "${path}" already exists`);
-      } else {
-        this.err(q, err);
-      }
-    })
-    .newGym(path, name, description, () => res.send(`/gym/${path}`));
+
+  orm(null, null, next).insert('gyms', {path, name, description})
+    .then(() => res.send(`/gym/${path}`));
 });
 
 app.get("/user/latest", function(req, res, next) {
@@ -53,7 +47,13 @@ app.post("/user/:user_id/edit", function(req, res, next) {
   } else {
     return res.sendStatus(400);
   }
-  orm(req, res, next).updateUserStatus(userId, isAdmin, isVerified);
+
+  var s = {};
+  if (isAdmin !== undefined) s['is_admin'] = isAdmin;
+  if (isVerified !== undefined) s['is_verified'] = isVerified;
+
+  orm(null, null, next).update('users', s, {id: userId})
+    .then(() => res.sendStatus(200));
 });
 
 module.exports = app;
