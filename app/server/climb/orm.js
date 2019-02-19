@@ -1,12 +1,12 @@
-var mysql = require('mysql');
+var mysql = require("mysql");
 
-var config = require('../../config');
+var config = require("../../config");
 
 var db_config = {
-	host: config.mysql_host || '127.0.0.1',
-	database: config.mysql_database || 'climb',
-	user: 'root',
-	password: config.mysql_password,
+	host: config.mysql_host || "127.0.0.1",
+	database: config.mysql_database || "climb",
+	user: "root",
+	password: config.mysql_password
 };
 var conn;
 
@@ -14,13 +14,13 @@ function connect() {
 	conn = mysql.createConnection(db_config);
 	conn.connect(function(err) {
 		if (err) {
-			console.log('db connection error', err);
+			console.log("db connection error", err);
 			setTimeout(connect, 1000);
 		}
 	});
-	conn.on('error', function(err) {
-		console.log('db error', err);
-		if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+	conn.on("error", function(err) {
+		console.log("db error", err);
+		if (err.code === "PROTOCOL_CONNECTION_LOST") {
 			setTimeout(connect, 1000);
 		} else {
 			throw err;
@@ -30,23 +30,23 @@ function connect() {
 
 function getCons(where) {
 	var wk = Object.keys(where || {});
-	var w = wk.map((key) => `${key}=?`).join(' AND ')
-	var p = wk.map((key) => where[key]);
+	var w = wk.map(key => `${key}=?`).join(" AND ");
+	var p = wk.map(key => where[key]);
 
-	return {w,p};
+	return { w, p };
 }
 
 function select(table, where, options) {
 	var w = getCons(where);
 	var options = options || {};
 	var parts = [
-		'SELECT',
-		(options.columns || ['*']).join(','),
-		'FROM',
+		"SELECT",
+		(options.columns || ["*"]).join(","),
+		"FROM",
 		table,
-		w.w ? 'WHERE' : null,
+		w.w ? "WHERE" : null,
 		w.w,
-		options.suffix,
+		options.suffix
 	];
 	return query(parts, w.p);
 }
@@ -54,35 +54,27 @@ function select(table, where, options) {
 function update(table, updates, where) {
 	var w = getCons(where);
 	var u = getCons(updates);
-	var parts = [
-		'UPDATE',
-		table,
-		'SET',
-		u.w,
-		'WHERE',
-		w.w,
-	];
+	var parts = ["UPDATE", table, "SET", u.w, "WHERE", w.w];
 	return query(parts, u.p.concat(w.p));
 }
 
 function insert(table, inserts, suffix) {
 	var keys = Object.keys(inserts);
-	var values = keys.map((key) => inserts[key]);
+	var values = keys.map(key => inserts[key]);
 	var s = suffix || {};
 	var parts = [
-		'INSERT INTO',
+		"INSERT INTO",
 		table,
-		`(${keys.join(',')})`,
-		'VALUES',
-		`(${values.map((value) => '?').join(',')})`,
-		s.q,
+		`(${keys.join(",")})`,
+		"VALUES",
+		`(${values.map(value => "?").join(",")})`,
+		s.q
 	];
-	return query(parts, values.concat(s.p))
-		.then((packet) => packet.insertId);
+	return query(parts, values.concat(s.p)).then(packet => packet.insertId);
 }
 
 function query(parts, params) {
-	var query_string = parts.filter(Boolean).join(' ');
+	var query_string = parts.filter(Boolean).join(" ");
 	return new Promise((resolve, reject) =>
 		conn.query(query_string, params, function(err, results, fields) {
 			if (err) return reject(err);

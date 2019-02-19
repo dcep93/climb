@@ -1,5 +1,5 @@
-var express = require('express');
-var exec = require('child_process').exec;
+var express = require("express");
+var exec = require("child_process").exec;
 
 var app = express.Router();
 
@@ -20,7 +20,7 @@ app.use("/pull", function(req, res) {
 
 app.use("/rs", function(req, res) {
 	res.sendStatus(200);
-	process.kill(process.pid, 'SIGUSR2');
+	process.kill(process.pid, "SIGUSR2");
 });
 
 module.exports = app;
