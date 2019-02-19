@@ -10,46 +10,43 @@ declare global {
     }
 }
 
-class Auth extends Component {
-    constructor(props: any) {
-        super(props);
+function login(response: any): void {
+    if (loggedIn()) return;
+    var id_token = response.Zi.id_token;
+    g.req('/api/auth/login', 'POST', { id_token })
+        .then(g.refresh);
+}
 
+function logout(): void {
+    var googlePromise = window.gapi.auth2.getAuthInstance().signOut();
+    var reqPromise = g.req('/api/auth/logout', 'POST');
+
+    Promise.all([googlePromise, reqPromise])
+        .then(g.refresh);
+}
+
+function loggedIn(): boolean {
+    return g.common().user.id !== undefined;
+}
+
+function Auth() {
+    if (window.onSignIn === undefined) {
         var preload = document.getElementById('google-platform-preload') as HTMLLinkElement;
         var script = document.createElement('script');
         script.src = preload.href;
         document.head.appendChild(script);
 
-        window.onSignIn = this.login;
+        window.onSignIn = login;
     }
 
-    login = (response: any): void => {
-        if (this.loggedIn()) return;
-        var id_token = response.Zi.id_token;
-        g.req('/api/auth/login', 'POST', { id_token })
-            .then(g.refresh);
-    }
-
-    logout = (): void => {
-        var googlePromise = window.gapi.auth2.getAuthInstance().signOut();
-        var reqPromise = g.req('/api/auth/logout', 'POST');
-
-        Promise.all([googlePromise, reqPromise])
-            .then(g.refresh);
-    }
-
-    loggedIn(): boolean {
-        return g.common().user.id !== undefined;
-    }
-
-    render(): any {
-        return (
+    return (
         <div>
             <meta name="google-signin-client_id" content={g.common().google_signin_client_id}></meta>
-            <div hidden={this.loggedIn()} id="sign-in-button" className="g-signin2" data-onsuccess="onSignIn"></div>
+            <div hidden={loggedIn()} id="sign-in-button" className="g-signin2" data-onsuccess="onSignIn"></div>
 
-            {this.loggedIn() && (
+            {loggedIn() && (
                 <div>
-                    <button onClick={this.logout}>Sign out</button><br />
+                    <button onClick={logout}>Sign out</button><br />
                     <Link to={`/user/${g.common().user.id}`}>Profile</Link>
                 </div>
             )}
@@ -57,8 +54,7 @@ class Auth extends Component {
                 <Link to={'/admin/user/latest'}>Latest Users</Link>
             )}
         </div>
-        );
-    }
-  }
+    );
+}
 
 export default Auth;

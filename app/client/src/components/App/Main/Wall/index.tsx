@@ -5,26 +5,24 @@ import Media from './Media';
 
 import * as gt from '../../../../globals';
 
-class Wall extends Component<{wall: gt.wallType & {media: gt.mediaType[]}}> {
-    render() {
-      return (
-          <div>
-            <Link to={'/'}>Home</Link>
-            <div>
-                <p>id: {this.props.wall.id}</p>
-                <p>name: {this.props.wall.name}</p>
-                <p>difficulty: {this.props.wall.difficulty}</p>
-                <p>location: {this.props.wall.location}</p>
-                <p>date: {this.props.wall.date}</p>
-                <p>setter: {this.props.wall.setter}</p>
-                <p>color: {this.props.wall.color}</p>
-                <p>status: {this.props.wall.active ? 'active' : 'retired'}</p>
+function Wall(props: {wall: gt.wallType & {media: gt.mediaType[]}}) {
+  return (
+      <div>
+        <Link to={'/'}>Home</Link>
+        <div>
+            <p>id: {props.wall.id}</p>
+            <p>name: {props.wall.name}</p>
+            <p>difficulty: {props.wall.difficulty}</p>
+            <p>location: {props.wall.location}</p>
+            <p>date: {props.wall.date}</p>
+            <p>setter: {props.wall.setter}</p>
+            <p>color: {props.wall.color}</p>
+            <p>status: {props.wall.active ? 'active' : 'retired'}</p>
 
-                <Media media={this.props.wall.media}/>
-            </div>
-          </div>
-      );
-    }
-  }
+            <Media media={props.wall.media}/>
+        </div>
+      </div>
+  );
+}
 
 export default Wall;

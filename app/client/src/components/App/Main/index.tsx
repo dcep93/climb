@@ -12,7 +12,7 @@ import Wall from './Wall';
 
 import g from '../../../globals';
 
-function props(path: string, render: (params: {[param: string]: string}) => ReactNode) {
+function p(path: string, render: (params: {[param: string]: string}) => ReactNode) {
   return {
     exact: true,
     path,
@@ -21,22 +21,20 @@ function props(path: string, render: (params: {[param: string]: string}) => Reac
   }
 }
 
-class Main extends Component<any> {
-    render() {
-      return (
-        <div>
-          <Auth />
-          <Switch>
-            <Route {...props('/', () => <Gyms gyms={this.props.gyms}/>)}/>
-            <Route {...props('/admin/user/latest', () => <LatestUsers users={this.props.users}/>)}/>
-            <Route {...props('/user/:user_id', () => <Profile user={this.props.user}/>)}/>
-            <Route {...props('/gym/:gym_path', () => <Gym gym={this.props.gym}/>)}/>
-            <Route {...props('/gym/:gym_path/edit', () => <GymEdit gym={this.props.gym}/>)}/>
-            <Route {...props('/gym/:gym_path/wall/:wall_id', () => <Wall wall={this.props.wall}/>)}/>
-          </Switch>
-        </div>
-      );
-    }
-  }
+function Main(props: any) {
+    return (
+      <div>
+        <Auth />
+        <Switch>
+          <Route {...p('/', () => <Gyms gyms={props.gyms}/>)}/>
+          <Route {...p('/admin/user/latest', () => <LatestUsers users={props.users}/>)}/>
+          <Route {...p('/user/:user_id', () => <Profile user={props.user}/>)}/>
+          <Route {...p('/gym/:gym_path', () => <Gym gym={props.gym}/>)}/>
+          <Route {...p('/gym/:gym_path/edit', () => <GymEdit gym={props.gym}/>)}/>
+          <Route {...p('/gym/:gym_path/wall/:wall_id', () => <Wall wall={props.wall}/>)}/>
+        </Switch>
+      </div>
+    );
+}
 
 export default Main;
