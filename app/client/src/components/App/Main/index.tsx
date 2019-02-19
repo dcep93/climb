@@ -16,25 +16,25 @@ function p(path: string, render: (params: {[param: string]: string}) => ReactNod
   return {
     exact: true,
     path,
-    render: (rProps: RouteComponentProps<any, StaticContext, any>) =>
-      g.common().path === encodeURI(rProps.location.pathname) && render(rProps.match.params)
+    render: (r_props: RouteComponentProps<any, StaticContext, any>) =>
+      g.common().path === encodeURI(r_props.location.pathname) && render(r_props.match.params)
   }
 }
 
 function Main(props: any) {
-    return (
-      <div>
-        <Auth />
-        <Switch>
-          <Route {...p('/', () => <Gyms gyms={props.gyms}/>)}/>
-          <Route {...p('/admin/user/latest', () => <LatestUsers users={props.users}/>)}/>
-          <Route {...p('/user/:user_id', () => <Profile user={props.user}/>)}/>
-          <Route {...p('/gym/:gym_path', () => <Gym gym={props.gym}/>)}/>
-          <Route {...p('/gym/:gym_path/edit', () => <GymEdit gym={props.gym}/>)}/>
-          <Route {...p('/gym/:gym_path/wall/:wall_id', () => <Wall wall={props.wall}/>)}/>
-        </Switch>
-      </div>
-    );
+  return (
+    <div>
+      <Auth />
+      <Switch>
+        <Route {...p('/', () => <Gyms gyms={props.gyms}/>)}/>
+        <Route {...p('/admin/user/latest', () => <LatestUsers users={props.users}/>)}/>
+        <Route {...p('/user/:user_id', () => <Profile user={props.user}/>)}/>
+        <Route {...p('/gym/:gym_path', () => <Gym gym={props.gym}/>)}/>
+        <Route {...p('/gym/:gym_path/edit', () => <GymEdit gym={props.gym}/>)}/>
+        <Route {...p('/gym/:gym_path/wall/:wall_id', () => <Wall wall={props.wall}/>)}/>
+      </Switch>
+    </div>
+  );
 }
 
 export default Main;

@@ -5,42 +5,42 @@ import g from '../../../globals';
 import * as gt from '../../../globals';
 
 class Profile extends Component<{user: gt.userType}, gt.userType> {
-    constructor(props: any) {
-      super(props);
-      this.state = Object.assign({}, props.user);
-    }
-
-    checkboxProps(name: string) {
-        var originalState = Object.assign({}, this.state);
-        var gProps = g.input(this, name, gt.InputType.Checkbox);
-        var originalOnChange = gProps.onChange;
-        var disabled = !this.state.is_admin;
-        var onChange: typeof originalOnChange = (event) => {
-            var stateChange = originalOnChange(event);
-            g.req(`/api/admin/user/${this.props.user.id}/edit`, 'POST', stateChange)
-                .then((response) => response.json())
-                .catch((err) => {
-                    this.setState(originalState);
-                    g.err(err);
-                });
-            return stateChange;
-        };
-        return Object.assign(gProps, {onChange, disabled});
-    }
-
-    render() {
-      return (
-          <div>
-            <Link to={'/'}>Home</Link>
-            <div>
-                <p>{this.props.user.name}</p>
-                <img src={this.props.user.image} /><br />
-                <p>is admin: <input {...this.checkboxProps("is_admin")} /></p>
-                <p>is verified: <input {...this.checkboxProps("is_verified")} /></p>
-            </div>
-          </div>
-      );
-    }
+  constructor(props: any) {
+    super(props);
+    this.state = Object.assign({}, props.user);
   }
+
+  checkboxProps(name: string) {
+      var original_state = Object.assign({}, this.state);
+      var g_props = g.input(this, name, gt.InputType.Checkbox);
+      var original_on_change = g_props.onChange;
+      var disabled = !this.state.is_admin;
+      var onChange: typeof original_on_change = (event) => {
+          var state_change = original_on_change(event);
+          g.req(`/api/admin/user/${this.props.user.id}/edit`, 'POST', state_change)
+              .then((response) => response.json())
+              .catch((err) => {
+                  this.setState(original_state);
+                  g.err(err);
+              });
+          return state_change;
+      };
+      return Object.assign(g_props, {onChange, disabled});
+  }
+
+  render() {
+    return (
+        <div>
+          <Link to={'/'}>Home</Link>
+          <div>
+              <p>{this.props.user.name}</p>
+              <img src={this.props.user.image} /><br />
+              <p>is admin: <input {...this.checkboxProps("is_admin")} /></p>
+              <p>is verified: <input {...this.checkboxProps("is_verified")} /></p>
+          </div>
+        </div>
+    );
+  }
+}
 
 export default Profile;

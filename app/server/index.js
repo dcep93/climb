@@ -2,8 +2,8 @@ var log = console.log;
 console.log = function() {
 	var arr = Array.from(arguments);
 	var d = new Date();
-	var dateString = `${d.toDateString()} ${d.toTimeString().split(' ')[0]}`;
-	arr.unshift(dateString);
+	var date_string = `${d.toDateString()} ${d.toTimeString().split(' ')[0]}`;
+	arr.unshift(date_string);
 	log(...arr);
 	return arr[0];
 };
@@ -14,18 +14,18 @@ Date.prototype._toDateString = function() {
 
 var express = require('express');
 var path = require('path');
-var bodyParser = require('body-parser');
-var cookieSession = require('cookie-session');
+var body_parser = require('body-parser');
+var cookie_session = require('cookie-session');
 
 var climb = require('./climb/climb');
 var config = require("../config");
 
 var app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(body_parser.json());
+app.use(body_parser.urlencoded({ extended: false }));
 
-app.use(cookieSession({
+app.use(cookie_session({
 	name: 'session',
 	secret: config.cookie_secret || '*'
 }));

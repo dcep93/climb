@@ -17,20 +17,20 @@ class Gym extends Component<PropsType, StateType> {
     }
 
     checkboxProps(id: number) {
-        var gProps = g.input(this, id.toString(), gt.InputType.Checkbox);
-        var originalOnChange = gProps.onChange;
-        var onChange: typeof originalOnChange = (event) => {
+        var g_props = g.input(this, id.toString(), gt.InputType.Checkbox);
+        var original_on_change = g_props.onChange;
+        var onChange: typeof original_on_change = (event) => {
             event.preventDefault();
-            var originalState = Object.assign({}, this.state);
-            var stateChange = originalOnChange(event);
-            g.req(`/api/${g.common().path}/wall/${id}/climb`, 'POST', {climbed: stateChange[id]})
+            var original_state = Object.assign({}, this.state);
+            var state_change = original_on_change(event);
+            g.req(`/api/${g.common().path}/wall/${id}/climb`, 'POST', {climbed: state_change[id]})
                 .catch((err) => {
-                    this.setState(originalState);
+                    this.setState(original_state);
                     g.err(err);
                 });
-            return stateChange;
+            return state_change;
         };
-        return Object.assign(gProps, {onChange});
+        return Object.assign(g_props, {onChange});
     }
 
     render() {

@@ -37,7 +37,7 @@ interface wallType {
   color: string,
 };
 
-const initialWall: wallType = {id: 0, name: "", difficulty: "", location: "", date: "", setter: "", color: "", active: false};
+const initial_wall: wallType = {id: 0, name: "", difficulty: "", location: "", date: "", setter: "", color: "", active: false};
 
 interface mediaType {
   id: number,
@@ -75,14 +75,14 @@ enum InputType {
   Checkbox = "checkbox",
 }
 
-const inputTypeToField = {
+const input_type_to_field = {
   [InputType.Text]: "value",
   [InputType.Checkbox]: "checked",
 };
 
 const input = (c: Component<object, Readonly<any>>, name: string, type?: InputType) => {
     if (c.state[name] === undefined) throw new Error(`bad name - ${name} - ${JSON.stringify(c.state)}`);
-    var field = (type === undefined) ? "value" : inputTypeToField[type];
+    var field = (type === undefined) ? "value" : input_type_to_field[type];
     return {
       name,
       type: type,
@@ -112,13 +112,13 @@ function common() {
   return app._common();
 }
 
-var unreadyO = Object();
+var unready_o = Object();
 
 function unready() {
-  refresh(unreadyO);
+  refresh(unready_o);
 }
 
-export default { req, input, err, refresh, common, setApp, unready, unreadyO };
+export default { req, input, err, refresh, common, setApp, unready, unready_o };
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
-export { commonType, userType, gymType, wallType, initialWall, mediaType, InputType };
+export { commonType, userType, gymType, wallType, initial_wall, mediaType, InputType };

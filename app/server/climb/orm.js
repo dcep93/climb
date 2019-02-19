@@ -2,7 +2,7 @@ var mysql = require('mysql');
 
 var config = require('../../config');
 
-var dbConfig = {
+var db_config = {
 	host: config.mysql_host || '127.0.0.1',
 	database: config.mysql_database || 'climb',
 	user: 'root',
@@ -11,7 +11,7 @@ var dbConfig = {
 var conn;
 
 function connect() {
-	conn = mysql.createConnection(dbConfig);
+	conn = mysql.createConnection(db_config);
 	conn.connect(function(err) {
 		if (err) {
 			console.log('db connection error', err);
@@ -82,9 +82,9 @@ function insert(table, inserts, suffix) {
 }
 
 function query(parts, params) {
-	var queryString = parts.filter(Boolean).join(' ');
+	var query_string = parts.filter(Boolean).join(' ');
 	return new Promise((resolve, reject) =>
-		conn.query(queryString, params, function(err, results, fields) {
+		conn.query(query_string, params, function(err, results, fields) {
 			if (err) return reject(err);
 			resolve(results, fields);
 		})

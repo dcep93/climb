@@ -18,10 +18,10 @@ function login(response: any): void {
 }
 
 function logout(): void {
-    var googlePromise = window.gapi.auth2.getAuthInstance().signOut();
-    var reqPromise = g.req('/api/auth/logout', 'POST');
+    var google_promise = window.gapi.auth2.getAuthInstance().signOut();
+    var req_promise = g.req('/api/auth/logout', 'POST');
 
-    Promise.all([googlePromise, reqPromise])
+    Promise.all([google_promise, req_promise])
         .then(g.refresh);
 }
 

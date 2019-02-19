@@ -7,9 +7,9 @@ function common(req, res, next) {
         google_signin_client_id: config.google_signin_client_id,
     };
     res.data = (json) => res.json(Object.assign({common: res.common}, json));
-    var userId = req.session.userId;
-    if (userId !== undefined) {
-        orm.select('users', {id: userId})
+    var user_id = req.session.user_id;
+    if (user_id !== undefined) {
+        orm.select('users', {id: user_id})
             .then((users) => users[0] || Promise.reject())
             .then((user) => Object.assign(res.common, {user}))
             .then(() => next())

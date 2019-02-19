@@ -6,17 +6,17 @@ var config = require("../../config");
 
 var app = express.Router();
 
-function setAdmin(userId, next) {
-    return orm.update('users', {is_admin: true, is_verified: true}, {id: userId});
+function setAdmin(user_id) {
+    return orm.update('users', {is_admin: true, is_verified: true}, {id: user_id});
 }
 
 app.post("/login", function(req, res, next) {
-    var idToken = req.body.id_token;
-    var client = new OAuth2Client(config.clientId);
+    var id_token = req.body.id_token;
+    var client = new OAuth2Client(config.google_signin_client_id);
     client
         .verifyIdToken({
-            idToken: idToken,
-            audience: config.clientId
+            idToken: id_token,
+            audience: config.google_signin_client_id
         })
         .then(function(ticket) {
             var payload = ticket.getPayload();
@@ -33,14 +33,14 @@ app.post("/login", function(req, res, next) {
                     p: [name, image]
                 })
             })
-        .then((userId) => Object.assign(req.session, {userId}) && userId)
-        .then((userId) => userId == 1 && setAdmin(userId, next))
+        .then((user_id) => Object.assign(req.session, {user_id}) && user_id)
+        .then((user_id) => user_id == 1 && setAdmin(user_id))
         .then(() => res.sendStatus(200))
         .catch(next);
 });
 
 app.post("/logout", function(req, res) {
-    req.session.userId = undefined;
+    req.session.user_id = undefined;
     res.sendStatus(200);
 });
 

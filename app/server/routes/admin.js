@@ -1,11 +1,11 @@
 var express = require('express');
 
 var orm = require("../climb/orm");
-var adminNodemon = require("./admin_nodemon");
+var admin_nodemon = require("./admin_nodemon");
 
 var app = express.Router();
 
-app.use(adminNodemon);
+app.use(admin_nodemon);
 
 app.use(function(req, res, next) {
 	if (!res.common.user.is_admin) return res.sendStatus(403);
@@ -29,32 +29,32 @@ app.get("/user/latest", function(req, res, next) {
 });
 
 app.post("/user/:user_id/edit", function(req, res, next) {
-  var userId = req.params.user_id;
-  if (userId == res.common.user.id) return res.sendStatus(409);
-  if (userId == 1) return res.sendStatus(403);
+  var user_id = req.params.user_id;
+  if (user_id == res.common.user.id) return res.sendStatus(409);
+  if (user_id == 1) return res.sendStatus(403);
   var field = req.body.field;
   var value = req.body.value === "true";
-  var isAdmin;
-  var isVerified;
+  var is_admin;
+  var is_verified;
   if (field === "admin") {
-    isAdmin = value;
-    if (isAdmin) {
-      isVerified = true;
+    is_admin = value;
+    if (is_admin) {
+      is_verified = true;
     }
   } else if (field === "verified") {
-    isVerified = value;
-    if (!isVerified) {
-      isAdmin = false;
+    is_verified = value;
+    if (!is_verified) {
+      is_admin = false;
     }
   } else {
     return res.sendStatus(400);
   }
 
   var s = {};
-  if (isAdmin !== undefined) s['is_admin'] = isAdmin;
-  if (isVerified !== undefined) s['is_verified'] = isVerified;
+  if (is_admin !== undefined) s['is_admin'] = is_admin;
+  if (is_verified !== undefined) s['is_verified'] = is_verified;
 
-  orm.update('users', s, {id: userId})
+  orm.update('users', s, {id: user_id})
     .then(() => res.sendStatus(200))
     .catch(next);
 });

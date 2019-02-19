@@ -3,7 +3,7 @@ import React, { Component, RefObject, FormEvent } from 'react';
 import g from '../../../../globals';
 import * as gt from '../../../../globals';
 
-var newMediaRef: RefObject<HTMLInputElement> = React.createRef();
+var new_media_ref: RefObject<HTMLInputElement> = React.createRef();
 
 function newMedia() {
     if (g.common().user.id === undefined) {
@@ -14,30 +14,28 @@ function newMedia() {
         return <div>
             <p>New Media</p>
             <form onSubmit={submitNewMedia}>
-                <input ref={newMediaRef} type="file" name="upload" />
+                <input ref={new_media_ref} type="file" name="upload" />
                 <input type="submit" />
             </form>
         </div>
     }
 }
 
-
-
 function submitNewMedia(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    var input = newMediaRef.current;
+    var input = new_media_ref.current;
     if (input === null) return;
     var files = input.files;
     if (!files) return;
     var file = files[0];
     var mime = file.type.split("/")[0];
-    var acceptableMedia = ["image", "video"];
-    if (acceptableMedia.indexOf(mime) === -1) return alert('invalid file');
-    var gcsKey: string;
+    var acceptable_media = ["image", "video"];
+    if (acceptable_media.indexOf(mime) === -1) return alert('invalid file');
+    var gcs_key: string;
     g.req('/api/get_gcs_key')
         .then((response) => response.json())
         .then((response) => {
-            gcsKey = response.token;
+            gcs_key = response.token;
             var folder = response.folder;
             var bucket = response.bucket;
 
@@ -48,7 +46,7 @@ function submitNewMedia(event: FormEvent<HTMLFormElement>) {
                 method: 'POST',
                 body: file,
                 headers: {
-                    'Authorization': `Bearer ${gcsKey}`,
+                    'Authorization': `Bearer ${gcs_key}`,
                     'Content-Type': file.type,
                     // 'Content-Length': file.size,
                 },
@@ -61,7 +59,7 @@ function submitNewMedia(event: FormEvent<HTMLFormElement>) {
                 gcs_id: response.id,
                 mime: file.type,
                 size: file.size,
-                gcs_key: gcsKey,
+                gcs_key: gcs_key,
             })
         )
         .then(g.refresh)
