@@ -6,9 +6,10 @@ var app = express.Router({mergeParams: true});
 
 app.get("/", function(req, res, next) {
     var userId = req.params.user_id;
-    orm(null, null, next).select('users', {id: userId})
+    orm.select('users', {id: userId})
         .then((users) => users[0] || Promise.reject())
-        .then((user) => res.data({user}));
+        .then((user) => res.data({user}))
+        .catch(next);
 });
 
 module.exports = app;

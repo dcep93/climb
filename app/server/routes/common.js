@@ -9,10 +9,11 @@ function common(req, res, next) {
     res.data = (json) => res.json(Object.assign({common: res.common}, json));
     var userId = req.session.userId;
     if (userId !== undefined) {
-        orm(null, null, next).select('users', {id: userId})
+        orm.select('users', {id: userId})
             .then((users) => users[0] || Promise.reject())
             .then((user) => Object.assign(res.common, {user}))
-            .then(() => next());
+            .then(() => next())
+            .catch(next);
     } else {
         res.common.user = {};
         next();

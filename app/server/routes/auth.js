@@ -7,7 +7,7 @@ var config = require("../../config");
 var app = express.Router();
 
 function setAdmin(userId, next) {
-    return orm(null, null, next).update('users', {is_admin: true, is_verified: true}, {id: userId});
+    return orm.update('users', {is_admin: true, is_verified: true}, {id: userId});
 }
 
 app.post("/login", function(req, res, next) {
@@ -23,7 +23,7 @@ app.post("/login", function(req, res, next) {
             var email = payload["email"];
             var name = payload["name"];
             var image = payload["picture"];
-            return orm(null, null, next).insert('users', {
+            return orm.insert('users', {
                     google_id: payload["sub"],
                     email,
                     name,
@@ -33,10 +33,10 @@ app.post("/login", function(req, res, next) {
                     p: [name, image]
                 })
             })
-                .then((userId) => Object.assign(req.session, {userId}) && userId)
-                .then((userId) => userId == 1 && setAdmin(userId, next))
-                .then(() => res.sendStatus(200))
-                .catch(next);
+        .then((userId) => Object.assign(req.session, {userId}) && userId)
+        .then((userId) => userId == 1 && setAdmin(userId, next))
+        .then(() => res.sendStatus(200))
+        .catch(next);
 });
 
 app.post("/logout", function(req, res) {

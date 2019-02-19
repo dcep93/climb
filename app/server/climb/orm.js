@@ -36,70 +36,61 @@ function getCons(where) {
 	return {w,p};
 }
 
-class Orm {
-	constructor(req, res, next) {
-		this.req = req;
-		this.res = res;
-		this.next = next;
-	}
+function select(table, where, options) {
+	var w = getCons(where);
+	var options = options || {};
+	var parts = [
+		'SELECT',
+		(options.columns || ['*']).join(','),
+		'FROM',
+		table,
+		w.w ? 'WHERE' : null,
+		w.w,
+		options.suffix,
+	];
+	return query(parts, w.p);
+}
 
-	select(table, where, options) {
-		var w = getCons(where);
-		var options = options || {};
-		var parts = [
-			'SELECT',
-			(options.columns || ['*']).join(','),
-			'FROM',
-			table,
-			w.w ? 'WHERE' : null,
-			w.w,
-			options.suffix,
-		];
-		return this.query(parts, w.p);
-	}
+function update(table, updates, where) {
+	var w = getCons(where);
+	var u = getCons(updates);
+	var parts = [
+		'UPDATE',
+		table,
+		'SET',
+		u.w,
+		'WHERE',
+		w.w,
+	];
+	return query(parts, u.p.concat(w.p));
+}
 
-	update(table, updates, where) {
-		var w = getCons(where);
-		var u = getCons(updates);
-		var parts = [
-			'UPDATE',
-			table,
-			'SET',
-			u.w,
-			'WHERE',
-			w.w,
-		];
-		return this.query(parts, u.p.concat(w.p));
-	}
+function insert(table, inserts, suffix) {
+	var keys = Object.keys(inserts);
+	var values = keys.map((key) => inserts[key]);
+	var s = suffix || {};
+	var parts = [
+		'INSERT INTO',
+		table,
+		`(${keys.join(',')})`,
+		'VALUES',
+		`(${values.map((value) => '?').join(',')})`,
+		s.q,
+	];
+	return query(parts, values.concat(s.p))
+		.then((packet) => packet.insertId);
+}
 
-	insert(table, inserts, suffix) {
-		var keys = Object.keys(inserts);
-		var values = keys.map((key) => inserts[key]);
-		var s = suffix || {};
-		var parts = [
-			'INSERT INTO',
-			table,
-			`(${keys.join(',')})`,
-			'VALUES',
-			`(${values.map((value) => '?').join(',')})`,
-			s.q,
-		];
-		return this.query(parts, values.concat(s.p))
-			.then((packet) => packet.insertId);
-	}
-
-	query(parts, params) {
-		var queryString = parts.filter(Boolean).join(' ');
-		return new Promise((resolve, reject) =>
-			conn.query(queryString, params, function(err, results, fields) {
-				if (err) return reject(err);
-				resolve(results, fields);
-			})
-		)
-			.catch(this.next);
-	}
+function query(parts, params) {
+	var queryString = parts.filter(Boolean).join(' ');
+	return new Promise((resolve, reject) =>
+		conn.query(queryString, params, function(err, results, fields) {
+			if (err) return reject(err);
+			resolve(results, fields);
+		})
+	);
 }
 
 connect();
 
-module.exports = function () { return new Orm(...arguments); };
+module.exports = { select, update, insert };

@@ -9,13 +9,13 @@ app.get("/", function(req, res, next) {
     var gymPath = req.params.gym_path;
     var wallId = req.params.wall_id;
     var state = {};
-    orm(null, null, next).select('walls', {gym_path: gymPath, id: wallId})
+    orm.select('walls', {gym_path: gymPath, id: wallId})
         .then((walls) => walls[0] || Promise.reject())
         .then((wall) => Object.assign(state, {wall}))
-        .then(() => orm(null, null, next).select('walls', {gym_path: gymPath}))
+        .then(() => orm.select('walls', {gym_path: gymPath}))
         .then((gyms) => gyms[0] || Promise.reject())
         .then((gym) => Object.assign(state.wall, {gym}))
-        .then(() => orm(null, null, next).select('wall_media', {wall_id: wallId}))
+        .then(() => orm.select('wall_media', {wall_id: wallId}))
         .then((media) => Object.assign(state.wall, {media}))
         .then(() => res.data(state))
         .catch(next);
@@ -30,13 +30,15 @@ app.post("/climb", function(req, res, next) {
     
     var promise;
     if (userId !== undefined) {
-        promise = orm(null, null, next).insert('climbed_walls', {active: climbed, 'gym_path': gymPath, 'wall_id': wallId, 'user_id': userId}, {q: 'ON DUPLICATE KEY UPDATE active = ?', p: [climbed]})
+        promise = orm.insert('climbed_walls', {active: climbed, 'gym_path': gymPath, 'wall_id': wallId, 'user_id': userId}, {q: 'ON DUPLICATE KEY UPDATE active = ?', p: [climbed]})
     } else {
         if (req.session.climbed === undefined) req.session.climbed = {};
         req.session.climbed[wallId] = climbed;
         promise = Promise.resolve();
     }
-    promise.then(() => res.sendStatus(200));
+    promise
+        .then(() => res.sendStatus(200))
+        .catch(next);
 });
 
 app.post("/edit", function(req, res, next) {
@@ -52,8 +54,9 @@ app.post("/edit", function(req, res, next) {
     var color = req.body.color;
     var active = req.body.active === "on";
 
-    orm(null, null, next).update('walls', {name, difficulty, location, date, setter, color, active}, {gym_path: gymPath, id: wallId})
-        .then(() => res.sendStatus(200));
+    orm.update('walls', {name, difficulty, location, date, setter, color, active}, {gym_path: gymPath, id: wallId})
+        .then(() => res.sendStatus(200))
+        .catch(next);
 });
 
 app.post("/upload", function(req, res, next) {
@@ -72,7 +75,7 @@ app.post("/upload", function(req, res, next) {
 
     if (acceptableMedia.indexOf(mime) === -1) return res.sendStatus(400);
 
-    orm(null, null, next).insert('wall_media', {wall_id: wallId, gcs_path: gcsPath, user_id: res.common.user.id, file_size: fileSize, mime})
+    orm.insert('wall_media', {wall_id: wallId, gcs_path: gcsPath, user_id: res.common.user.id, file_size: fileSize, mime})
         .then((id) => uploadToFacebook(id, mime, gcsPath, gcsKey))
         .then(() => res.sendStatus(200))
         .catch(next);

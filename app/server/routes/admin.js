@@ -17,13 +17,15 @@ app.post("/new_gym", function(req, res, next) {
   var name = req.body.name;
   var description = req.body.description;
 
-  orm(null, null, next).insert('gyms', {path, name, description})
-    .then(() => res.send(`/gym/${path}`));
+  orm.insert('gyms', {path, name, description})
+    .then(() => res.send(`/gym/${path}`))
+    .catch(next);
 });
 
 app.get("/user/latest", function(req, res, next) {
-  orm(null, null, next).select('users', null, {suffix: 'ORDER BY id DESC LIMIT 100'})
-    .then((users) => res.data({users}));
+  orm.select('users', null, {suffix: 'ORDER BY id DESC LIMIT 100'})
+    .then((users) => res.data({users}))
+    .catch(next);
 });
 
 app.post("/user/:user_id/edit", function(req, res, next) {
@@ -52,8 +54,9 @@ app.post("/user/:user_id/edit", function(req, res, next) {
   if (isAdmin !== undefined) s['is_admin'] = isAdmin;
   if (isVerified !== undefined) s['is_verified'] = isVerified;
 
-  orm(null, null, next).update('users', s, {id: userId})
-    .then(() => res.sendStatus(200));
+  orm.update('users', s, {id: userId})
+    .then(() => res.sendStatus(200))
+    .catch(next);
 });
 
 module.exports = app;

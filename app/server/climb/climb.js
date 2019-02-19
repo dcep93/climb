@@ -27,8 +27,9 @@ app.use("/gym/:gym_path", gym);
 app.use("/user/:user_id", user);
 
 app.get("/", function(req, res, next) {
-    orm().select('gyms')
-        .then((gyms) => res.data({gyms}));
+    orm.select('gyms')
+        .then((gyms) => res.data({gyms}))
+        .catch(next);
 });
 
 app.get("/get_gcs_key", function(req, res, next) {
