@@ -2,7 +2,7 @@ var OAuth2Client = require("google-auth-library").OAuth2Client;
 var express = require("express");
 
 var orm = require("../climb/orm");
-var config = require("../config");
+var config = require("../../config");
 
 var app = express.Router();
 

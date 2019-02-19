@@ -1,4 +1,4 @@
-var config = require("../config");
+var config = require("../../config");
 var orm = require("../climb/orm");
 
 function common(req, res, next) {

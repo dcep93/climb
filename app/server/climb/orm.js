@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-var config = require('../config');
+var config = require('../../config');
 
 var dbConfig = {
 	host: config.mysql_host || '127.0.0.1',
@@ -43,7 +43,7 @@ class Orm {
 		this.next = next;
 	}
 
-	select = (table, where, options) => {
+	select(table, where, options) {
 		var w = getCons(where);
 		var options = options || {};
 		var parts = [
@@ -58,7 +58,7 @@ class Orm {
 		return this.query(parts, w.p);
 	}
 
-	update = (table, updates, where) => {
+	update(table, updates, where) {
 		var w = getCons(where);
 		var u = getCons(updates);
 		var parts = [
@@ -72,7 +72,7 @@ class Orm {
 		return this.query(parts, u.p.concat(w.p));
 	}
 
-	insert = (table, inserts, suffix) => {
+	insert(table, inserts, suffix) {
 		var keys = Object.keys(inserts);
 		var values = keys.map((key) => inserts[key]);
 		var s = suffix || {};
@@ -87,7 +87,7 @@ class Orm {
 		return this.query(parts, i.p.concat(s.p));
 	}
 
-	query = (parts, params) => {
+	query(parts, params) {
 		var queryString = parts.filter(Boolean).join(' ');
 		return new Promise((resolve, reject) =>
 			conn.query(queryString, params, function(err, results, fields) {

@@ -17,7 +17,7 @@ var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session');
 
 var climb = require('./climb/climb');
-var config = require("./config");
+var config = require("../config");
 
 var app = express();
 
