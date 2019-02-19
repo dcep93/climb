@@ -5,6 +5,7 @@ console.log = function() {
 	var dateString = `${d.toDateString()} ${d.toTimeString().split(' ')[0]}`;
 	arr.unshift(dateString);
 	log(...arr);
+	return arr[0];
 };
 
 Date.prototype._toDateString = function() {

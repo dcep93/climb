@@ -81,10 +81,11 @@ class Orm {
 			table,
 			`(${keys.join(',')})`,
 			'VALUES',
-			`(${values.join(',')})`,
+			`(${values.map((value) => '?').join(',')})`,
 			s.q,
 		];
-		return this.query(parts, i.p.concat(s.p));
+		return this.query(parts, values.concat(s.p))
+			.then((packet) => packet.insertId);
 	}
 
 	query(parts, params) {

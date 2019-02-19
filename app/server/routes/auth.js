@@ -16,11 +16,14 @@ app.post("/login", function(req, res, next) {
         })
         .then(function(ticket) {
             var payload = ticket.getPayload();
+            var email = payload["email"];
+            var name = payload["name"];
+            var image = payload["picture"];
             orm(null, null, next).insert('users', {
                     google_id: payload["sub"],
-                    email: payload["email"],
-                    name: payload["name"],
-                    image: payload["picture"]
+                    email,
+                    name,
+                    image,
                 }, {
                     q: 'ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), name=?, image=?',
                     p: [name, image]

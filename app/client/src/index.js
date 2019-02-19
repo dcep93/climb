@@ -6,6 +6,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import App from './components/App';
 
+var log = console.log;
+console.log = function() {
+	var arr = Array.from(arguments);
+	log(...arr);
+	return arr[0];
+}
+
 ReactDOM.render((
   <BrowserRouter>
     <App />
