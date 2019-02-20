@@ -6,12 +6,12 @@ import * as gt from "../../../globals";
 class GymsAdmin extends Component<object, gt.gymType> {
 	constructor(props: any) {
 		super(props);
-		this.state = { id: 0, name: "", path: "", description: "" };
+		this.state = gt.initial_gym;
 	}
 
 	submit = (event: React.FormEvent) => {
 		g.req("/api/admin/new_gym", "POST", this.state)
-			.then(response => response.text())
+			.then(() => this.setState(gt.initial_gym))
 			.then(g.refresh);
 		event.preventDefault();
 	};
