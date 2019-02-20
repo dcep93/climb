@@ -3,15 +3,16 @@ import React, { Component } from "react";
 import g from "../../../globals";
 import * as gt from "../../../globals";
 
+const initial_gym: gt.gymType = { id: 0, name: "", path: "", description: "" };
 class GymsAdmin extends Component<object, gt.gymType> {
 	constructor(props: any) {
 		super(props);
-		this.state = gt.initial_gym;
+		this.state = initial_gym;
 	}
 
 	submit = (event: React.FormEvent) => {
 		g.req("/api/admin/new_gym", "POST", this.state)
-			.then(() => this.setState(gt.initial_gym))
+			.then(() => this.setState(initial_gym))
 			.then(g.refresh);
 		event.preventDefault();
 	};

@@ -37,19 +37,6 @@ interface wallType {
 	color: string;
 }
 
-const initial_wall: wallType = {
-	id: 0,
-	name: "",
-	difficulty: "",
-	location: "",
-	date: "",
-	setter: "",
-	color: "",
-	active: false
-};
-
-const initial_gym: gymType = { id: 0, name: "", path: "", description: "" };
-
 interface mediaType {
 	id: number;
 	wall_id: number;
@@ -140,4 +127,4 @@ export default { req, input, err, refresh, common, setApp, unready, unready_o };
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
 // prettier-ignore
-export { commonType, userType, gymType, initial_gym, wallType, initial_wall, mediaType, InputType };
+export { commonType, userType, gymType, wallType, mediaType, InputType };
