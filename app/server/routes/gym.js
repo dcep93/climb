@@ -49,6 +49,7 @@ app.get("/edit", function(req, res, next) {
 app.post("/edit", function(req, res, next) {
 	var gym_path = req.params.gym_path;
 	if (!res.common.user.is_verified) return res.sendStatus(403);
+
 	var name = req.body.name;
 	var description = req.body.description;
 
@@ -67,7 +68,7 @@ app.post("/new_wall", function(req, res, next) {
 	var date = new Date(req.body.date || null);
 	var setter = req.body.setter;
 	var color = req.body.color;
-	var active = req.body.active === "on";
+	var active = req.body.active;
 
 	orm.insert("walls", {
 		gym_path,

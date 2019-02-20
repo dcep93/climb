@@ -55,7 +55,14 @@ function select(table, where, options) {
 function update(table, updates, where) {
 	var w = getCons(where);
 	var u = getCons(updates);
-	var parts = ["UPDATE", table, "SET", u.w.join(","), "WHERE", w.w];
+	var parts = [
+		"UPDATE",
+		table,
+		"SET",
+		u.w.join(","),
+		"WHERE",
+		w.w.join(" AND ")
+	];
 	return query(parts, u.p.concat(w.p));
 }
 
@@ -76,6 +83,7 @@ function insert(table, inserts, suffix) {
 
 function query(parts, params) {
 	var query_string = parts.filter(Boolean).join(" ");
+	console.log(query_string, params);
 	return new Promise((resolve, reject) =>
 		conn.query(query_string, params, function(err, results, fields) {
 			if (err) return reject(err);

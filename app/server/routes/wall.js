@@ -24,7 +24,7 @@ app.get("/", function(req, res, next) {
 app.post("/climb", function(req, res, next) {
 	var gym_path = req.params.gym_path;
 	var wall_id = req.params.wall_id;
-	var active = req.body.climbed === "true";
+	var active = req.body.climbed;
 
 	var user_id = this.req.session.user_id;
 
@@ -54,7 +54,7 @@ app.post("/edit", function(req, res, next) {
 	var date = new Date(req.body.date || null);
 	var setter = req.body.setter;
 	var color = req.body.color;
-	var active = req.body.active === "on";
+	var active = req.body.active;
 
 	orm.update(
 		"walls",

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, FormEvent } from "react";
 import { Link } from "react-router-dom";
 
 import NewWall from "./NewWall";
@@ -16,11 +16,18 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 		this.state = Object.assign({}, props.gym);
 	}
 
+	submit = (event: FormEvent<HTMLFormElement>): void => {
+		event.preventDefault();
+		g.req(`/api/gym/${this.props.gym.path}/edit`, "POST", this.state).then(
+			g.refresh
+		);
+	};
+
 	render() {
 		return (
 			<div>
 				<Link to={"/"}>Home</Link>
-				<form>
+				<form onSubmit={this.submit}>
 					<p>
 						name: <input {...g.input(this, "name")} />
 					</p>

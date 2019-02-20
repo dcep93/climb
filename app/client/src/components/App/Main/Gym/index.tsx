@@ -5,7 +5,7 @@ import g from "../../../../globals";
 import * as gt from "../../../../globals";
 
 interface PropsType {
-	gym: gt.gymType & { climbedWalls: number[]; walls: gt.wallType[] };
+	gym: gt.gymType & { climbed_walls: number[]; walls: gt.wallType[] };
 }
 interface StateType {
 	[id: number]: boolean;
@@ -15,7 +15,7 @@ class Gym extends Component<PropsType, StateType> {
 		super(props);
 		var state: StateType = {};
 		props.gym.walls.forEach((wall: gt.wallType) => {
-			state[wall.id] = props.gym.climbedWalls.indexOf(wall.id) !== -1;
+			state[wall.id] = props.gym.climbed_walls.indexOf(wall.id) !== -1;
 		});
 		this.state = state;
 	}
