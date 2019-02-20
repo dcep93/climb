@@ -33,27 +33,10 @@ app.post("/user/:user_id/edit", function(req, res, next) {
 	var user_id = req.params.user_id;
 	if (user_id == res.common.user.id) return res.sendStatus(409);
 	if (user_id == 1) return res.sendStatus(403);
-	var field = req.body.field;
-	var value = req.body.value === "true";
-	var is_admin;
-	var is_verified;
-	if (field === "admin") {
-		is_admin = value;
-		if (is_admin) {
-			is_verified = true;
-		}
-	} else if (field === "verified") {
-		is_verified = value;
-		if (!is_verified) {
-			is_admin = false;
-		}
-	} else {
-		return res.sendStatus(400);
-	}
 
-	var s = {};
-	if (is_admin !== undefined) s["is_admin"] = is_admin;
-	if (is_verified !== undefined) s["is_verified"] = is_verified;
+	var s = Object.assign({}, req.body);
+	if (s.is_admin) s.is_verified = true;
+	else if (s.is_verified === false) s.is_admin = false;
 
 	orm.update("users", s, { id: user_id })
 		.then(() => res.sendStatus(200))

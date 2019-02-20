@@ -20,15 +20,17 @@ class App extends Component<RouteComponentProps, { ready: boolean } & any> {
 		g.unready();
 	}
 
-	_refresh = (_unready: any): void => {
+	_refresh = (_unready: any): Promise<any> => {
 		var unready = _unready === g.unready_o;
 		console.log("refresh", unready, this.props.history.location.pathname);
 		if (unready) this.setState({ ready: false });
-		g.req(`/api${this.props.history.location.pathname}`)
+		return g
+			.req(`/api${this.props.history.location.pathname}`)
 			.then(response => response.json())
-			.then(response =>
-				this.setState(Object.assign({ ready: true }, response))
-			);
+			.then(response => {
+				this.setState(Object.assign({ ready: true }, response));
+				return response;
+			});
 	};
 
 	_common = (): gt.commonType => {

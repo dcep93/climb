@@ -14,7 +14,7 @@ class Profile extends Component<{ user: gt.userType }, gt.userType> {
 		var original_state = Object.assign({}, this.state);
 		var g_props = g.input(this, name, gt.InputType.Checkbox);
 		var original_on_change = g_props.onChange;
-		var disabled = !this.state.is_admin;
+		var disabled = !g.common().user.is_admin;
 		var onChange: typeof original_on_change = event => {
 			var state_change = original_on_change(event);
 			g.req(
@@ -22,7 +22,7 @@ class Profile extends Component<{ user: gt.userType }, gt.userType> {
 				"POST",
 				state_change
 			)
-				.then(response => response.json())
+				.then(g.unready)
 				.catch(err => {
 					this.setState(original_state);
 					g.err(err);

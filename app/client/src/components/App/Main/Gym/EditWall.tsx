@@ -18,7 +18,7 @@ class EditWall extends Component<
 			`/api/gym/${this.props.gym_path}/wall/${this.props.id}/edit`,
 			"POST",
 			this.state
-		).then(g.refresh);
+		).then(g.unready);
 	};
 
 	render() {
