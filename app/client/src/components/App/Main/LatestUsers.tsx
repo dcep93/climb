@@ -12,6 +12,7 @@ function LatestUsers(props: { users: gt.userType[] }) {
 					<div key={user.id}>
 						<p>id: {user.id}</p>
 						<p>name: {user.name}</p>
+						<p>email: {user.email}</p>
 						<p>timestamp: {user.timestamp}</p>
 						<p>
 							<Link to={`/user/${user.id}`}>Profile</Link>

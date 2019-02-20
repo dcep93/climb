@@ -8,6 +8,7 @@ interface userType {
 	id: number;
 	is_admin: boolean;
 	is_verified: boolean;
+	email: string;
 	name: string;
 	image: string;
 	timestamp: number;
