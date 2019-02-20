@@ -13,7 +13,10 @@ function common(req, res, next) {
 			.then(users => users[0] || Promise.reject())
 			.then(user => Object.assign(res.common, { user }))
 			.then(() => next())
-			.catch(next);
+			.catch(err => {
+				req.session.user_id = undefined;
+				next(err);
+			});
 	} else {
 		res.common.user = {};
 		next();
