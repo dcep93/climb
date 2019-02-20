@@ -10,11 +10,16 @@ function common(req, res, next) {
 	var user_id = req.session.user_id;
 	if (user_id !== undefined) {
 		orm.select("users", { id: user_id })
+			.then(orm.castUsers)
 			.then(users => users[0] || Promise.reject())
 			.then(user => Object.assign(res.common, { user }))
 			.then(() => next())
 			.catch(err => {
-				req.session.user_id = undefined;
+				// user not found in db
+				if (!err) {
+					req.session.user_id = undefined;
+					res.common.user = {};
+				}
 				next(err);
 			});
 	} else {

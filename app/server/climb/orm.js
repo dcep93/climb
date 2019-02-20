@@ -8,6 +8,7 @@ var db_config = {
 	user: "root",
 	password: config.mysql_password
 };
+
 var conn;
 
 function connect() {
@@ -30,7 +31,7 @@ function connect() {
 
 function getCons(where) {
 	var wk = Object.keys(where || {});
-	var w = wk.map(key => `${key}=?`).join(" AND ");
+	var w = wk.map(key => `${key}=?`);
 	var p = wk.map(key => where[key]);
 
 	return { w, p };
@@ -44,8 +45,8 @@ function select(table, where, options) {
 		(options.columns || ["*"]).join(","),
 		"FROM",
 		table,
-		w.w ? "WHERE" : null,
-		w.w,
+		w.w.length > 0 ? "WHERE" : null,
+		w.w.join(" AND "),
 		options.suffix
 	];
 	return query(parts, w.p);
@@ -54,7 +55,7 @@ function select(table, where, options) {
 function update(table, updates, where) {
 	var w = getCons(where);
 	var u = getCons(updates);
-	var parts = ["UPDATE", table, "SET", u.w, "WHERE", w.w];
+	var parts = ["UPDATE", table, "SET", u.w.join(","), "WHERE", w.w];
 	return query(parts, u.p.concat(w.p));
 }
 
@@ -83,6 +84,24 @@ function query(parts, params) {
 	);
 }
 
+function castTransforms(row, transforms) {
+	var rval = {};
+	for (var t in transforms) {
+		rval[t] = transforms[t](row[t]);
+	}
+	return rval;
+}
+
+function cast(arr, transforms) {
+	return arr.map(row =>
+		Object.assign({}, row, castTransforms(row, transforms))
+	);
+}
+
+function castUsers(users) {
+	return cast(users, { is_admin: Boolean, is_verified: Boolean });
+}
+
 connect();
 
-module.exports = { select, update, insert };
+module.exports = { select, update, insert, cast, castUsers };

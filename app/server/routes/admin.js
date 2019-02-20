@@ -24,6 +24,7 @@ app.post("/new_gym", function(req, res, next) {
 
 app.get("/user/latest", function(req, res, next) {
 	orm.select("users", null, { suffix: "ORDER BY id DESC LIMIT 100" })
+		.then(orm.castUsers)
 		.then(users => res.data({ users }))
 		.catch(next);
 });
