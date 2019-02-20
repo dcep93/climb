@@ -25,6 +25,7 @@ app.get("/", function(req, res, next) {
 				{ columns: ["wall_id"] }
 			)
 		)
+		.then(rows => rows.map(row => row.wall_id))
 		.then(climbed_walls => Object.assign(state.gym, { climbed_walls }))
 		.then(() => res.data(state))
 		.catch(next);

@@ -29,10 +29,12 @@ class Gym extends Component<PropsType, StateType> {
 			var state_change = original_on_change(event);
 			g.req(`/api/${g.common().path}/wall/${id}/climb`, "POST", {
 				climbed: state_change[id]
-			}).catch(err => {
-				this.setState(original_state);
-				g.err(err);
-			});
+			})
+				.then(g.unready)
+				.catch(err => {
+					this.setState(original_state);
+					g.err(err);
+				});
 			return state_change;
 		};
 		return Object.assign(g_props, { onChange });
@@ -52,23 +54,24 @@ class Gym extends Component<PropsType, StateType> {
 						<Link to={`${g.common().path}/edit`}>Edit</Link>
 					)}
 					{this.props.gym.walls.map(wall => (
-						<Link
-							key={wall.id}
-							to={`${g.common().path}/wall/${wall.id}`}
-						>
-							<p>id: {wall.id}</p>
-							<p>name: {wall.name}</p>
-							<p>difficulty: {wall.difficulty}</p>
-							<p>location: {wall.location}</p>
-							<p>date: {wall.date}</p>
-							<p>setter: {wall.setter}</p>
-							<p>color: {wall.color}</p>
-							<p>status: {wall.active ? "active" : "retired"}</p>
+						<div key={wall.id}>
+							<Link to={`${g.common().path}/wall/${wall.id}`}>
+								<p>id: {wall.id}</p>
+								<p>name: {wall.name}</p>
+								<p>difficulty: {wall.difficulty}</p>
+								<p>location: {wall.location}</p>
+								<p>date: {wall.date}</p>
+								<p>setter: {wall.setter}</p>
+								<p>color: {wall.color}</p>
+								<p>
+									status: {wall.active ? "active" : "retired"}
+								</p>
+							</Link>
 							<p>
 								climbed:{" "}
 								<input {...this.checkboxProps(wall.id)} />
 							</p>
-						</Link>
+						</div>
 					))}
 				</div>
 			</div>

@@ -26,7 +26,7 @@ app.post("/climb", function(req, res, next) {
 	var wall_id = req.params.wall_id;
 	var active = req.body.climbed;
 
-	var user_id = this.req.session.user_id;
+	var user_id = req.session.user_id;
 
 	var promise;
 	if (user_id !== undefined) {
