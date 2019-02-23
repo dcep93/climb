@@ -1,6 +1,6 @@
 var express = require("express");
 
-var upload_to_facebook = require("./upload_to_facebook");
+var uploadToFacebook = require("./uploadToFacebook");
 var orm = require("../climb/orm");
 
 var app = express.Router({ mergeParams: true });
@@ -15,7 +15,13 @@ app.get("/", function(req, res, next) {
 		.then(() => orm.select("walls", { gym_path }))
 		.then(gyms => gyms[0] || Promise.reject())
 		.then(gym => Object.assign(state.wall, { gym }))
-		.then(() => orm.select("wall_media", { wall_id }))
+		.then(() =>
+			orm.select(
+				"wall_media",
+				{ wall_id },
+				{ suffix: "ORDER BY id DESC" }
+			)
+		)
 		.then(media => Object.assign(state.wall, { media }))
 		.then(() => res.data(state))
 		.catch(next);
@@ -73,7 +79,7 @@ app.post("/upload", function(req, res, next) {
 	var gcs_path = req.body.gcs_path;
 	var full_mime = req.body.mime;
 	var file_size = req.body.size;
-	var gcs_key = req.body.gcs_key;
+	// var gcs_key = req.body.gcs_key;
 
 	var mime = full_mime.split("/")[0];
 
@@ -88,7 +94,7 @@ app.post("/upload", function(req, res, next) {
 		file_size,
 		mime
 	})
-		.then(id => upload_to_facebook(id, mime, gcs_path, gcs_key))
+		.then(id => uploadToFacebook(id, mime, gcs_path))
 		.then(() => res.sendStatus(200))
 		.catch(next);
 });

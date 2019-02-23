@@ -69,7 +69,7 @@ function update(table, updates, where) {
 function insert(table, inserts, suffix) {
 	var keys = Object.keys(inserts);
 	var values = keys.map(key => inserts[key]);
-	var s = suffix || {};
+	var s = suffix || { q: "", p: [] };
 	var parts = [
 		"INSERT INTO",
 		table,
