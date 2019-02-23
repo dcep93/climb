@@ -19,16 +19,16 @@ function newMedia() {
 		return (
 			<div>
 				<p>New Media</p>
-				<form onSubmit={submitNewMedia}>
+				<div>
 					<input ref={new_media_ref} type="file" name="upload" />
-					<input type="submit" />
-				</form>
+					<input type="submit" onClick={submitNewMedia} />
+				</div>
 			</div>
 		);
 	}
 }
 
-function submitNewMedia(event: FormEvent<HTMLFormElement>) {
+function submitNewMedia(event: React.MouseEvent<HTMLInputElement>) {
 	event.preventDefault();
 	var input = new_media_ref.current;
 	if (input === null) return;

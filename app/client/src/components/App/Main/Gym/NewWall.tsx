@@ -19,7 +19,7 @@ class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 		this.state = initial_wall;
 	}
 
-	submit = (event: FormEvent<HTMLFormElement>): void => {
+	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
 		event.preventDefault();
 		g.req(`/api/gym/${this.props.gym_path}/new_wall`, "POST", this.state)
 			.then(() => this.setState(initial_wall))
@@ -28,7 +28,7 @@ class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 
 	render() {
 		return (
-			<form onSubmit={this.submit}>
+			<div>
 				<p>New Wall</p>
 				<p>
 					name: <input {...g.input(this, "name")} />
@@ -54,8 +54,8 @@ class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 						{...g.input(this, "active", gt.InputType.Checkbox)}
 					/>
 				</p>
-				<input type="submit" />
-			</form>
+				<input type="submit" onClick={this.submit} />
+			</div>
 		);
 	}
 }

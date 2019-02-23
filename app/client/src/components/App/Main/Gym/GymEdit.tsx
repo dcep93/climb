@@ -16,7 +16,7 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 		this.state = Object.assign({}, props.gym);
 	}
 
-	submit = (event: FormEvent<HTMLFormElement>): void => {
+	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
 		event.preventDefault();
 		g.req(`/api/gym/${this.props.gym.path}/edit`, "POST", this.state).then(
 			g.refresh
@@ -27,7 +27,7 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 		return (
 			<div>
 				<Link to={"/"}>Home</Link>
-				<form onSubmit={this.submit}>
+				<div>
 					<p>
 						name: <input {...g.input(this, "name")} />
 					</p>
@@ -35,8 +35,8 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 						description:{" "}
 						<textarea {...g.input(this, "description")} />
 					</p>
-					<input type="submit" />
-				</form>
+					<input type="submit" onClick={this.submit} />
+				</div>
 				<div>
 					<p>Walls</p>
 					<br />

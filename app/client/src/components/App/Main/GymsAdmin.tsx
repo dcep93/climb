@@ -10,7 +10,7 @@ class GymsAdmin extends Component<object, gt.gymType> {
 		this.state = initial_gym;
 	}
 
-	submit = (event: React.FormEvent) => {
+	submit = (event: React.MouseEvent<HTMLInputElement>) => {
 		g.req("/api/admin/new_gym", "POST", this.state)
 			.then(() => this.setState(initial_gym))
 			.then(g.refresh);
@@ -19,7 +19,7 @@ class GymsAdmin extends Component<object, gt.gymType> {
 
 	render() {
 		return (
-			<form onSubmit={this.submit}>
+			<div>
 				<p>New Gym</p>
 				<p>
 					path:{" "}
@@ -32,8 +32,8 @@ class GymsAdmin extends Component<object, gt.gymType> {
 				<p>
 					description: <textarea {...g.input(this, "description")} />
 				</p>
-				<input type="submit" />
-			</form>
+				<input type="submit" onClick={this.submit} />
+			</div>
 		);
 	}
 }

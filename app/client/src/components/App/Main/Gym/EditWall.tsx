@@ -12,7 +12,7 @@ class EditWall extends Component<
 		this.state = Object.assign({}, props);
 	}
 
-	submit = (event: FormEvent<HTMLFormElement>): void => {
+	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
 		event.preventDefault();
 		g.req(
 			`/api/gym/${this.props.gym_path}/wall/${this.props.id}/edit`,
@@ -23,7 +23,7 @@ class EditWall extends Component<
 
 	render() {
 		return (
-			<form onSubmit={this.submit}>
+			<div>
 				<p>id: {this.props.id}</p>
 				<p>
 					name: <input {...g.input(this, "name")} />
@@ -49,8 +49,8 @@ class EditWall extends Component<
 						{...g.input(this, "active", gt.InputType.Checkbox)}
 					/>
 				</p>
-				<input type="submit" />
-			</form>
+				<input type="submit" onClick={this.submit} />
+			</div>
 		);
 	}
 }
