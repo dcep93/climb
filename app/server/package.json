@@ -1,21 +1,21 @@
 {
-  "name": "climb-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon index.js --ignore public"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.18.3",
-    "cookie-session": "^2.0.0-beta.3",
-    "ejs": "^2.6.1",
-    "express": "^4.16.4",
-    "google-auth-library": "^2.0.2",
-    "mysql": "^2.16.0",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.4"
-  }
+	"name": "climb-server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "nodemon index.js --ignore public"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"body-parser": "^1.18.3",
+		"cookie-session": "^2.0.0-beta.3",
+		"ejs": "^2.6.1",
+		"express": "^4.16.4",
+		"google-auth-library": "^2.0.2",
+		"mysql": "^2.16.0",
+		"request": "^2.88.0",
+		"request-promise": "^4.2.4"
+	}
 }
