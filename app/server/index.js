@@ -32,9 +32,14 @@ app.use(
 	})
 );
 
-app.use(express.static(path.join(__dirname, "public")));
-
 app.use("/api", climb);
+
+var build = path.join(__dirname, "../", "client", "build");
+
+app.use(express.static(build));
+app.get("/*", function(req, res) {
+	res.sendFile(path.join(build, "index.html"));
+});
 
 app.use(function(err, req, res, next) {
 	console.error(err.stack);
