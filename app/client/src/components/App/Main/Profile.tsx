@@ -16,12 +16,9 @@ class Profile extends Component<{ user: gt.userType }, gt.userType> {
 		var original_on_change = g_props.onChange;
 		var disabled = !g.common().user.is_admin;
 		var onChange: typeof original_on_change = event => {
+			var url = `/admin/user/${this.props.user.id}/edit`;
 			var state_change = original_on_change(event);
-			g.req(
-				`/api/admin/user/${this.props.user.id}/edit`,
-				"POST",
-				state_change
-			)
+			g.req(url, "POST", state_change)
 				.then(g.unready)
 				.catch(err => {
 					this.setState(original_state);

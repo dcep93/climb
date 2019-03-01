@@ -27,7 +27,7 @@ class Gym extends Component<PropsType, StateType> {
 			event.preventDefault();
 			var original_state = Object.assign({}, this.state);
 			var state_change = original_on_change(event);
-			g.req(`/api/${g.common().path}/wall/${id}/climb`, "POST", {
+			g.req(`/${g.common().path}/wall/${id}/climb`, "POST", {
 				climbed: state_change[id]
 			})
 				.then(g.unready)

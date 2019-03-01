@@ -39,7 +39,7 @@ function submitNewMedia(event: React.MouseEvent<HTMLInputElement>) {
 	var acceptable_media = ["image", "video"];
 	if (acceptable_media.indexOf(mime) === -1) return alert("invalid file");
 	var gcs_key: string;
-	g.req("/api/get_gcs_key")
+	g.req("/get_gcs_key")
 		.then(response => response.json())
 		.then(response => {
 			gcs_key = response.token;
@@ -61,7 +61,7 @@ function submitNewMedia(event: React.MouseEvent<HTMLInputElement>) {
 		})
 		.then(response => response.json())
 		.then(response =>
-			g.req(`/api/${g.common().path}/upload`, "POST", {
+			g.req(`/${g.common().path}/upload`, "POST", {
 				gcs_path: response.name,
 				gcs_id: response.id,
 				mime: file.type,

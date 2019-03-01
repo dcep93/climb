@@ -21,7 +21,7 @@ class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 
 	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
 		event.preventDefault();
-		g.req(`/api/gym/${this.props.gym_path}/new_wall`, "POST", this.state)
+		g.req(`/gym/${this.props.gym_path}/new_wall`, "POST", this.state)
 			.then(() => this.setState(initial_wall))
 			.then(g.refresh);
 	};

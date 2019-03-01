@@ -13,12 +13,12 @@ declare global {
 function login(response: any): void {
 	if (loggedIn()) return;
 	var id_token = response.Zi.id_token;
-	g.req("/api/auth/login", "POST", { id_token }).then(g.refresh);
+	g.req("/auth/login", "POST", { id_token }).then(g.refresh);
 }
 
 function logout(): void {
 	var google_promise = window.gapi.auth2.getAuthInstance().signOut();
-	var req_promise = g.req("/api/auth/logout", "POST");
+	var req_promise = g.req("/auth/logout", "POST");
 
 	Promise.all([google_promise, req_promise]).then(g.refresh);
 }

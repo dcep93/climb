@@ -53,7 +53,7 @@ interface mediaType {
 class ReqError extends Error {}
 
 function req(url: string, method?: string, body?: any): Promise<Response> {
-	return fetch(url, {
+	return fetch(`/api${url}`, {
 		method,
 		body: JSON.stringify(body),
 		headers: {

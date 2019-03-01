@@ -18,7 +18,7 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 
 	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
 		event.preventDefault();
-		g.req(`/api/gym/${this.props.gym.path}/edit`, "POST", this.state).then(
+		g.req(`/gym/${this.props.gym.path}/edit`, "POST", this.state).then(
 			g.refresh
 		);
 	};

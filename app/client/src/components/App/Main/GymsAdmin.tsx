@@ -11,7 +11,7 @@ class GymsAdmin extends Component<object, gt.gymType> {
 	}
 
 	submit = (event: React.MouseEvent<HTMLInputElement>) => {
-		g.req("/api/admin/new_gym", "POST", this.state)
+		g.req("/admin/new_gym", "POST", this.state)
 			.then(() => this.setState(initial_gym))
 			.then(g.refresh);
 		event.preventDefault();
