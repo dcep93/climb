@@ -25,7 +25,7 @@ class App extends Component<RouteComponentProps, { ready: boolean } & any> {
 		console.log("refresh", unready, this.props.history.location.pathname);
 		if (unready) this.setState({ ready: false });
 		return g
-			.req(`/api${this.props.history.location.pathname}`)
+			.req(`${this.props.history.location.pathname}`)
 			.then(response => response.json())
 			.then(response => {
 				this.setState(Object.assign({ ready: true }, response));
