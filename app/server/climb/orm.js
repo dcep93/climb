@@ -37,9 +37,9 @@ function getCons(where) {
 	return { w, p };
 }
 
-function select(table, where, options) {
+function select(table, where, _options) {
+	const options = _options || {};
 	const w = getCons(where);
-	const options = options || {};
 	const parts = [
 		"SELECT",
 		(options.columns || ["*"]).join(","),
