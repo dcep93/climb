@@ -1,4 +1,4 @@
-import React, { Component, FormEvent } from "react";
+import React, { Component } from "react";
 
 import g from "../../../../globals";
 import * as gt from "../../../../globals";
