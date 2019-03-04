@@ -1,8 +1,8 @@
-var mysql = require("mysql");
+const mysql = require("mysql");
 
-var config = require("../../config");
+const config = require("../../config");
 
-var db_config = {
+const db_config = {
 	host: config.mysql_host || "127.0.0.1",
 	database: config.mysql_database || "climb",
 	user: "root",
@@ -30,17 +30,17 @@ function connect() {
 }
 
 function getCons(where) {
-	var wk = Object.keys(where || {});
-	var w = wk.map(key => `${key}=?`);
-	var p = wk.map(key => where[key]);
+	const wk = Object.keys(where || {});
+	const w = wk.map(key => `${key}=?`);
+	const p = wk.map(key => where[key]);
 
 	return { w, p };
 }
 
 function select(table, where, options) {
-	var w = getCons(where);
-	var options = options || {};
-	var parts = [
+	const w = getCons(where);
+	const options = options || {};
+	const parts = [
 		"SELECT",
 		(options.columns || ["*"]).join(","),
 		"FROM",
@@ -53,9 +53,9 @@ function select(table, where, options) {
 }
 
 function update(table, updates, where) {
-	var w = getCons(where);
-	var u = getCons(updates);
-	var parts = [
+	const w = getCons(where);
+	const u = getCons(updates);
+	const parts = [
 		"UPDATE",
 		table,
 		"SET",
@@ -67,10 +67,10 @@ function update(table, updates, where) {
 }
 
 function insert(table, inserts, suffix) {
-	var keys = Object.keys(inserts);
-	var values = keys.map(key => inserts[key]);
-	var s = suffix || { q: "", p: [] };
-	var parts = [
+	const keys = Object.keys(inserts);
+	const values = keys.map(key => inserts[key]);
+	const s = suffix || { q: "", p: [] };
+	const parts = [
 		"INSERT INTO",
 		table,
 		`(${keys.join(",")})`,
@@ -82,7 +82,7 @@ function insert(table, inserts, suffix) {
 }
 
 function query(parts, params) {
-	var query_string = parts.filter(Boolean).join(" ");
+	const query_string = parts.filter(Boolean).join(" ");
 	console.log(query_string, params);
 	return new Promise((resolve, reject) =>
 		conn.query(query_string, params, function(err, results, fields) {
@@ -93,8 +93,8 @@ function query(parts, params) {
 }
 
 function castTransforms(row, transforms) {
-	var rval = {};
-	for (var t in transforms) {
+	const rval = {};
+	for (let t in transforms) {
 		rval[t] = transforms[t](row[t]);
 	}
 	return rval;

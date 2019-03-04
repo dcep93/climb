@@ -1,11 +1,11 @@
-var express = require("express");
+const express = require("express");
 
-var orm = require("../climb/orm");
+const orm = require("../climb/orm");
 
-var app = express.Router({ mergeParams: true });
+const app = express.Router({ mergeParams: true });
 
 app.get("/", function(req, res, next) {
-	var user_id = req.params.user_id;
+	const user_id = req.params.user_id;
 	orm.select("users", { id: user_id })
 		.then(orm.castUsers)
 		.then(users => users[0] || Promise.reject())

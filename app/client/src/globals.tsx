@@ -86,7 +86,7 @@ const input = (
 ) => {
 	if (c.state[name] === undefined)
 		throw new Error(`bad name - ${name} - ${JSON.stringify(c.state)}`);
-	var field = type === undefined ? "value" : input_type_to_field[type];
+	const field = type === undefined ? "value" : input_type_to_field[type];
 	return {
 		name,
 		type: type,
@@ -94,8 +94,8 @@ const input = (
 		onChange: (
 			event: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>
 		) => {
-			var t: any = event.target;
-			var state = { [event.target.name]: t[field] };
+			const t: any = event.target;
+			const state = { [event.target.name]: t[field] };
 			c.setState(state);
 			return state;
 		}
@@ -118,7 +118,7 @@ function common() {
 	return app._common();
 }
 
-var unready_o = Object();
+const unready_o = Object();
 
 function unready() {
 	refresh(unready_o);

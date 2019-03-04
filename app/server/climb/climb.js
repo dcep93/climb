@@ -1,18 +1,18 @@
-var express = require("express");
-var exec = require("child_process").exec;
+const express = require("express");
+const exec = require("child_process").exec;
 
-var config = require("../../config");
+const config = require("../../config");
 
-var orm = require("./orm");
+const orm = require("./orm");
 
-var common = require("../routes/common");
+const common = require("../routes/common");
 
-var admin = require("../routes/admin");
-var auth = require("../routes/auth");
-var gym = require("../routes/gym");
-var user = require("../routes/user");
+const admin = require("../routes/admin");
+const auth = require("../routes/auth");
+const gym = require("../routes/gym");
+const user = require("../routes/user");
 
-var app = express.Router();
+const app = express.Router();
 
 app.use(function(req, res, next) {
 	console.log(req.path);

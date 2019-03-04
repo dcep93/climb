@@ -11,13 +11,13 @@ class Profile extends Component<{ user: gt.userType }, gt.userType> {
 	}
 
 	checkboxProps(name: string) {
-		var original_state = Object.assign({}, this.state);
-		var g_props = g.input(this, name, gt.InputType.Checkbox);
-		var original_on_change = g_props.onChange;
-		var disabled = !g.common().user.is_admin;
-		var onChange: typeof original_on_change = event => {
-			var url = `/admin/user/${this.props.user.id}/edit`;
-			var state_change = original_on_change(event);
+		const original_state = Object.assign({}, this.state);
+		const g_props = g.input(this, name, gt.InputType.Checkbox);
+		const original_on_change = g_props.onChange;
+		const disabled = !g.common().user.is_admin;
+		const onChange: typeof original_on_change = event => {
+			const url = `/admin/user/${this.props.user.id}/edit`;
+			const state_change = original_on_change(event);
 			g.req(url, "POST", state_change)
 				.then(g.unready)
 				.catch(err => {

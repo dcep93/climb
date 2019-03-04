@@ -1,14 +1,14 @@
-var express = require("express");
+const express = require("express");
 
-var uploadToFacebook = require("./uploadToFacebook");
-var orm = require("../climb/orm");
+const uploadToFacebook = require("./uploadToFacebook");
+const orm = require("../climb/orm");
 
-var app = express.Router({ mergeParams: true });
+const app = express.Router({ mergeParams: true });
 
 app.get("/", function(req, res, next) {
-	var gym_path = req.params.gym_path;
-	var wall_id = req.params.wall_id;
-	var state = {};
+	const gym_path = req.params.gym_path;
+	const wall_id = req.params.wall_id;
+	const state = {};
 	orm.select("walls", { gym_path, id: wall_id })
 		.then(walls => walls[0] || Promise.reject())
 		.then(wall => Object.assign(state, { wall }))
@@ -28,13 +28,13 @@ app.get("/", function(req, res, next) {
 });
 
 app.post("/climb", function(req, res, next) {
-	var gym_path = req.params.gym_path;
-	var wall_id = req.params.wall_id;
-	var active = req.body.climbed;
+	const gym_path = req.params.gym_path;
+	const wall_id = req.params.wall_id;
+	const active = req.body.climbed;
 
-	var user_id = req.session.user_id;
+	const user_id = req.session.user_id;
 
-	var promise;
+	let promise;
 	if (user_id !== undefined) {
 		promise = orm.insert(
 			"climbed_walls",
@@ -51,16 +51,16 @@ app.post("/climb", function(req, res, next) {
 
 app.post("/edit", function(req, res, next) {
 	if (!res.common.user.is_verified) return res.sendStatus(403);
-	var gym_path = req.params.gym_path;
-	var wall_id = req.params.wall_id;
+	const gym_path = req.params.gym_path;
+	const wall_id = req.params.wall_id;
 
-	var name = req.body.name;
-	var difficulty = req.body.difficulty;
-	var location = req.body.location;
-	var date = new Date(req.body.date || null);
-	var setter = req.body.setter;
-	var color = req.body.color;
-	var active = req.body.active;
+	const name = req.body.name;
+	const difficulty = req.body.difficulty;
+	const location = req.body.location;
+	const date = new Date(req.body.date || null);
+	const setter = req.body.setter;
+	const color = req.body.color;
+	const active = req.body.active;
 
 	orm.update(
 		"walls",
@@ -73,17 +73,17 @@ app.post("/edit", function(req, res, next) {
 
 app.post("/upload", function(req, res, next) {
 	if (!res.common.user.is_verified) return res.sendStatus(403);
-	var wall_id = req.params.wall_id;
+	const wall_id = req.params.wall_id;
 
-	// var gcs_id = req.body.gcs_id;
-	var gcs_path = req.body.gcs_path;
-	var full_mime = req.body.mime;
-	var file_size = req.body.size;
-	// var gcs_key = req.body.gcs_key;
+	// const gcs_id = req.body.gcs_id;
+	const gcs_path = req.body.gcs_path;
+	const full_mime = req.body.mime;
+	const file_size = req.body.size;
+	// const gcs_key = req.body.gcs_key;
 
-	var mime = full_mime.split("/")[0];
+	const mime = full_mime.split("/")[0];
 
-	var acceptable_media = ["image", "video"];
+	const acceptable_media = ["image", "video"];
 
 	if (acceptable_media.indexOf(mime) === -1) return res.sendStatus(400);
 

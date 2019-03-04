@@ -1,10 +1,10 @@
-var OAuth2Client = require("google-auth-library").OAuth2Client;
-var express = require("express");
+const OAuth2Client = require("google-auth-library").OAuth2Client;
+const express = require("express");
 
-var orm = require("../climb/orm");
-var config = require("../../config");
+const orm = require("../climb/orm");
+const config = require("../../config");
 
-var app = express.Router();
+const app = express.Router();
 
 function setAdmin(user_id) {
 	return orm.update(
@@ -15,18 +15,18 @@ function setAdmin(user_id) {
 }
 
 app.post("/login", function(req, res, next) {
-	var id_token = req.body.id_token;
-	var client = new OAuth2Client(config.google_signin_client_id);
+	const id_token = req.body.id_token;
+	const client = new OAuth2Client(config.google_signin_client_id);
 	client
 		.verifyIdToken({
 			idToken: id_token,
 			audience: config.google_signin_client_id
 		})
 		.then(function(ticket) {
-			var payload = ticket.getPayload();
-			var email = payload["email"];
-			var name = payload["name"];
-			var image = payload["picture"];
+			const payload = ticket.getPayload();
+			const email = payload["email"];
+			const name = payload["name"];
+			const image = payload["picture"];
 			return orm.insert(
 				"users",
 				{

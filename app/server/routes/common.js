@@ -1,5 +1,5 @@
-var config = require("../../config");
-var orm = require("../climb/orm");
+const config = require("../../config");
+const orm = require("../climb/orm");
 
 function common(req, res, next) {
 	res.common = {
@@ -7,7 +7,7 @@ function common(req, res, next) {
 		google_signin_client_id: config.google_signin_client_id
 	};
 	res.data = json => res.json(Object.assign({ common: res.common }, json));
-	var user_id = req.session.user_id;
+	const user_id = req.session.user_id;
 	if (user_id !== undefined) {
 		orm.select("users", { id: user_id })
 			.then(orm.castUsers)

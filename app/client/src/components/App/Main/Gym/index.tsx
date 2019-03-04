@@ -13,7 +13,7 @@ interface StateType {
 class Gym extends Component<PropsType, StateType> {
 	constructor(props: PropsType) {
 		super(props);
-		var state: StateType = {};
+		const state: StateType = {};
 		props.gym.walls.forEach((wall: gt.wallType) => {
 			state[wall.id] = props.gym.climbed_walls.indexOf(wall.id) !== -1;
 		});
@@ -21,12 +21,12 @@ class Gym extends Component<PropsType, StateType> {
 	}
 
 	checkboxProps(id: number) {
-		var g_props = g.input(this, id.toString(), gt.InputType.Checkbox);
-		var original_on_change = g_props.onChange;
-		var onChange: typeof original_on_change = event => {
+		const g_props = g.input(this, id.toString(), gt.InputType.Checkbox);
+		const original_on_change = g_props.onChange;
+		const onChange: typeof original_on_change = event => {
 			event.preventDefault();
-			var original_state = Object.assign({}, this.state);
-			var state_change = original_on_change(event);
+			const original_state = Object.assign({}, this.state);
+			const state_change = original_on_change(event);
 			g.req(`/${g.common().path}/wall/${id}/climb`, "POST", {
 				climbed: state_change[id]
 			})

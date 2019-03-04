@@ -21,7 +21,7 @@ class App extends Component<RouteComponentProps, { ready: boolean } & any> {
 	}
 
 	_refresh = (_unready: any): Promise<any> => {
-		var unready = _unready === g.unready_o;
+		const unready = _unready === g.unready_o;
 		console.log("refresh", unready, this.props.history.location.pathname);
 		if (unready) this.setState({ ready: false });
 		return g

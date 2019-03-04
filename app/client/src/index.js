@@ -6,9 +6,9 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import App from "./components/App";
 
-var log = console.log;
+const log = console.log;
 console.log = function() {
-	var arr = Array.from(arguments);
+	const arr = Array.from(arguments);
 	log(...arr);
 	return arr[0];
 };

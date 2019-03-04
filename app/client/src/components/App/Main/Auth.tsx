@@ -12,13 +12,13 @@ declare global {
 
 function login(response: any): void {
 	if (loggedIn()) return;
-	var id_token = response.Zi.id_token;
+	const id_token = response.Zi.id_token;
 	g.req("/auth/login", "POST", { id_token }).then(g.refresh);
 }
 
 function logout(): void {
-	var google_promise = window.gapi.auth2.getAuthInstance().signOut();
-	var req_promise = g.req("/auth/logout", "POST");
+	const google_promise = window.gapi.auth2.getAuthInstance().signOut();
+	const req_promise = g.req("/auth/logout", "POST");
 
 	Promise.all([google_promise, req_promise]).then(g.refresh);
 }
@@ -29,10 +29,10 @@ function loggedIn(): boolean {
 
 function Auth() {
 	if (window.onSignIn === undefined) {
-		var preload = document.getElementById(
+		const preload = document.getElementById(
 			"google-platform-preload"
 		) as HTMLLinkElement;
-		var script = document.createElement("script");
+		const script = document.createElement("script");
 		script.src = preload.href;
 		document.head.appendChild(script);
 

@@ -1,17 +1,17 @@
-var request = require("request-promise");
+const request = require("request-promise");
 
-var config = require("../../config");
-var orm = require("../climb/orm");
+const config = require("../../config");
+const orm = require("../climb/orm");
 
-var GET_MEDIA_INTERVAL = 3000;
-var MAX_MEDIA_TRIES = 100;
-var MEDIA_TRIES_PRINT_INTERVAL = 10;
+const GET_MEDIA_INTERVAL = 3000;
+const MAX_MEDIA_TRIES = 100;
+const MEDIA_TRIES_PRINT_INTERVAL = 10;
 
-var access_token = config.facebook_page_access_token;
-var storage_path = `https://storage.googleapis.com/${config.gcs_bucket_id}`;
+const access_token = config.facebook_page_access_token;
+const storage_path = `https://storage.googleapis.com/${config.gcs_bucket_id}`;
 
 function uploadToFacebook(wall_media_id, mime, gcs_path) {
-	var vars = { wall_media_id, mime, gcs_path, get_media_tries: 0 };
+	const vars = { wall_media_id, mime, gcs_path, get_media_tries: 0 };
 	return Promise.resolve(vars)
 		.then(getVars)
 		.then(uploadRequest)
@@ -23,8 +23,8 @@ function uploadToFacebook(wall_media_id, mime, gcs_path) {
 }
 
 function catchF(vars, err) {
-	var message = err.message;
-	var short_err = message.split("/")[0];
+	const message = err.message;
+	const short_err = message.split("/")[0];
 	return orm
 		.update(
 			"wall_media",
@@ -41,10 +41,10 @@ function fail(note, data) {
 }
 
 function getVars(vars) {
-	var endpoint;
-	var upload_field;
-	var fields_to_get;
-	var handleGetResponse;
+	let endpoint;
+	let upload_field;
+	let fields_to_get;
+	let handleGetResponse;
 	if (vars.mime === "image") {
 		endpoint = "https://graph.facebook.com/v3.2/me/photos";
 		upload_field = "url";
@@ -67,15 +67,15 @@ function getVars(vars) {
 }
 
 function imageGetResponse(vars, raw_response) {
-	var response = JSON.parse(raw_response);
-	var images = response.images;
+	const response = JSON.parse(raw_response);
+	const images = response.images;
 	if (!images) fail("no images", raw_response);
-	var first_image = images[0];
+	const first_image = images[0];
 	if (!first_image) fail("no first image", raw_response);
-	var img_source = first_image.source;
+	const img_source = first_image.source;
 	if (!img_source) fail("no source", raw_response);
-	var height = response.height;
-	var width = response.width;
+	const height = response.height;
+	const width = response.width;
 	if (!height || !width)
 		fail(`bad dimensions - ${width}x${height}`, raw_response);
 	return Object.assign(vars, { data: img_source, height, width });
@@ -83,25 +83,25 @@ function imageGetResponse(vars, raw_response) {
 
 function videoGetResponse(vars, raw_response) {
 	// TODO dont make client wait
-	var response = JSON.parse(raw_response);
-	var perma_link = response.permalink_url;
+	const response = JSON.parse(raw_response);
+	const perma_link = response.permalink_url;
 	if (!perma_link) fail("no permalink", raw_response);
-	var status = response.status;
+	const status = response.status;
 	if (!status) fail("no status", raw_response);
-	var video_status = status.video_status;
+	const video_status = status.video_status;
 	if (!video_status) fail("no video status", raw_response);
 	if (video_status === "ready") {
-		var formats = response.format;
+		const formats = response.format;
 		if (!formats) fail("no formats", raw_response);
-		var last_format = formats[formats.length - 1];
+		const last_format = formats[formats.length - 1];
 		if (!last_format) fail("no last format", raw_response);
-		var height = last_format.height;
-		var width = last_format.width;
+		const height = last_format.height;
+		const width = last_format.width;
 		if (!height || !width)
 			fail(`bad dimensions - ${width}x${height}`, raw_response);
 		return Object.assign(vars, { data: perma_link, height, width });
 	} else if (video_status === "processing") {
-		var processing_progress = status.processing_progress;
+		const processing_progress = status.processing_progress;
 		if (processing_progress === undefined)
 			fail("undefined progress", raw_response);
 
@@ -143,7 +143,7 @@ function uploadRequest(vars) {
 	})
 		.catch(err => fail("post", err))
 		.then(response => {
-			var media_id = JSON.parse(response).id;
+			const media_id = JSON.parse(response).id;
 			if (!media_id) fail("no media id", response);
 			return Object.assign(vars, { media_id });
 		});

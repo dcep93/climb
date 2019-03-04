@@ -14,7 +14,7 @@ class EditWall extends Component<
 
 	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
 		event.preventDefault();
-		var url = `/gym/${this.props.gym_path}/wall/${this.props.id}/edit`;
+		const url = `/gym/${this.props.gym_path}/wall/${this.props.id}/edit`;
 		g.req(url, "POST", this.state).then(g.refresh);
 	};
 

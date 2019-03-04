@@ -1,11 +1,11 @@
-var express = require("express");
-var exec = require("child_process").exec;
+const express = require("express");
+const exec = require("child_process").exec;
 
-var app = express.Router();
+const app = express.Router();
 
 app.use("/pull", function(req, res) {
 	exec(`git -C ${__dirname} pull -f`, function(err, stdout, stderr) {
-		var send_string;
+		let send_string;
 		if (err) {
 			console.log(stderr);
 			res.status(500);
