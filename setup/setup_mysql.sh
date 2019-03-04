@@ -23,3 +23,5 @@ fi
 mysql -e "set @pw='${MYSQL_PASSWORD}'; `cat set_password.sql`"
 
 iptables -A INPUT -i eth0 -p tcp -m tcp --dport 3306 -j ACCEPT
+
+# maybe need to edit /etc/mysql/mariadb.conf.d/50-server.cnf and remove bind-address
