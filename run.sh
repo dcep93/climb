@@ -11,6 +11,6 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 echo "$(date) startup" | tee -a $LOG_FILE
 
-cd app && npm run server
+screen -S $NAME -Dm bash -c "cd app && npm run server; sh"
 
 echo "$(date) success" | tee -a $LOG_FILE
