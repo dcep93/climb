@@ -43,7 +43,6 @@ class Gym extends Component<PropsType, StateType> {
 	render() {
 		return (
 			<div>
-				<Link to={"/"}>Home</Link>
 				<div>{this.props.gym.name}</div>
 				<div>{this.props.gym.description}</div>
 				<br />

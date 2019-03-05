@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import g from "../../../globals";
 import * as gt from "../../../globals";
+import gs from "../../../globals.module.css";
 
 const initial_gym: gt.gymType = { id: 0, name: "", path: "", description: "" };
 class GymsAdmin extends Component<object, gt.gymType> {
@@ -19,7 +20,7 @@ class GymsAdmin extends Component<object, gt.gymType> {
 
 	render() {
 		return (
-			<div>
+			<div className={gs.bubble}>
 				<p>New Gym</p>
 				<p>
 					path:{" "}

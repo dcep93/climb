@@ -1,0 +1,4 @@
+.gyms {
+	display: flex;
+	flex-wrap: wrap;
+}

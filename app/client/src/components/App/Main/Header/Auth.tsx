@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import g from "../../../globals";
+import g from "../../../../globals";
+
+import styles from "./index.module.css";
 
 declare global {
 	interface Window {
@@ -40,7 +42,7 @@ function Auth() {
 	}
 
 	return (
-		<div>
+		<div className={styles.align_end}>
 			<meta
 				name="google-signin-client_id"
 				content={g.common().google_signin_client_id}
@@ -58,9 +60,6 @@ function Auth() {
 					<br />
 					<Link to={`/user/${g.common().user.id}`}>Profile</Link>
 				</div>
-			)}
-			{g.common().user.is_admin && (
-				<Link to={"/admin/user/latest"}>Latest Users</Link>
 			)}
 		</div>
 	);

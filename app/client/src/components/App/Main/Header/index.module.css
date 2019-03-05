@@ -1,0 +1,14 @@
+.header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	height: 90px;
+}
+
+.header > * {
+	margin: 10px;
+}
+
+.align_end {
+	margin-left: auto;
+}

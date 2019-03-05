@@ -32,19 +32,16 @@ class Profile extends Component<{ user: gt.userType }, gt.userType> {
 	render() {
 		return (
 			<div>
-				<Link to={"/"}>Home</Link>
-				<div>
-					<p>{this.props.user.name}</p>
-					<img src={this.props.user.image} />
-					<br />
-					<p>
-						is admin: <input {...this.checkboxProps("is_admin")} />
-					</p>
-					<p>
-						is verified:{" "}
-						<input {...this.checkboxProps("is_verified")} />
-					</p>
-				</div>
+				<p>{this.props.user.name}</p>
+				<img src={this.props.user.image} />
+				<br />
+				<p>
+					is admin: <input {...this.checkboxProps("is_admin")} />
+				</p>
+				<p>
+					is verified:{" "}
+					<input {...this.checkboxProps("is_verified")} />
+				</p>
 			</div>
 		);
 	}

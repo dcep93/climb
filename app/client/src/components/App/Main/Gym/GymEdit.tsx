@@ -26,7 +26,6 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 	render() {
 		return (
 			<div>
-				<Link to={"/"}>Home</Link>
 				<div>
 					<p>
 						name: <input {...g.input(this, "name")} />

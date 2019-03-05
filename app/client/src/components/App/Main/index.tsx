@@ -6,7 +6,7 @@ import {
 	StaticContext
 } from "react-router";
 
-import Auth from "./Auth";
+import Header from "./Header";
 
 import Gyms from "./Gyms";
 import Profile from "./Profile";
@@ -33,7 +33,7 @@ function p(
 function Main(props: any) {
 	return (
 		<div>
-			<Auth />
+			<Header />
 			<Switch>
 				<Route {...p("/", () => <Gyms gyms={props.gyms} />)} />
 				<Route
