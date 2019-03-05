@@ -30,7 +30,7 @@ class Gym extends Component<PropsType, StateType> {
 			g.req(`/${g.common().path}/wall/${id}/climb`, "POST", {
 				climbed: state_change[id]
 			})
-				.then(g.unready)
+				.then(g.refresh)
 				.catch(err => {
 					this.setState(original_state);
 					g.err(err);

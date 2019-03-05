@@ -13,11 +13,11 @@ class App extends Component<RouteComponentProps, { ready: boolean } & any> {
 
 		g.setApp(this);
 
-		this.props.history.listen(g.unready);
+		this.props.history.listen(g.refresh);
 	}
 
 	componentDidMount(): void {
-		g.unready();
+		g.refresh();
 	}
 
 	_refresh = (_unready: any): Promise<any> => {
