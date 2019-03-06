@@ -1,0 +1,9 @@
+.profile {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.profile > * {
+	margin: 20px;
+}

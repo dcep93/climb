@@ -7,18 +7,19 @@ import g from "../../../globals";
 import * as gt from "../../../globals";
 import gs from "../../../globals.module.css";
 
-import styles from "./index.module.css";
+import styles from "./Gyms.module.css";
 
 function Gyms(props: { gyms: gt.gymType[] }) {
 	return (
 		<div>
-			<div className={`${styles.gyms} ${gs.bubble}`}>
+			<div className={styles.gyms}>
 				{props.gyms.map(gym => (
-					<p key={gym.id} className={gs.bubble}>
+					<div key={gym.id} className={gs.bubble}>
 						<Link to={`/gym/${gym.path}`}>
-							{gym.name} | {gym.description}
+							<h3>{gym.name}</h3>
+							<p>{gym.description}</p>
 						</Link>
-					</p>
+					</div>
 				))}
 			</div>
 			{g.common().user.is_admin && <GymsAdmin />}

@@ -6,7 +6,7 @@ import Auth from "./Auth";
 import g from "../../../../globals";
 import gs from "../../../../globals.module.css";
 
-import styles from "./index.module.css";
+import styles from "./Header.module.css";
 
 function Header() {
 	return (

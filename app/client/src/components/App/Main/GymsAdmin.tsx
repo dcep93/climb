@@ -4,7 +4,7 @@ import g from "../../../globals";
 import * as gt from "../../../globals";
 import gs from "../../../globals.module.css";
 
-import styles from "./index.module.css";
+import styles from "./GymsAdmin.module.css";
 
 const initial_gym: gt.gymType = { id: 0, name: "", path: "", description: "" };
 class GymsAdmin extends Component<object, gt.gymType> {
@@ -23,7 +23,7 @@ class GymsAdmin extends Component<object, gt.gymType> {
 	render() {
 		return (
 			<div className={`${gs.bubble} ${styles.new_gym}`}>
-				<p>New Gym</p>
+				<h3>New Gym</h3>
 				<p>
 					path:{" "}
 					<input {...g.input(this, "path", gt.InputType.Text)} />

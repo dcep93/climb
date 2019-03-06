@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 
 import g from "../../../globals";
 import * as gt from "../../../globals";
+import gs from "../../../globals.module.css";
+
+import styles from "./Profile.module.css";
 
 class Profile extends Component<{ user: gt.userType }, gt.userType> {
 	constructor(props: any) {
@@ -31,17 +33,20 @@ class Profile extends Component<{ user: gt.userType }, gt.userType> {
 
 	render() {
 		return (
-			<div>
-				<p>{this.props.user.name}</p>
-				<img src={this.props.user.image} />
-				<br />
-				<p>
-					is admin: <input {...this.checkboxProps("is_admin")} />
-				</p>
-				<p>
-					is verified:{" "}
-					<input {...this.checkboxProps("is_verified")} />
-				</p>
+			<div className={`${gs.bubble} ${styles.profile}`}>
+				<div>
+					<p>{this.props.user.name}</p>
+					<img src={this.props.user.image} />
+				</div>
+				<div>
+					<p>
+						is admin: <input {...this.checkboxProps("is_admin")} />
+					</p>
+					<p>
+						is verified:{" "}
+						<input {...this.checkboxProps("is_verified")} />
+					</p>
+				</div>
 			</div>
 		);
 	}
