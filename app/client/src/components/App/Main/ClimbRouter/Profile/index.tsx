@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import g from "../../../../globals";
-import * as gt from "../../../../globals";
-import gs from "../../../../globals.module.css";
+import g from "../../../../../globals";
+import * as gt from "../../../../../globals";
+import gs from "../../../../../globals.module.css";
 
 import styles from "./index.module.css";
 

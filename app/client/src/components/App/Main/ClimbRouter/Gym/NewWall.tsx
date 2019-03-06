@@ -1,27 +1,35 @@
 import React, { Component } from "react";
 
-import g from "../../../../globals";
-import * as gt from "../../../../globals";
+import g from "../../../../../globals";
+import * as gt from "../../../../../globals";
 
-class EditWall extends Component<
-	gt.wallType & { gym_path: string },
-	gt.wallType
-> {
+const initial_wall: gt.wallType = {
+	id: 0,
+	name: "",
+	difficulty: "",
+	location: "",
+	date: "",
+	setter: "",
+	color: "",
+	active: false
+};
+class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 	constructor(props: any) {
 		super(props);
-		this.state = Object.assign({}, props);
+		this.state = initial_wall;
 	}
 
 	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
 		event.preventDefault();
-		const url = `/gym/${this.props.gym_path}/wall/${this.props.id}/edit`;
-		g.req(url, "POST", this.state).then(g.refresh);
+		g.req(`/gym/${this.props.gym_path}/new_wall`, "POST", this.state)
+			.then(() => this.setState(initial_wall))
+			.then(g.refresh);
 	};
 
 	render() {
 		return (
 			<div>
-				<p>id: {this.props.id}</p>
+				<p>New Wall</p>
 				<p>
 					name: <input {...g.input(this, "name")} />
 				</p>
@@ -52,4 +60,4 @@ class EditWall extends Component<
 	}
 }
 
-export default EditWall;
+export default NewWall;

@@ -2,7 +2,7 @@ import React from "react";
 
 import Media from "./Media";
 
-import * as gt from "../../../../globals";
+import * as gt from "../../../../../globals";
 
 function Wall(props: { wall: gt.wallType & { media: gt.mediaType[] } }) {
 	return (

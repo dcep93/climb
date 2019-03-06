@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import NewWall from "./NewWall";
 import EditWall from "./EditWall";
 
-import g from "../../../../globals";
-import * as gt from "../../../../globals";
+import g from "../../../../../globals";
+import * as gt from "../../../../../globals";
 
 interface PropsType {
 	gym: gt.gymType & { walls: gt.wallType[] };

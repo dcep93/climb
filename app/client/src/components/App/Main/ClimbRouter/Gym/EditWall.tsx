@@ -1,35 +1,27 @@
 import React, { Component } from "react";
 
-import g from "../../../../globals";
-import * as gt from "../../../../globals";
+import g from "../../../../../globals";
+import * as gt from "../../../../../globals";
 
-const initial_wall: gt.wallType = {
-	id: 0,
-	name: "",
-	difficulty: "",
-	location: "",
-	date: "",
-	setter: "",
-	color: "",
-	active: false
-};
-class NewWall extends Component<{ gym_path: string }, gt.wallType> {
+class EditWall extends Component<
+	gt.wallType & { gym_path: string },
+	gt.wallType
+> {
 	constructor(props: any) {
 		super(props);
-		this.state = initial_wall;
+		this.state = Object.assign({}, props);
 	}
 
 	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
 		event.preventDefault();
-		g.req(`/gym/${this.props.gym_path}/new_wall`, "POST", this.state)
-			.then(() => this.setState(initial_wall))
-			.then(g.refresh);
+		const url = `/gym/${this.props.gym_path}/wall/${this.props.id}/edit`;
+		g.req(url, "POST", this.state).then(g.refresh);
 	};
 
 	render() {
 		return (
 			<div>
-				<p>New Wall</p>
+				<p>id: {this.props.id}</p>
 				<p>
 					name: <input {...g.input(this, "name")} />
 				</p>
@@ -60,4 +52,4 @@ class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 	}
 }
 
-export default NewWall;
+export default EditWall;

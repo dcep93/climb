@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import g from "../../../../globals";
-import * as gt from "../../../../globals";
+import g from "../../../../../globals";
+import * as gt from "../../../../../globals";
 
 interface PropsType {
 	gym: gt.gymType & { climbed_walls: number[]; walls: gt.wallType[] };
