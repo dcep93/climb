@@ -15,14 +15,14 @@ declare global {
 function login(response: any): void {
 	if (loggedIn()) return;
 	const id_token = response.Zi.id_token;
-	g.req("/auth/login", "POST", { id_token }).then(g.refresh);
+	g.req("/auth/login", "POST", { id_token }).then(g.unready);
 }
 
 function logout(): void {
 	const google_promise = window.gapi.auth2.getAuthInstance().signOut();
 	const req_promise = g.req("/auth/logout", "POST");
 
-	Promise.all([google_promise, req_promise]).then(g.refresh);
+	Promise.all([google_promise, req_promise]).then(g.unready);
 }
 
 function loggedIn(): boolean {
