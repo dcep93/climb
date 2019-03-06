@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import g from "../../../../globals";
+import g from "../../../../../globals";
 
-import styles from "./Auth.module.css";
+import styles from "./index.module.css";
 
 declare global {
 	interface Window {

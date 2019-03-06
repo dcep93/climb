@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import * as gt from "../../../globals";
-import gs from "../../../globals.module.css";
+import * as gt from "../../../../globals";
+import gs from "../../../../globals.module.css";
 
-import styles from "./LatestUsers.module.css";
+import styles from "./index.module.css";
 
 function LatestUsers(props: { users: gt.userType[] }) {
 	return (
