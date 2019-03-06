@@ -124,7 +124,25 @@ function unready() {
 	refresh(unready_o);
 }
 
-export default { req, input, err, refresh, common, setApp, unready, unready_o };
+class Title extends Component<{ title: string }> {
+	componentDidMount = () => {
+		document.title = this.props.title;
+	};
+
+	render = () => null;
+}
+
+export default {
+	req,
+	input,
+	err,
+	refresh,
+	common,
+	setApp,
+	unready,
+	unready_o,
+	Title
+};
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
 // prettier-ignore

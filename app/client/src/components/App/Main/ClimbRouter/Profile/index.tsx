@@ -34,6 +34,7 @@ class Profile extends Component<{ user: gt.userType }, gt.userType> {
 	render() {
 		return (
 			<div className={`${gs.bubble} ${styles.profile}`}>
+				<g.Title title={this.props.user.name} />
 				<div>
 					<p>{this.props.user.name}</p>
 					<img src={this.props.user.image} />

@@ -12,6 +12,7 @@ import styles from "./index.module.css";
 function Gyms(props: { gyms: gt.gymType[] }) {
 	return (
 		<div>
+			<g.Title title="The Climbing App" />
 			<div className={styles.gyms}>
 				{props.gyms.map(gym => (
 					<div key={gym.id} className={gs.bubble}>
