@@ -4,6 +4,8 @@ import g from "../../../globals";
 import * as gt from "../../../globals";
 import gs from "../../../globals.module.css";
 
+import styles from "./index.module.css";
+
 const initial_gym: gt.gymType = { id: 0, name: "", path: "", description: "" };
 class GymsAdmin extends Component<object, gt.gymType> {
 	constructor(props: any) {
@@ -20,7 +22,7 @@ class GymsAdmin extends Component<object, gt.gymType> {
 
 	render() {
 		return (
-			<div className={gs.bubble}>
+			<div className={`${gs.bubble} ${styles.new_gym}`}>
 				<p>New Gym</p>
 				<p>
 					path:{" "}
