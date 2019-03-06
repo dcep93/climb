@@ -7,12 +7,11 @@ import {
 } from "react-router";
 
 import Gym from "./Gym";
+import Wall from "./Gym/Wall";
+import GymEdit from "./Gym/GymEdit";
 import Gyms from "./Gyms";
 import LatestUsers from "./LatestUsers";
 import Profile from "./Profile";
-import Wall from "./Wall";
-
-import GymEdit from "./Gym/GymEdit";
 
 import g from "../../../../globals";
 

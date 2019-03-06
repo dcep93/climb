@@ -1,7 +1,7 @@
 import React, { RefObject } from "react";
 
-import g from "../../../../../globals";
-import * as gt from "../../../../../globals";
+import g from "../../../../../../globals";
+import * as gt from "../../../../../../globals";
 
 const new_media_ref: RefObject<HTMLInputElement> = React.createRef();
 
