@@ -13,3 +13,7 @@
 	display: flex;
 	flex-wrap: wrap;
 }
+
+.margin {
+	margin: 20px;
+}

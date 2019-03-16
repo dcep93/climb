@@ -11,9 +11,13 @@ import styles from "./index.module.css";
 function Header() {
 	return (
 		<div className={`${styles.header} ${gs.bubble}`}>
-			<Link to={"/"}>Home</Link>
+			<Link to={"/"} className={gs.margin}>
+				Home
+			</Link>
 			{g.common().user.is_admin && (
-				<Link to={"/admin/user/latest"}>Latest Users</Link>
+				<Link to={"/admin/user/latest"} className={gs.margin}>
+					Latest Users
+				</Link>
 			)}
 			<Auth />
 		</div>

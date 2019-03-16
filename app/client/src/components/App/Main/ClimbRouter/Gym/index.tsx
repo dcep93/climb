@@ -5,8 +5,6 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-import styles from "./index.module.css";
-
 function formatDate(dateString: string): string {
 	return new Date(dateString).toDateString();
 }
@@ -50,7 +48,7 @@ class Gym extends Component<PropsType, StateType> {
 		return (
 			<div>
 				<g.Title title={this.props.gym.name} />
-				<div className={styles.gym_header}>
+				<div className={gs.margin}>
 					<h2>{this.props.gym.name}</h2>
 					<div>{this.props.gym.description}</div>
 					{g.common().user.is_verified && (
