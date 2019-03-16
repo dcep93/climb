@@ -7,13 +7,11 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-import styles from "./index.module.css";
-
 function Gyms(props: { gyms: gt.gymType[] }) {
 	return (
 		<div>
 			<g.Title title="The Climbing App" />
-			<div className={styles.gyms}>
+			<div className={gs.flex}>
 				{props.gyms.map(gym => (
 					<div key={gym.id} className={gs.bubble}>
 						<Link to={`/gym/${gym.path}`}>

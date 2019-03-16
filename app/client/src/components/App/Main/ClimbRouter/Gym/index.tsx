@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 
 import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
+import gs from "../../../../../globals.module.css";
+
+import styles from "./index.module.css";
+
+function formatDate(dateString: string): string {
+	return new Date(dateString).toDateString();
+}
 
 interface PropsType {
 	gym: gt.gymType & { climbed_walls: number[]; walls: gt.wallType[] };
@@ -43,29 +50,26 @@ class Gym extends Component<PropsType, StateType> {
 	render() {
 		return (
 			<div>
-				<div>{this.props.gym.name}</div>
-				<div>{this.props.gym.description}</div>
-				<br />
-				<div>
-					<p>Walls</p>
-					<br />
+				<g.Title title={this.props.gym.name} />
+				<div className={styles.gym_header}>
+					<h2>{this.props.gym.name}</h2>
+					<div>{this.props.gym.description}</div>
 					{g.common().user.is_verified && (
 						<Link to={`${g.common().path}/edit`}>Edit</Link>
 					)}
+				</div>
+				<div className={gs.flex}>
 					{this.props.gym.walls.map(wall => (
-						<div key={wall.id}>
+						<div key={wall.id} className={gs.bubble}>
 							<Link to={`${g.common().path}/wall/${wall.id}`}>
-								<p>id: {wall.id}</p>
-								<p>name: {wall.name}</p>
-								<p>difficulty: {wall.difficulty}</p>
-								<p>location: {wall.location}</p>
-								<p>date: {wall.date}</p>
-								<p>setter: {wall.setter}</p>
-								<p>color: {wall.color}</p>
-								<p>
-									status: {wall.active ? "active" : "retired"}
-								</p>
+								<h4>{`${wall.name} (${wall.id})`}</h4>
 							</Link>
+							<p>difficulty: {wall.difficulty}</p>
+							<p>location: {wall.location}</p>
+							<p>date: {formatDate(wall.date)}</p>
+							<p>setter: {wall.setter}</p>
+							<p>color: {wall.color}</p>
+							<p>status: {wall.active ? "active" : "retired"}</p>
 							<p>
 								climbed:{" "}
 								<input {...this.checkboxProps(wall.id)} />

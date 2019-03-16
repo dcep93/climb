@@ -5,13 +5,11 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-import styles from "./index.module.css";
-
 function LatestUsers(props: { users: gt.userType[] }) {
 	return (
 		<div>
 			<g.Title title="Latest Users" />
-			<div className={styles.users}>
+			<div className={gs.flex}>
 				{props.users.map(user => (
 					<div key={user.id} className={gs.bubble}>
 						<Link to={`/user/${user.id}`}>

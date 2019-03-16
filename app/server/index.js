@@ -8,10 +8,6 @@ console.log = function() {
 	return arr[0];
 };
 
-Date.prototype._toDateString = function() {
-	return this.toISOString().slice(0, 10);
-};
-
 const express = require("express");
 const path = require("path");
 const body_parser = require("body-parser");
