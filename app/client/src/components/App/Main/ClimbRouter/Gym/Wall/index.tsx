@@ -16,7 +16,7 @@ function Wall(props: { wall: gt.wallType & { media: gt.mediaType[] } }) {
 			<p>color: {props.wall.color}</p>
 			<p>status: {props.wall.active ? "active" : "retired"}</p>
 
-			<Media media={props.wall.media} />
+			<Media gym_path={props.wall.gym_path} media={props.wall.media} />
 		</div>
 	);
 }

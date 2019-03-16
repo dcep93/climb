@@ -12,7 +12,8 @@ const initial_wall: gt.wallType = {
 	date: "",
 	setter: "",
 	color: "",
-	active: true
+	active: true,
+	gym_path: ""
 };
 class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 	constructor(props: any) {

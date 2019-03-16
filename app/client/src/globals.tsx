@@ -36,6 +36,7 @@ interface wallType {
 	setter: string;
 	active: boolean;
 	color: string;
+	gym_path: string;
 }
 
 interface mediaType {

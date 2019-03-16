@@ -33,7 +33,7 @@ class Gym extends Component<PropsType, StateType> {
 		const onChange: typeof original_on_change = event => {
 			const original_state = Object.assign({}, this.state);
 			const state_change = original_on_change(event);
-			g.req(`/${g.common().path}/wall/${id}/climb`, "POST", {
+			g.req(`/gym/${this.props.gym.path}/wall/${id}/climb`, "POST", {
 				climbed: state_change[id]
 			})
 				.then(g.refresh)
@@ -54,13 +54,13 @@ class Gym extends Component<PropsType, StateType> {
 					<h2>{this.props.gym.name}</h2>
 					<div>{this.props.gym.description}</div>
 					{g.common().user.is_verified && (
-						<Link to={`${g.common().path}/edit`}>Edit</Link>
+						<Link to={`${this.props.gym.path}/edit`}>Edit</Link>
 					)}
 				</div>
 				<div className={gs.flex}>
 					{this.props.gym.walls.map(wall => (
 						<div key={wall.id} className={gs.bubble}>
-							<Link to={`${g.common().path}/wall/${wall.id}`}>
+							<Link to={`${this.props.gym.path}/wall/${wall.id}`}>
 								<h4>{`${wall.name} (${wall.id})`}</h4>
 							</Link>
 							<p>{formatDate(wall.date)}</p>
