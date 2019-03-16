@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
+import gs from "../../../../../globals.module.css";
 
 class EditWall extends Component<
 	gt.wallType & { gym_path: string },
@@ -20,7 +21,7 @@ class EditWall extends Component<
 
 	render() {
 		return (
-			<div>
+			<div className={gs.bubble}>
 				<p>id: {this.props.id}</p>
 				<p>
 					name: <input {...g.input(this, "name")} />

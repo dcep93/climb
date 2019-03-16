@@ -5,6 +5,10 @@ import EditWall from "./EditWall";
 
 import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
+import gs from "../../../../../globals.module.css";
+
+import GymEditStyles from "./GymEdit.module.css";
+import { Link } from "react-router-dom";
 
 interface PropsType {
 	gym: gt.gymType & { walls: gt.wallType[] };
@@ -25,7 +29,10 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 	render() {
 		return (
 			<div>
-				<div>
+				<g.Title title={`Edit: ${this.props.gym.name}`} />
+				<div className={GymEditStyles.gym_edit}>
+					<Link to={`/user/`}>To Gym Page</Link>
+					<div className={GymEditStyles.vertical_space} />
 					<p>
 						name: <input {...g.input(this, "name")} />
 					</p>
@@ -35,14 +42,12 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 					</p>
 					<input type="submit" onClick={this.submit} />
 				</div>
-				<div>
-					<p>Walls</p>
-					<br />
+				<div className={gs.flex}>
 					<NewWall gym_path={this.props.gym.path} />
 					{this.props.gym.walls.map(wall => (
 						<EditWall
-							gym_path={this.props.gym.path}
 							key={wall.id}
+							gym_path={this.props.gym.path}
 							{...wall}
 						/>
 					))}

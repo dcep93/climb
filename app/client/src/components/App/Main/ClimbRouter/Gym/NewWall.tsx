@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
+import gs from "../../../../../globals.module.css";
 
 const initial_wall: gt.wallType = {
 	id: 0,
@@ -11,7 +12,7 @@ const initial_wall: gt.wallType = {
 	date: "",
 	setter: "",
 	color: "",
-	active: false
+	active: true
 };
 class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 	constructor(props: any) {
@@ -28,7 +29,7 @@ class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 
 	render() {
 		return (
-			<div>
+			<div className={gs.bubble}>
 				<p>New Wall</p>
 				<p>
 					name: <input {...g.input(this, "name")} />
