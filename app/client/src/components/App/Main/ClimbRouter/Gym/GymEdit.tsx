@@ -31,7 +31,7 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 			<div>
 				<g.Title title={`Edit: ${this.props.gym.name}`} />
 				<div className={GymEditStyles.gym_edit}>
-					<Link to={`/user/`}>To Gym Page</Link>
+					<Link to={`/gym/${this.props.gym.path}`}>To Gym Page</Link>
 					<div className={GymEditStyles.vertical_space} />
 					<p>
 						name: <input {...g.input(this, "name")} />
