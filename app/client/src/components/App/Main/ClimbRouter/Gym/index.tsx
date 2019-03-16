@@ -31,7 +31,6 @@ class Gym extends Component<PropsType, StateType> {
 		const g_props = g.input(this, id.toString(), gt.InputType.Checkbox);
 		const original_on_change = g_props.onChange;
 		const onChange: typeof original_on_change = event => {
-			event.preventDefault();
 			const original_state = Object.assign({}, this.state);
 			const state_change = original_on_change(event);
 			g.req(`/${g.common().path}/wall/${id}/climb`, "POST", {
