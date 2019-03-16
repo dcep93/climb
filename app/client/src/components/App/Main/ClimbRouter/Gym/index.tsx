@@ -63,12 +63,12 @@ class Gym extends Component<PropsType, StateType> {
 							<Link to={`${g.common().path}/wall/${wall.id}`}>
 								<h4>{`${wall.name} (${wall.id})`}</h4>
 							</Link>
-							<p>difficulty: {wall.difficulty}</p>
-							<p>location: {wall.location}</p>
-							<p>date: {formatDate(wall.date)}</p>
-							<p>setter: {wall.setter}</p>
-							<p>color: {wall.color}</p>
-							<p>status: {wall.active ? "active" : "retired"}</p>
+							<p>{formatDate(wall.date)}</p>
+							<p>{wall.difficulty}</p>
+							<p>{wall.location}</p>
+							<p>{wall.color}</p>
+							<p>{wall.setter}</p>
+							<p>{wall.active ? "active" : "retired"}</p>
 							<p>
 								climbed:{" "}
 								<input {...this.checkboxProps(wall.id)} />
