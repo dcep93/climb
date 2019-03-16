@@ -124,6 +124,11 @@ function unready() {
 	refresh(unready_o);
 }
 
+function inputDate(dateString?: string) {
+	const date = dateString === undefined ? new Date() : new Date(dateString);
+	return date.toISOString().slice(0, 10);
+}
+
 class Title extends Component<{ title: string }> {
 	componentDidMount = () => {
 		document.title = this.props.title;
@@ -141,6 +146,7 @@ export default {
 	setApp,
 	unready,
 	unready_o,
+	inputDate,
 	Title
 };
 

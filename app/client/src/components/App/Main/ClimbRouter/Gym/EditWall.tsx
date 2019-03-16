@@ -10,7 +10,9 @@ class EditWall extends Component<
 > {
 	constructor(props: any) {
 		super(props);
-		this.state = Object.assign({}, props);
+		this.state = Object.assign({}, props, {
+			date: g.inputDate(props.date)
+		});
 	}
 
 	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
@@ -33,7 +35,7 @@ class EditWall extends Component<
 					location: <input {...g.input(this, "location")} />
 				</p>
 				<p>
-					date: <input {...g.input(this, "date")} />
+					date: <input {...g.input(this, "date")} type="date" />
 				</p>
 				<p>
 					setter: <input {...g.input(this, "setter")} />

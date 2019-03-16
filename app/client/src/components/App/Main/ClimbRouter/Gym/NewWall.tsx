@@ -17,7 +17,7 @@ const initial_wall: gt.wallType = {
 class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 	constructor(props: any) {
 		super(props);
-		this.state = initial_wall;
+		this.state = Object.assign({}, initial_wall, { date: g.inputDate() });
 	}
 
 	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
@@ -41,7 +41,7 @@ class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 					location: <input {...g.input(this, "location")} />
 				</p>
 				<p>
-					date: <input {...g.input(this, "date")} />
+					date: <input {...g.input(this, "date")} type="date" />
 				</p>
 				<p>
 					setter: <input {...g.input(this, "setter")} />
