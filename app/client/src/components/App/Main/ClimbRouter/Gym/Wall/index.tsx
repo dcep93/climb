@@ -12,7 +12,6 @@ function Wall(props: { wall: gt.wallType & { media: gt.mediaType[] } }) {
 			<div className={gs.margin}>
 				<Link to={`/gym/${props.wall.gym_path}`}>To Gym Page</Link>
 			</div>
-			<br />
 			<div className={`${gs.bubble} ${gs.inline}`}>
 				<p>id: {props.wall.id}</p>
 				<p>name: {props.wall.name}</p>
