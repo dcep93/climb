@@ -22,7 +22,7 @@ class GymsAdmin extends Component<object, gt.gymType> {
 
 	render() {
 		return (
-			<div className={`${gs.bubble} ${styles.new_gym}`}>
+			<div className={`${gs.bubble} ${gs.margin} ${styles.new_gym}`}>
 				<h3>New Gym</h3>
 				<p>
 					path:{" "}
