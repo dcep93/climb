@@ -5,7 +5,7 @@ console.log = function() {
 	const date_string = `${d.toDateString()} ${d.toTimeString().split(" ")[0]}`;
 	arr.unshift(date_string);
 	log(...arr);
-	return arr[0];
+	return arr[1];
 };
 
 const express = require("express");
