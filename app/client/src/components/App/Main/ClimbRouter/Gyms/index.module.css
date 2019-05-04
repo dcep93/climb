@@ -1,0 +1,11 @@
+.gym {
+	height: fit-content;
+}
+
+.gyms {
+	align-self: flex-start;
+}
+
+.gyms_parent {
+	justify-content: space-between;
+}
