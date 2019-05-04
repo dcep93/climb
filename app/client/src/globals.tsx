@@ -1,9 +1,5 @@
 import React, { Component } from "react";
 
-window.addEventListener("unhandledrejection", function(event) {
-	if (event.reason instanceof ReqError) event.preventDefault();
-});
-
 interface userType {
 	id: number;
 	is_admin: boolean;
@@ -51,8 +47,6 @@ interface mediaType {
 	height: number;
 }
 
-class ReqError extends Error {}
-
 function req(url: string, method?: string, body?: any): Promise<Response> {
 	return fetch(`/api${url}`, {
 		method,
@@ -60,14 +54,13 @@ function req(url: string, method?: string, body?: any): Promise<Response> {
 		headers: {
 			"Content-Type": "application/json"
 		}
-	})
-		.then(response => {
-			if (response.status >= 400) throw new ReqError(response.statusText);
+	}).then(response => {
+		if (response.status >= 400) {
+			throw response;
+		} else {
 			return response;
-		})
-		.catch(err => {
-			return Promise.reject(new ReqError(err));
-		}) as Promise<Response>;
+		}
+	}) as Promise<Response>;
 }
 
 enum InputType {

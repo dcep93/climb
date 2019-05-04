@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Button from "react-bootstrap/Button";
 
 import g from "../../../../../../globals";
 import * as gt from "../../../../../../globals";
@@ -13,11 +14,12 @@ class GymsAdmin extends Component<object, gt.gymType> {
 		this.state = initial_gym;
 	}
 
-	submit = (event: React.MouseEvent<HTMLInputElement>) => {
+	submit = () => {
 		g.req("/admin/new_gym", "POST", this.state)
 			.then(() => this.setState(initial_gym))
-			.then(g.refresh);
-		event.preventDefault();
+			.then(g.refresh)
+			.catch(response => response.text())
+			.then(err => alert(err.split("\n")[0]));
 	};
 
 	render() {
@@ -25,17 +27,23 @@ class GymsAdmin extends Component<object, gt.gymType> {
 			<div className={`${gs.bubble} ${gs.margin} ${styles.new_gym}`}>
 				<h3>New Gym</h3>
 				<p>
-					path:{" "}
+					path
+					<br />
 					<input {...g.input(this, "path", gt.InputType.Text)} />
 				</p>
 				<p>
-					name:{" "}
+					name
+					<br />
 					<input {...g.input(this, "name", gt.InputType.Text)} />
 				</p>
 				<p>
-					description: <textarea {...g.input(this, "description")} />
+					description
+					<br />
+					<textarea {...g.input(this, "description")} />
 				</p>
-				<input type="submit" onClick={this.submit} />
+				<Button onClick={this.submit} variant="primary">
+					Submit
+				</Button>
 			</div>
 		);
 	}
