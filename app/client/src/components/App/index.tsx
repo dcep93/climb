@@ -23,7 +23,9 @@ class App extends Component<RouteComponentProps, { ready: boolean } & any> {
 	_refresh = (_unready: any): Promise<any> => {
 		const unready = _unready === g.unready_o;
 		console.log("refresh", unready, this.props.history.location.pathname);
-		if (unready) this.setState({ ready: false });
+		// todo fix to actually unready
+		// if (unready) this.setState({ ready: false });
+		if (unready) location.reload();
 		return g
 			.req(`${this.props.history.location.pathname}`)
 			.then(response => response.json())
