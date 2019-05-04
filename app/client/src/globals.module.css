@@ -17,3 +17,8 @@
 .margin {
 	margin: 20px;
 }
+
+.main {
+	max-width: 1000px;
+	margin: 50px auto;
+}
