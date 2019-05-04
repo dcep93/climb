@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
 import g from "../../../../../globals";
+import gs from "../../../../../globals.module.css";
 
 import styles from "./index.module.css";
 
@@ -50,15 +52,22 @@ function Auth() {
 			<div
 				hidden={loggedIn()}
 				id="sign-in-button"
-				className="g-signin2"
+				// className="g-signin2"
+				className={`g-signin2 ${styles.g_sign_in}`}
 				data-onsuccess="onSignIn"
 			/>
 
 			{loggedIn() && (
 				<div>
-					<button onClick={logout}>Sign out</button>
-					<br />
-					<Link to={`/user/${g.common().user.id}`}>Profile</Link>
+					<Button onClick={logout} variant="primary">
+						Sign out
+					</Button>
+					<Link
+						to={`/user/${g.common().user.id}`}
+						className={gs.margin}
+					>
+						Profile
+					</Link>
 				</div>
 			)}
 		</div>

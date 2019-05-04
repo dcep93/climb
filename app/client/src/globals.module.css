@@ -21,4 +21,6 @@
 .main {
 	max-width: 1000px;
 	margin: 50px auto;
+	font-family: Verdana;
+	font-size: 125%;
 }
