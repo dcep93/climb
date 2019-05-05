@@ -42,6 +42,11 @@ label > * {
 	vertical-align: middle;
 }
 
+input[type="checkbox"] {
+	transform: scale(1.25);
+	margin: 5px;
+}
+
 .vertical_space {
 	margin: 20px 0px;
 }
