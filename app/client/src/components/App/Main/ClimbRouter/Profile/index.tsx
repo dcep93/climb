@@ -31,15 +31,25 @@ class Profile extends Component<{ user: gt.userType }, gt.userType> {
 		return Object.assign(g_props, { onChange, disabled });
 	}
 
+	static profileDiv(user: gt.userType) {
+		return (
+			<div>
+				<p>
+					{user.name} ({user.id})
+				</p>
+				<p>{user.email}</p>
+				<p>{new Date(user.timestamp).toLocaleString()}</p>
+				<img className={styles.profile_pic} src={user.image} />
+			</div>
+		);
+	}
+
 	render() {
 		return (
 			<div className={`${gs.bubble} ${styles.profile}`}>
 				<g.Title title={this.props.user.name} />
 				<div>
-					<p>{this.props.user.name}</p>
-					<img src={this.props.user.image} />
-				</div>
-				<div>
+					{Profile.profileDiv(this.props.user)}
 					<p>
 						is admin: <input {...this.checkboxProps("is_admin")} />
 					</p>

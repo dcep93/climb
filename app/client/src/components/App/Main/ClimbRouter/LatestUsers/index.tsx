@@ -5,7 +5,7 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-import styles from "./index.module.css";
+import profile from "../Profile";
 
 function LatestUsers(props: { users: gt.userType[] }) {
 	return (
@@ -15,15 +15,7 @@ function LatestUsers(props: { users: gt.userType[] }) {
 				{props.users.map(user => (
 					<div key={user.id} className={gs.bubble}>
 						<Link to={`/user/${user.id}`}>
-							<p>
-								{user.name} ({user.id})
-							</p>
-							<p>{user.email}</p>
-							<p>{new Date(user.timestamp).toLocaleString()}</p>
-							<img
-								className={styles.profile_pic}
-								src={user.image}
-							/>
+							{profile.profileDiv(user)}
 						</Link>
 					</div>
 				))}

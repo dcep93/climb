@@ -3,3 +3,7 @@
 	flex-wrap: wrap;
 	align-items: center;
 }
+
+.profile_pic {
+	border-radius: 25px;
+}
