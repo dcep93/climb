@@ -37,3 +37,7 @@ body::after {
 	position: fixed;
 	z-index: -1;
 }
+
+label > * {
+	vertical-align: middle;
+}

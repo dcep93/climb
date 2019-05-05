@@ -62,8 +62,10 @@ class Gym extends Component<PropsType, StateType> {
 								<h4>{`${wall.name} (${wall.id})`}</h4>
 							</Link>
 							<p>
-								{wall.difficulty}{" "}
-								<input {...this.checkboxProps(wall.id)} />
+								<label>
+									<span>{wall.difficulty} </span>
+									<input {...this.checkboxProps(wall.id)} />
+								</label>
 							</p>
 							<p>{formatDate(wall.date)}</p>
 							<p>
@@ -73,7 +75,10 @@ class Gym extends Component<PropsType, StateType> {
 								)}
 							</p>
 							<p>
-								{wall.color} - set by {wall.setter}
+								{wall.color}
+								{Boolean(wall.setter) && (
+									<span> - set by {wall.setter}</span>
+								)}
 							</p>
 						</div>
 					))}
