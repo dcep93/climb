@@ -41,3 +41,7 @@ body::after {
 label > * {
 	vertical-align: middle;
 }
+
+.vertical_space {
+	margin: 20px 0px;
+}

@@ -1,0 +1,9 @@
+.wall {
+	display: flex;
+	flex-wrap: wrap;
+	max-width: 500px;
+}
+
+.wall > * {
+	padding: 5px;
+}

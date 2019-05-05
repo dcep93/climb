@@ -4,6 +4,9 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
+import styles from "./NewWall.module.css";
+import Button from "react-bootstrap/Button";
+
 const initial_wall: gt.wallType = {
 	id: 0,
 	name: "",
@@ -21,8 +24,7 @@ class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 		this.state = Object.assign({}, initial_wall, { date: g.inputDate() });
 	}
 
-	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
-		event.preventDefault();
+	submit = (): void => {
 		g.req(`/gym/${this.props.gym_path}/new_wall`, "POST", this.state)
 			.then(() => this.setState(initial_wall))
 			.then(g.refresh);
@@ -30,33 +32,47 @@ class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 
 	render() {
 		return (
-			<div className={gs.bubble}>
+			<div className={`${gs.bubble} ${gs.inline}`}>
 				<p>New Wall</p>
-				<p>
-					name: <input {...g.input(this, "name")} />
-				</p>
-				<p>
-					difficulty: <input {...g.input(this, "difficulty")} />
-				</p>
-				<p>
-					location: <input {...g.input(this, "location")} />
-				</p>
-				<p>
-					date: <input {...g.input(this, "date")} type="date" />
-				</p>
-				<p>
-					setter: <input {...g.input(this, "setter")} />
-				</p>
-				<p>
-					color: <input {...g.input(this, "color")} />
-				</p>
-				<p>
-					active:{" "}
-					<input
-						{...g.input(this, "active", gt.InputType.Checkbox)}
-					/>
-				</p>
-				<input type="submit" onClick={this.submit} />
+				<div className={styles.wall}>
+					<div>
+						name
+						<br />
+						<input {...g.input(this, "name")} size={11} />
+					</div>
+					<div>
+						difficulty
+						<br />
+						<input {...g.input(this, "difficulty")} size={5} />
+					</div>
+					<div>
+						date
+						<br />
+						<input
+							{...g.input(this, "date")}
+							type="date"
+							min="2019-01-01"
+							max="2030-12-31"
+						/>
+					</div>
+					<div>
+						location
+						<br />
+						<input {...g.input(this, "location")} size={10} />
+					</div>
+					<div>
+						color
+						<br />
+						<input {...g.input(this, "color")} size={7} />
+					</div>
+					<div>
+						setter
+						<br />
+						<input {...g.input(this, "setter")} size={8} />
+					</div>
+				</div>
+				<div className={gs.vertical_space} />
+				<Button onClick={this.submit}>Submit</Button>
 			</div>
 		);
 	}
