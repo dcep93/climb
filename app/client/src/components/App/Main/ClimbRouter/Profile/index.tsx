@@ -44,19 +44,27 @@ class Profile extends Component<{ user: gt.userType }, gt.userType> {
 		);
 	}
 
+	permissionDiv() {
+		return (
+			<div>
+				<p>
+					is admin: <input {...this.checkboxProps("is_admin")} />
+				</p>
+				<p>
+					is verified:{" "}
+					<input {...this.checkboxProps("is_verified")} />
+				</p>
+			</div>
+		);
+	}
+
 	render() {
 		return (
 			<div className={`${gs.bubble} ${styles.profile}`}>
 				<g.Title title={this.props.user.name} />
 				<div>
 					{Profile.profileDiv(this.props.user)}
-					<p>
-						is admin: <input {...this.checkboxProps("is_admin")} />
-					</p>
-					<p>
-						is verified:{" "}
-						<input {...this.checkboxProps("is_verified")} />
-					</p>
+					{g.common().user.is_admin && this.permissionDiv()}
 				</div>
 			</div>
 		);
