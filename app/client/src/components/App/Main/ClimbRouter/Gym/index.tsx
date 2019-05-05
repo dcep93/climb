@@ -48,7 +48,7 @@ class Gym extends Component<PropsType, StateType> {
 		return (
 			<div>
 				<g.Title title={this.props.gym.name} />
-				<div className={gs.margin}>
+				<div className={`${gs.inline} ${gs.bubble}`}>
 					<h2>{this.props.gym.name}</h2>
 					<div>{this.props.gym.description}</div>
 					{g.common().user.is_verified && (
@@ -61,15 +61,19 @@ class Gym extends Component<PropsType, StateType> {
 							<Link to={`${this.props.gym.path}/wall/${wall.id}`}>
 								<h4>{`${wall.name} (${wall.id})`}</h4>
 							</Link>
-							<p>{formatDate(wall.date)}</p>
-							<p>{wall.difficulty}</p>
-							<p>{wall.location}</p>
-							<p>{wall.color}</p>
-							<p>{wall.setter}</p>
-							<p>{wall.active ? "active" : "retired"}</p>
 							<p>
-								climbed:{" "}
+								{wall.difficulty}{" "}
 								<input {...this.checkboxProps(wall.id)} />
+							</p>
+							<p>{formatDate(wall.date)}</p>
+							<p>
+								{wall.location}
+								{Boolean(wall.active) && (
+									<span> (retired)</span>
+								)}
+							</p>
+							<p>
+								{wall.color} - set by {wall.setter}
 							</p>
 						</div>
 					))}
