@@ -8,6 +8,11 @@ console.log = function() {
 	return arr[1];
 };
 
+function time(obj) {
+	console.log(new Date().getMilliseconds(), this.toString());
+	return obj;
+}
+
 const express = require("express");
 const path = require("path");
 const body_parser = require("body-parser");

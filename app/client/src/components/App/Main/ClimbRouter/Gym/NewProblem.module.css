@@ -1,9 +1,9 @@
-.wall {
+.problem {
 	display: flex;
 	flex-wrap: wrap;
 	max-width: 500px;
 }
 
-.wall > * {
+.problem > * {
 	padding: 5px;
 }

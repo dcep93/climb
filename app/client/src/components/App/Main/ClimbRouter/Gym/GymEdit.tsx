@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import NewWall from "./NewWall";
-import EditWall from "./EditWall";
+import NewProblem from "./NewProblem";
+import EditProblem from "./EditProblem";
 
 import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 interface PropsType {
-	gym: gt.gymType & { walls: gt.wallType[] };
+	gym: gt.gymType & { problems: gt.problemType[] };
 }
 class GymEdit extends Component<PropsType, gt.gymType> {
 	constructor(props: PropsType) {
@@ -50,14 +50,14 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 						</Button>
 					</div>
 					<br />
-					<NewWall gym_path={this.props.gym.path} />
+					<NewProblem gym_path={this.props.gym.path} />
 				</div>
 				<div className={gs.flex}>
-					{this.props.gym.walls.map(wall => (
-						<EditWall
-							key={wall.id}
+					{this.props.gym.problems.map(problem => (
+						<EditProblem
+							key={problem.id}
 							gym_path={this.props.gym.path}
-							{...wall}
+							{...problem}
 						/>
 					))}
 				</div>

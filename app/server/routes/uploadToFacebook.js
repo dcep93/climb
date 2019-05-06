@@ -10,8 +10,8 @@ const MEDIA_TRIES_PRINT_INTERVAL = 10;
 const access_token = config.facebook_page_access_token;
 const storage_path = `https://storage.googleapis.com/${config.gcs_bucket_id}`;
 
-function uploadToFacebook(wall_media_id, mime, gcs_path) {
-	const vars = { wall_media_id, mime, gcs_path, get_media_tries: 0 };
+function uploadToFacebook(problem_media_id, mime, gcs_path) {
+	const vars = { problem_media_id, mime, gcs_path, get_media_tries: 0 };
 	return Promise.resolve(vars)
 		.then(getVars)
 		.then(uploadRequest)
@@ -27,9 +27,9 @@ function catchF(vars, err) {
 	const short_err = message.split("/")[0];
 	return orm
 		.update(
-			"wall_media",
+			"problem_media",
 			{ mime: `${vars.mime} - ${short_err}`, data: message },
-			{ id: vars.wall_media_id }
+			{ id: vars.problem_media_id }
 		)
 		.then(() => {
 			throw err;
@@ -107,12 +107,12 @@ function videoGetResponse(vars, raw_response) {
 
 		return orm
 			.update(
-				"wall_media",
+				"problem_media",
 				{
 					mime: `${vars.mime} - processing ${processing_progress}%`,
 					data: perma_link
 				},
-				{ id: vars.wall_media_id }
+				{ id: vars.problem_media }
 			)
 			.then(() => {
 				if (++vars.get_media_tries === MAX_MEDIA_TRIES)
@@ -166,14 +166,14 @@ function getMedia(vars) {
 function write(vars) {
 	return orm
 		.update(
-			"wall_media",
+			"problem_media",
 			{
 				mime: vars.mime,
 				data: vars.data,
 				height: vars.height,
 				width: vars.width
 			},
-			{ id: vars.wall_media_id }
+			{ id: vars.problem_media_id }
 		)
 		.then(() => vars);
 }

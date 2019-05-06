@@ -5,7 +5,7 @@ import * as gt from "../../../../../../globals";
 
 const new_media_ref: RefObject<HTMLInputElement> = React.createRef();
 
-function newMedia(gym_path: string, wall_id: number) {
+function newMedia(gym_path: string, problem_id: number) {
 	if (g.common().user.id === undefined) {
 		return <p>Create an account and become verified to upload media.</p>;
 	} else if (!g.common().user.is_verified) {
@@ -24,7 +24,7 @@ function newMedia(gym_path: string, wall_id: number) {
 					<input
 						type="submit"
 						onClick={event =>
-							submitNewMedia(gym_path, wall_id, event)
+							submitNewMedia(gym_path, problem_id, event)
 						}
 					/>
 				</div>
@@ -35,7 +35,7 @@ function newMedia(gym_path: string, wall_id: number) {
 
 function submitNewMedia(
 	gym_path: string,
-	wall_id: number,
+	problem_id: number,
 	event: React.MouseEvent<HTMLInputElement>
 ) {
 	event.preventDefault();
@@ -70,7 +70,7 @@ function submitNewMedia(
 		})
 		.then(response => response.json())
 		.then(response =>
-			g.req(`/gym/${gym_path}/wall/${wall_id}/upload`, "POST", {
+			g.req(`/gym/${gym_path}/problem/${problem_id}/upload`, "POST", {
 				gcs_path: response.name,
 				gcs_id: response.id,
 				mime: file.type,
@@ -105,14 +105,14 @@ function mediaData(m: gt.mediaType) {
 
 function Media(props: {
 	gym_path: string;
-	wall_id: number;
+	problem_id: number;
 	media: gt.mediaType[];
 }) {
 	return (
 		<div>
 			<p>Media</p>
 			<br />
-			{newMedia(props.gym_path, props.wall_id)}
+			{newMedia(props.gym_path, props.problem_id)}
 			<div>
 				{props.media.map(m => (
 					<div key={m.id}>

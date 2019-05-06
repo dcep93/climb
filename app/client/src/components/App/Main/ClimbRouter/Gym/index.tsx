@@ -10,7 +10,10 @@ function formatDate(dateString: string): string {
 }
 
 interface PropsType {
-	gym: gt.gymType & { climbed_walls: number[]; walls: gt.wallType[] };
+	gym: gt.gymType & {
+		climbed_problems: number[];
+		problems: gt.problemType[];
+	};
 }
 interface StateType {
 	[id: number]: boolean;
@@ -19,8 +22,9 @@ class Gym extends Component<PropsType, StateType> {
 	constructor(props: PropsType) {
 		super(props);
 		const state: StateType = {};
-		props.gym.walls.forEach((wall: gt.wallType) => {
-			state[wall.id] = props.gym.climbed_walls.indexOf(wall.id) !== -1;
+		props.gym.problems.forEach((problem: gt.problemType) => {
+			state[problem.id] =
+				props.gym.climbed_problems.indexOf(problem.id) !== -1;
 		});
 		this.state = state;
 	}
@@ -31,7 +35,7 @@ class Gym extends Component<PropsType, StateType> {
 		const onChange: typeof original_on_change = event => {
 			const original_state = Object.assign({}, this.state);
 			const state_change = original_on_change(event);
-			g.req(`/gym/${this.props.gym.path}/wall/${id}/climb`, "POST", {
+			g.req(`/gym/${this.props.gym.path}/problem/${id}/climb`, "POST", {
 				climbed: state_change[id]
 			})
 				.then(g.refresh)
@@ -56,28 +60,34 @@ class Gym extends Component<PropsType, StateType> {
 					)}
 				</div>
 				<div className={gs.flex}>
-					{this.props.gym.walls.map(wall => (
-						<div key={wall.id} className={gs.bubble}>
-							<Link to={`${this.props.gym.path}/wall/${wall.id}`}>
-								<h4>{`${wall.name} (${wall.id})`}</h4>
+					{this.props.gym.problems.map(problem => (
+						<div key={problem.id} className={gs.bubble}>
+							<Link
+								to={`${this.props.gym.path}/problem/${
+									problem.id
+								}`}
+							>
+								<h4>{`${problem.name} (${problem.id})`}</h4>
 							</Link>
 							<p>
 								<label>
-									<span>{wall.difficulty} </span>
-									<input {...this.checkboxProps(wall.id)} />
+									<span>{problem.difficulty} </span>
+									<input
+										{...this.checkboxProps(problem.id)}
+									/>
 								</label>
 							</p>
-							<p>{formatDate(wall.date)}</p>
+							<p>{formatDate(problem.date)}</p>
 							<p>
-								{wall.location}
-								{Boolean(wall.active) && (
+								{problem.location}
+								{Boolean(problem.active) && (
 									<span> (retired)</span>
 								)}
 							</p>
 							<p>
-								{wall.color}
-								{Boolean(wall.setter) && (
-									<span> - set by {wall.setter}</span>
+								{problem.color}
+								{Boolean(problem.setter) && (
+									<span> - set by {problem.setter}</span>
 								)}
 							</p>
 						</div>

@@ -7,7 +7,7 @@ import {
 } from "react-router";
 
 import Gym from "./Gym";
-import Wall from "./Gym/Wall";
+import Problem from "./Gym/Problem";
 import GymEdit from "./Gym/GymEdit";
 import Gyms from "./Gyms";
 import LatestUsers from "./LatestUsers";
@@ -52,8 +52,8 @@ function ClimbRouter(props: any) {
 					))}
 				/>
 				<Route
-					{...p("/gym/:gym_path/wall/:wall_id", () => (
-						<Wall wall={props.wall} />
+					{...p("/gym/:gym_path/problem/:problem_id", () => (
+						<Problem problem={props.problem} />
 					))}
 				/>
 			</Switch>

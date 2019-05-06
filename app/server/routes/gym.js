@@ -2,11 +2,11 @@ const express = require("express");
 
 const orm = require("../climb/orm");
 
-const wall = require("./wall");
+const problem = require("./problem");
 
 const app = express.Router({ mergeParams: true });
 
-app.use("/wall/:wall_id", wall);
+app.use("/problem/:problem_id", problem);
 
 app.get("/", function(req, res, next) {
 	const gym_path = req.params.gym_path;
@@ -15,18 +15,20 @@ app.get("/", function(req, res, next) {
 		.then(gyms => gyms[0] || Promise.reject())
 		.then(gym => Object.assign(state, { gym }))
 		.then(() =>
-			orm.select("walls", { gym_path }, { suffix: "ORDER BY id DESC" })
+			orm.select("problems", { gym_path }, { suffix: "ORDER BY id DESC" })
 		)
-		.then(walls => Object.assign(state.gym, { walls }))
+		.then(problems => Object.assign(state.gym, { problems }))
 		.then(() =>
 			orm.select(
-				"climbed_walls",
+				"climbed_problems",
 				{ gym_path, user_id: req.session.user_id, active: true },
-				{ columns: ["wall_id"] }
+				{ columns: ["problem_id"] }
 			)
 		)
-		.then(rows => rows.map(row => row.wall_id))
-		.then(climbed_walls => Object.assign(state.gym, { climbed_walls }))
+		.then(rows => rows.map(row => row.problem_id))
+		.then(climbed_problems =>
+			Object.assign(state.gym, { climbed_problems })
+		)
 		.then(() => res.data(state))
 		.catch(next);
 });
@@ -40,9 +42,9 @@ app.get("/edit", function(req, res, next) {
 		.then(gym => gym || Promise.reject())
 		.then(gym => Object.assign(state, { gym }))
 		.then(() =>
-			orm.select("walls", { gym_path }, { suffix: "ORDER BY id DESC" })
+			orm.select("problems", { gym_path }, { suffix: "ORDER BY id DESC" })
 		)
-		.then(walls => Object.assign(state.gym, { walls }))
+		.then(problems => Object.assign(state.gym, { problems }))
 		.then(() => res.data(state))
 		.catch(next);
 });
@@ -59,7 +61,7 @@ app.post("/edit", function(req, res, next) {
 		.catch(next);
 });
 
-app.post("/new_wall", function(req, res, next) {
+app.post("/new_problem", function(req, res, next) {
 	if (!res.common.user.is_verified) return res.sendStatus(403);
 	const gym_path = req.params.gym_path;
 
@@ -71,7 +73,7 @@ app.post("/new_wall", function(req, res, next) {
 	const color = req.body.color;
 	const active = req.body.active;
 
-	orm.insert("walls", {
+	orm.insert("problems", {
 		gym_path,
 		name,
 		difficulty,

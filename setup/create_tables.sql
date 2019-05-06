@@ -24,7 +24,7 @@ CREATE TABLE gyms (
     UNIQUE KEY path (path)
 );
 
-CREATE TABLE walls (
+CREATE TABLE problems (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     gym_path VARCHAR(32) NOT NULL,
     name VARCHAR(32) NOT NULL,
@@ -39,20 +39,20 @@ CREATE TABLE walls (
     KEY gym_path (gym_path)
 );
 
-CREATE TABLE climbed_walls (
+CREATE TABLE climbed_problems (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     gym_path VARCHAR(32) NOT NULL,
-    wall_id INT UNSIGNED NOT NULL,
+    problem_id INT UNSIGNED NOT NULL,
     user_id INT UNSIGNED NOT NULL,
     active BOOL NOT NULL,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    UNIQUE KEY gym_path_wall_id_user_id (gym_path, wall_id, user_id)
+    UNIQUE KEY gym_path_problem_id_user_id (gym_path, problem_id, user_id)
 );
 
-CREATE TABLE wall_media (
+CREATE TABLE problem_media (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    wall_id INT UNSIGNED NOT NULL,
+    problem_id INT UNSIGNED NOT NULL,
     gcs_path VARCHAR(128) NOT NULL,
     user_id INT UNSIGNED NOT NULL,
     file_size INT UNSIGNED NOT NULL,

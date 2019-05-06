@@ -4,10 +4,10 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-import styles from "./NewWall.module.css";
+import styles from "./NewProblem.module.css";
 import Button from "react-bootstrap/Button";
 
-const initial_wall: gt.wallType = {
+const initial_problem: gt.problemType = {
 	id: 0,
 	name: "",
 	difficulty: "",
@@ -18,23 +18,25 @@ const initial_wall: gt.wallType = {
 	active: true,
 	gym_path: ""
 };
-class NewWall extends Component<{ gym_path: string }, gt.wallType> {
+class NewProblem extends Component<{ gym_path: string }, gt.problemType> {
 	constructor(props: any) {
 		super(props);
-		this.state = Object.assign({}, initial_wall, { date: g.inputDate() });
+		this.state = Object.assign({}, initial_problem, {
+			date: g.inputDate()
+		});
 	}
 
 	submit = (): void => {
-		g.req(`/gym/${this.props.gym_path}/new_wall`, "POST", this.state)
-			.then(() => this.setState(initial_wall))
+		g.req(`/gym/${this.props.gym_path}/new_problem`, "POST", this.state)
+			.then(() => this.setState(initial_problem))
 			.then(g.refresh);
 	};
 
 	render() {
 		return (
 			<div className={`${gs.bubble} ${gs.inline}`}>
-				<p>New Wall</p>
-				<div className={styles.wall}>
+				<p>New Problem</p>
+				<div className={styles.problem}>
 					<div>
 						name
 						<br />
@@ -78,4 +80,4 @@ class NewWall extends Component<{ gym_path: string }, gt.wallType> {
 	}
 }
 
-export default NewWall;
+export default NewProblem;

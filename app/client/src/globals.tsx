@@ -23,7 +23,7 @@ interface gymType {
 	description: string;
 }
 
-interface wallType {
+interface problemType {
 	id: number;
 	name: string;
 	difficulty: string;
@@ -37,7 +37,7 @@ interface wallType {
 
 interface mediaType {
 	id: number;
-	wall_id: number;
+	problem_id: number;
 	gcs_path: string;
 	user_id: number;
 	fils_size: number;
@@ -146,4 +146,4 @@ export default {
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
 // prettier-ignore
-export { commonType, userType, gymType, wallType, mediaType, InputType };
+export { commonType, userType, gymType, problemType, mediaType, InputType };

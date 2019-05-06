@@ -4,9 +4,9 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-class EditWall extends Component<
-	gt.wallType & { gym_path: string },
-	gt.wallType
+class EditProblem extends Component<
+	gt.problemType & { gym_path: string },
+	gt.problemType
 > {
 	constructor(props: any) {
 		super(props);
@@ -17,7 +17,7 @@ class EditWall extends Component<
 
 	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
 		event.preventDefault();
-		const url = `/gym/${this.props.gym_path}/wall/${this.props.id}/edit`;
+		const url = `/gym/${this.props.gym_path}/problem/${this.props.id}/edit`;
 		g.req(url, "POST", this.state).then(g.refresh);
 	};
 
@@ -55,4 +55,4 @@ class EditWall extends Component<
 	}
 }
 
-export default EditWall;
+export default EditProblem;
