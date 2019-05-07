@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 
 import g from "../../../../../globals";
+import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
 import styles from "./Filters.module.css";
+
+interface PropsType {
+	updateFilter: any;
+}
 
 interface StateType {
 	name: string;
@@ -15,8 +20,8 @@ interface StateType {
 	setter: string;
 }
 
-class Filters extends Component<object, StateType> {
-	constructor(props: {}) {
+class Filters extends Component<PropsType, StateType> {
+	constructor(props: PropsType) {
 		super(props);
 		this.state = {
 			name: "",
@@ -29,6 +34,31 @@ class Filters extends Component<object, StateType> {
 		};
 	}
 
+	static shouldDisplayProblem(
+		problem: gt.problemType,
+		filters: StateType
+	): boolean {
+		if (
+			Boolean(filters.name) &&
+			problem.name.toLowerCase().indexOf(filters.name.toLowerCase()) ===
+				-1
+		) {
+			return false;
+		}
+		return true;
+	}
+
+	input(name: string): any {
+		const g_props = g.input(this, name);
+		const original_on_change = g_props.onChange;
+		const onChange: typeof original_on_change = event => {
+			const state_change = original_on_change(event);
+			this.props.updateFilter(state_change);
+			return state_change;
+		};
+		return Object.assign(g_props, { onChange });
+	}
+
 	render() {
 		return (
 			// todo minimizeable
@@ -39,31 +69,31 @@ class Filters extends Component<object, StateType> {
 				<div className={`${styles.filters} ${gs.flex}`}>
 					<div>
 						<p>Name</p>
-						<input {...g.input(this, "name")} size={7} />
+						<input {...this.input("name")} size={7} />
 					</div>
 					<div>
 						<p>Difficulty</p>
-						<input {...g.input(this, "difficulty")} size={4} />
+						<input {...this.input("difficulty")} size={4} />
 					</div>
 					<div>
 						<p>Location</p>
-						<input {...g.input(this, "location")} size={7} />
+						<input {...this.input("location")} size={7} />
 					</div>
 					<div>
 						<p>Date</p>
-						<input {...g.input(this, "date")} size={8} />
+						<input {...this.input("date")} size={8} />
 					</div>
 					<div>
 						<p>Active</p>
-						<input {...g.input(this, "active")} size={8} />
+						<input {...this.input("active")} size={8} />
 					</div>
 					<div>
 						<p>Color</p>
-						<input {...g.input(this, "color")} size={6} />
+						<input {...this.input("color")} size={6} />
 					</div>
 					<div>
 						<p>Setter</p>
-						<input {...g.input(this, "setter")} size={6} />
+						<input {...this.input("setter")} size={6} />
 					</div>
 				</div>
 			</div>

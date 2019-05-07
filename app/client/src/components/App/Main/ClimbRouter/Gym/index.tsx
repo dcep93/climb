@@ -18,14 +18,18 @@ interface PropsType {
 	};
 }
 
+// feels bad, but works
+// integer keys are climbed problems
+// "filters" holds filters object matching Filters.StateType
 interface StateType {
 	[id: number]: boolean;
+	filters: any;
 }
 
 class Gym extends Component<PropsType, StateType> {
 	constructor(props: PropsType) {
 		super(props);
-		const state: StateType = {};
+		const state: StateType = { filters: {} };
 		props.gym.problems.forEach((problem: gt.problemType) => {
 			state[problem.id] =
 				props.gym.climbed_problems.indexOf(problem.id) !== -1;
@@ -52,6 +56,10 @@ class Gym extends Component<PropsType, StateType> {
 		return Object.assign(g_props, { onChange });
 	}
 
+	updateFilter(filters: any) {
+		this.setState({ filters });
+	}
+
 	render() {
 		return (
 			<div>
@@ -63,40 +71,47 @@ class Gym extends Component<PropsType, StateType> {
 						<Link to={`${this.props.gym.path}/edit`}>Edit</Link>
 					)}
 				</div>
-				<Filters />
+				<Filters updateFilter={this.updateFilter.bind(this)} />
 				<div className={gs.flex}>
-					{this.props.gym.problems.map(problem => (
-						<div key={problem.id} className={gs.bubble}>
-							<Link
-								to={`${this.props.gym.path}/problem/${
-									problem.id
-								}`}
-							>
-								<h4>{`${problem.name} (${problem.id})`}</h4>
-							</Link>
-							<p>
-								<label>
-									<span>{problem.difficulty} </span>
-									<input
-										{...this.checkboxProps(problem.id)}
-									/>
-								</label>
-							</p>
-							<p>{formatDate(problem.date)}</p>
-							<p>
-								{problem.location}
-								{Boolean(problem.active) && (
-									<span> (retired)</span>
-								)}
-							</p>
-							<p>
-								{problem.color}
-								{Boolean(problem.setter) && (
-									<span> - set by {problem.setter}</span>
-								)}
-							</p>
-						</div>
-					))}
+					{this.props.gym.problems
+						.filter(problem =>
+							Filters.shouldDisplayProblem(
+								problem,
+								this.state.filters
+							)
+						)
+						.map(problem => (
+							<div key={problem.id} className={gs.bubble}>
+								<Link
+									to={`${this.props.gym.path}/problem/${
+										problem.id
+									}`}
+								>
+									<h4>{`${problem.name} (${problem.id})`}</h4>
+								</Link>
+								<p>
+									<label>
+										<span>{problem.difficulty} </span>
+										<input
+											{...this.checkboxProps(problem.id)}
+										/>
+									</label>
+								</p>
+								<p>{formatDate(problem.date)}</p>
+								<p>
+									{problem.location}
+									{Boolean(problem.active) && (
+										<span> (retired)</span>
+									)}
+								</p>
+								<p>
+									{problem.color}
+									{Boolean(problem.setter) && (
+										<span> - set by {problem.setter}</span>
+									)}
+								</p>
+							</div>
+						))}
 				</div>
 			</div>
 		);
