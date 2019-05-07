@@ -30,6 +30,19 @@ app.get("/", function(req, res, next) {
 			)
 		)
 		.then(media => Object.assign(state.problem, { media }))
+		.then(() =>
+			orm.select(
+				"users",
+				{
+					id: Array.from(
+						new Set(state.problem.media.map(media => media.user_id))
+					)
+				},
+				{ columns: ["id", "image", "name"] }
+			)
+		)
+
+		.then(users => Object.assign(state.problem, { users }))
 		.then(() => res.data(state))
 		.catch(next);
 });

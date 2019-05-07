@@ -34,7 +34,7 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 						<Link to={`/gym/${this.props.gym.path}`}>
 							To Gym Page
 						</Link>
-						<div className={gs.vertical_space} />
+						<div className={gs.vertical_space_20} />
 						<p>
 							name
 							<br />

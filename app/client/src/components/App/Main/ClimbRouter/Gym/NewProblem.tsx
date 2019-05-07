@@ -78,7 +78,7 @@ class NewProblem extends Component<{ gym_path: string }, gt.problemType> {
 						/>
 					</div>
 				</div>
-				<div className={gs.vertical_space} />
+				<div className={gs.vertical_space_20} />
 				<Button onClick={this.submit}>Submit</Button>
 			</div>
 		);

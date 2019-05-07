@@ -31,8 +31,11 @@ function connect() {
 
 function getCons(where) {
 	const wk = Object.keys(where || {});
-	const w = wk.map(key => `${key}=?`);
+	const w = wk.map(
+		key => `${key}${Array.isArray(where[key]) ? " IN (?)" : "=?"}`
+	);
 	const p = wk.map(key => where[key]);
+	console.log(JSON.stringify(p));
 
 	return { w, p };
 }

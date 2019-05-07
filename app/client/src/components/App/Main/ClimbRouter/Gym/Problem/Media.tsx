@@ -1,44 +1,48 @@
 import React, { RefObject } from "react";
+import Button from "react-bootstrap/Button";
+
+import { Link } from "react-router-dom";
 
 import g from "../../../../../../globals";
 import * as gt from "../../../../../../globals";
+import gs from "../../../../../../globals.module.css";
+
+import styles from "./Media.module.css";
+import profile_styles from "../../Profile/index.module.css";
 
 const new_media_ref: RefObject<HTMLInputElement> = React.createRef();
 
 function newMedia(gym_path: string, problem_id: number) {
 	if (g.common().user.id === undefined) {
-		return <p>Create an account and become verified to upload media.</p>;
+		return <p>Login and become verified to upload media.</p>;
 	} else if (!g.common().user.is_verified) {
 		return (
 			<p>
-				Email climb.nomorerice@gmail.com to become verified to upload
-				media.
+				Email climb.nomorerice@gmail.com with a link to your profile to
+				become verified to upload media.
 			</p>
 		);
 	} else {
 		return (
 			<div>
-				<p>New Media</p>
-				<div>
-					<input ref={new_media_ref} type="file" name="upload" />
-					<input
-						type="submit"
-						onClick={event =>
-							submitNewMedia(gym_path, problem_id, event)
-						}
-					/>
+				<div className={gs.bubble}>
+					<p>New Media</p>
+					<div>
+						<input ref={new_media_ref} type="file" name="upload" />
+						<br />
+						<Button
+							onClick={() => submitNewMedia(gym_path, problem_id)}
+						>
+							Submit
+						</Button>
+					</div>
 				</div>
 			</div>
 		);
 	}
 }
 
-function submitNewMedia(
-	gym_path: string,
-	problem_id: number,
-	event: React.MouseEvent<HTMLInputElement>
-) {
-	event.preventDefault();
+function submitNewMedia(gym_path: string, problem_id: number) {
 	const input = new_media_ref.current;
 	if (input === null) return;
 	const files = input.files;
@@ -87,18 +91,28 @@ function mediaData(m: gt.mediaType) {
 		return <p>received - handling</p>;
 	} else if (m.mime === "video") {
 		const href = encodeURIComponent(`https://www.facebook.com${m.data}`);
+		const paddingPercent = (m.height * 100) / m.width;
 		return (
-			<iframe
-				src={`https://www.facebook.com/plugins/video.php?href=${href}`}
-				width={m.width}
-				height={m.height}
-				style={{ border: "none", overflow: "hidden" }}
-				scrolling="no"
-				allowFullScreen={true}
-			/>
+			<div
+				className={styles.video_div}
+				style={{ paddingTop: `${paddingPercent}%` }}
+			>
+				<iframe
+					className={styles.video}
+					src={`https://www.facebook.com/plugins/video.php?href=${href}`}
+					width={m.width}
+					height={m.height}
+					style={{
+						border: "none"
+					}}
+					scrolling="no"
+					allowFullScreen={true}
+				/>
+				<div className={gs.vertical_space_10} />
+			</div>
 		);
 	} else if (m.mime === "image") {
-		return <img src={m.data} />;
+		return <img className={styles.image} src={m.data} />;
 	} else {
 		return <pre>{m.data}</pre>;
 	}
@@ -108,17 +122,30 @@ function Media(props: {
 	gym_path: string;
 	problem_id: number;
 	media: gt.mediaType[];
+	users: gt.userType[];
 }) {
+	const usersDict: { [id: number]: gt.userType } = {};
+	props.users.forEach(user => {
+		usersDict[user.id] = user;
+	});
 	return (
 		<div>
-			<p>Media</p>
-			<br />
-			{newMedia(props.gym_path, props.problem_id)}
 			<div>
 				{props.media.map(m => (
-					<div key={m.id}>
-						<p>id: {m.id}</p>
-						<p>mime: {m.mime}</p>
+					<div key={m.id} className={gs.bubble}>
+						<Link className={gs.margin} to={`/user/1`}>
+							<div>
+								<img
+									className={`${profile_styles.profile_pic} ${
+										gs.inline
+									}`}
+									src={usersDict[m.user_id].image}
+								/>
+								<p className={`${gs.inline} ${gs.margin}`}>
+									{usersDict[m.user_id].name} ({m.user_id})
+								</p>
+							</div>
+						</Link>
 						{mediaData(m)}
 					</div>
 				))}
@@ -126,5 +153,7 @@ function Media(props: {
 		</div>
 	);
 }
+
+Media.newMedia = newMedia;
 
 export default Media;

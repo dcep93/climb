@@ -1,0 +1,17 @@
+.profile_pic {
+	display: inline-block;
+}
+
+.video_div {
+	position: relative;
+}
+
+.video {
+	position: absolute;
+	width: 100%;
+	top: 0;
+}
+
+.image {
+	width: 100%;
+}

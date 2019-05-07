@@ -51,7 +51,11 @@ input[type="checkbox"] {
 	margin: 5px;
 }
 
-.vertical_space {
+.vertical_space_10 {
+	margin: 10px 0px;
+}
+
+.vertical_space_20 {
 	margin: 20px 0px;
 }
 
