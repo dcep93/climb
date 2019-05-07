@@ -32,10 +32,6 @@ class Gym extends Component<PropsType, any> {
 		this.setState(filters);
 	}
 
-	shouldDisplayProblem(problem: gt.problemType): boolean {
-		return Filters.shouldDisplayProblem(problem, this.state);
-	}
-
 	render() {
 		return (
 			<div>
@@ -53,7 +49,13 @@ class Gym extends Component<PropsType, any> {
 				/>
 				<GymProblems
 					{...this.props}
-					shouldDisplayProblem={this.shouldDisplayProblem.bind(this)}
+					shouldDisplayProblem={problem =>
+						Filters.shouldDisplayProblem(
+							problem,
+							this.state,
+							this.props.gym.climbed_problems
+						)
+					}
 				/>
 			</div>
 		);

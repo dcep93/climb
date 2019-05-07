@@ -37,13 +37,20 @@ class Filters extends Component<PropsType, StateType> {
 
 	static shouldDisplayProblem(
 		problem: gt.problemType,
-		filters: any
+		filters: any,
+		climbed_problems: number[]
 	): boolean {
 		if (filters === null) return true;
 		if (
 			filters.name !== undefined &&
 			problem.name.toLowerCase().indexOf(filters.name.toLowerCase()) ===
 				-1
+		)
+			return false;
+		if (
+			Boolean(filters.climbed) &&
+			(filters.climbed === "true") ===
+				(climbed_problems.indexOf(problem.id) === -1)
 		)
 			return false;
 		if (Filters.shouldFilterSelect("difficulty", problem, filters))
@@ -112,7 +119,6 @@ class Filters extends Component<PropsType, StateType> {
 	render() {
 		return (
 			// todo minimizeable
-			// todo climbed
 			// todo url state https://dev.to/gaels/an-alternative-to-handle-global-state-in-react-the-url--3753
 			<div className={gs.bubble}>
 				<h4>Filters</h4>
@@ -120,6 +126,17 @@ class Filters extends Component<PropsType, StateType> {
 					<div>
 						<p>Name</p>
 						<input {...this.inputProperties("name")} size={7} />
+					</div>
+					<div>
+						<p>Climbed</p>
+						<select
+							name={"climbed"}
+							onChange={this.selectAction.bind(this)}
+						>
+							<option value={""}>All</option>
+							<option value={"true"}>yes</option>
+							<option value={"false"}>no</option>
+						</select>
 					</div>
 					<div>
 						<p>Difficulty</p>
