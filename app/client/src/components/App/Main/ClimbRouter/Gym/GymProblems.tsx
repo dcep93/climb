@@ -5,14 +5,12 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-import Filters from "./Filters";
-
 interface PropsType {
 	gym: gt.gymType & {
 		climbed_problems: number[];
 		problems: gt.problemType[];
 	};
-	filters: any;
+	shouldDisplayProblem(problem: gt.problemType): boolean;
 }
 
 interface StateType {
@@ -81,18 +79,24 @@ class GymProblems extends Component<PropsType, StateType> {
 	}
 
 	render() {
-		return (
-			<div className={gs.flex}>
-				{this.props.gym.problems
-					.filter(problem =>
-						Filters.shouldDisplayProblem(
-							problem,
-							this.props.filters
-						)
-					)
-					.map(this.renderProblem.bind(this))}
-			</div>
+		const problems = this.props.gym.problems.filter(
+			this.props.shouldDisplayProblem
 		);
+		if (problems.length > 0) {
+			return (
+				<div className={gs.flex}>
+					{problems.map(this.renderProblem.bind(this))}
+				</div>
+			);
+		} else {
+			return (
+				<div className={gs.text_align}>
+					<div className={`${gs.bubble} ${gs.inline}`}>
+						No problems match your filter
+					</div>
+				</div>
+			);
+		}
 	}
 }
 

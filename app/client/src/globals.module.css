@@ -50,3 +50,7 @@ input[type="checkbox"] {
 .vertical_space {
 	margin: 20px 0px;
 }
+
+.text_align {
+	text-align: center;
+}
