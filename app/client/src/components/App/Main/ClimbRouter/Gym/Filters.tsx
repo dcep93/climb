@@ -8,6 +8,7 @@ import styles from "./Filters.module.css";
 
 interface PropsType {
 	updateFilter: any;
+	problemsBank: gt.problemType[];
 }
 
 interface StateType {
@@ -15,7 +16,7 @@ interface StateType {
 	difficulty: string;
 	location: string;
 	date: string;
-	active?: boolean;
+	active: string;
 	color: string;
 	setter: string;
 }
@@ -28,7 +29,7 @@ class Filters extends Component<PropsType, StateType> {
 			difficulty: "",
 			location: "",
 			date: "",
-			active: true,
+			active: "",
 			color: "",
 			setter: ""
 		};
@@ -36,20 +37,44 @@ class Filters extends Component<PropsType, StateType> {
 
 	static shouldDisplayProblem(
 		problem: gt.problemType,
-		filters: StateType
+		filters: any
 	): boolean {
 		if (filters === null) return true;
 		if (
-			Boolean(filters.name) &&
+			filters.name !== undefined &&
 			problem.name.toLowerCase().indexOf(filters.name.toLowerCase()) ===
 				-1
-		) {
+		)
 			return false;
-		}
+		if (Filters.shouldFilterSelect("difficulty", problem, filters))
+			return false;
+		if (Filters.shouldFilterSelect("location", problem, filters))
+			return false;
+		if (
+			Boolean(filters.active) &&
+			problem.active != (filters.active === "true")
+		)
+			return false;
+		if (Filters.shouldFilterSelect("color", problem, filters)) return false;
 		return true;
 	}
 
-	input(name: string): any {
+	static shouldFilterSelect(
+		field: string,
+		problem: gt.problemType,
+		filters: StateType
+	): boolean {
+		return (
+			// @ts-ignore Type error: Element implicitly has an 'any' type because type 'StateType' has no index signature.
+			filters[field] !== undefined &&
+			// @ts-ignore Type error: Element implicitly has an 'any' type because type 'StateType' has no index signature.
+			filters[field] !== "" &&
+			// @ts-ignore Type error: Element implicitly has an 'any' type because type 'StateType' has no index signature.
+			filters[field] !== problem[field]
+		);
+	}
+
+	inputProperties(name: string): any {
 		const g_props = g.input(this, name);
 		const original_on_change = g_props.onChange;
 		const onChange: typeof original_on_change = event => {
@@ -58,6 +83,30 @@ class Filters extends Component<PropsType, StateType> {
 			return state_change;
 		};
 		return Object.assign(g_props, { onChange });
+	}
+
+	selectAction(event: React.ChangeEvent<HTMLSelectElement>) {
+		this.props.updateFilter({ [event.target.name]: event.target.value });
+	}
+
+	getSelectOptions(field: string): any[] {
+		return this.props.problemsBank
+			.map(
+				// @ts-ignore Type error: Element implicitly has an 'any' type because type 'problemType' has no index signature.
+				problem => problem[field] as string
+			)
+			.sort();
+	}
+
+	selectComponent(field: string) {
+		return (
+			<select name={field} onChange={this.selectAction.bind(this)}>
+				<option value={""}>All</option>
+				{this.getSelectOptions(field).map(value => (
+					<option key={value}>{value}</option>
+				))}
+			</select>
+		);
 	}
 
 	render() {
@@ -70,31 +119,34 @@ class Filters extends Component<PropsType, StateType> {
 				<div className={`${styles.filters} ${gs.flex}`}>
 					<div>
 						<p>Name</p>
-						<input {...this.input("name")} size={7} />
+						<input {...this.inputProperties("name")} size={7} />
 					</div>
 					<div>
 						<p>Difficulty</p>
-						<input {...this.input("difficulty")} size={4} />
+						{this.selectComponent("difficulty")}
 					</div>
 					<div>
 						<p>Location</p>
-						<input {...this.input("location")} size={7} />
+						{this.selectComponent("location")}
 					</div>
 					<div>
-						<p>Date</p>
-						<input {...this.input("date")} size={8} />
-					</div>
-					<div>
-						<p>Active</p>
-						<input {...this.input("active")} size={8} />
+						<p>Status</p>
+						<select
+							name={"active"}
+							onChange={this.selectAction.bind(this)}
+						>
+							<option value={""}>All</option>
+							<option value={"true"}>Active</option>
+							<option value={"false"}>Retired</option>
+						</select>
 					</div>
 					<div>
 						<p>Color</p>
-						<input {...this.input("color")} size={6} />
+						{this.selectComponent("color")}
 					</div>
 					<div>
 						<p>Setter</p>
-						<input {...this.input("setter")} size={6} />
+						{this.selectComponent("setter")}
 					</div>
 				</div>
 			</div>

@@ -15,20 +15,13 @@ interface PropsType {
 	};
 }
 
-interface StateType {
-	filters: any;
-}
-
-class Gym extends Component<PropsType, StateType> {
+class Gym extends Component<PropsType, any> {
 	updateFilter(filters: any) {
-		this.setState({ filters });
+		this.setState(filters);
 	}
 
 	shouldDisplayProblem(problem: gt.problemType): boolean {
-		return Filters.shouldDisplayProblem(
-			problem,
-			this.state && this.state.filters
-		);
+		return Filters.shouldDisplayProblem(problem, this.state);
 	}
 
 	render() {
@@ -42,7 +35,10 @@ class Gym extends Component<PropsType, StateType> {
 						<Link to={`${this.props.gym.path}/edit`}>Edit</Link>
 					)}
 				</div>
-				<Filters updateFilter={this.updateFilter.bind(this)} />
+				<Filters
+					problemsBank={this.props.gym.problems}
+					updateFilter={this.updateFilter.bind(this)}
+				/>
 				<GymProblems
 					{...this.props}
 					shouldDisplayProblem={this.shouldDisplayProblem.bind(this)}
