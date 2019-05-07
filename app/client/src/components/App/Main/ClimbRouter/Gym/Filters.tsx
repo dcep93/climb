@@ -38,6 +38,7 @@ class Filters extends Component<PropsType, StateType> {
 		problem: gt.problemType,
 		filters: StateType
 	): boolean {
+		if (filters === null) return true;
 		if (
 			Boolean(filters.name) &&
 			problem.name.toLowerCase().indexOf(filters.name.toLowerCase()) ===
