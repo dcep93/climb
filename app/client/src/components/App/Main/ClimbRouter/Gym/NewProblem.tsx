@@ -34,9 +34,13 @@ class NewProblem extends Component<{ gym_path: string }, gt.problemType> {
 
 	render() {
 		return (
-			<div className={`${gs.bubble} ${gs.inline}`}>
+			<div
+				className={`${gs.bubble} ${gs.inline} ${
+					styles.new_problem_container
+				}`}
+			>
 				<p>New Problem</p>
-				<div className={styles.problem}>
+				<div className={styles.new_problem}>
 					<div>
 						name
 						<br />

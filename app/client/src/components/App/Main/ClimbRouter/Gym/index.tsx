@@ -5,6 +5,8 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
+import Filters from "./Filters";
+
 function formatDate(dateString: string): string {
 	return new Date(dateString).toDateString();
 }
@@ -15,9 +17,11 @@ interface PropsType {
 		problems: gt.problemType[];
 	};
 }
+
 interface StateType {
 	[id: number]: boolean;
 }
+
 class Gym extends Component<PropsType, StateType> {
 	constructor(props: PropsType) {
 		super(props);
@@ -59,6 +63,7 @@ class Gym extends Component<PropsType, StateType> {
 						<Link to={`${this.props.gym.path}/edit`}>Edit</Link>
 					)}
 				</div>
+				<Filters />
 				<div className={gs.flex}>
 					{this.props.gym.problems.map(problem => (
 						<div key={problem.id} className={gs.bubble}>

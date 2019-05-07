@@ -1,9 +1,12 @@
-.problem {
-	display: flex;
-	flex-wrap: wrap;
-	max-width: 500px;
+.new_problem_container {
+	max-width: 45%;
 }
 
-.problem > * {
+.new_problem {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.new_problem > * {
 	padding: 5px;
 }

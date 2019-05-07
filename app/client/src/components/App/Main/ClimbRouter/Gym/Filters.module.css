@@ -1,0 +1,7 @@
+.filters {
+	justify-content: space-between;
+}
+
+.filters > * {
+	padding: 5px;
+}
