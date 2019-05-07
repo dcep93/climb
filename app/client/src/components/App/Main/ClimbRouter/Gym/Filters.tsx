@@ -21,6 +21,13 @@ interface StateType {
 	setter: string;
 }
 
+enum SelectType {
+	difficulty = "difficulty",
+	location = "location",
+	color = "color",
+	setter = "setter"
+}
+
 class Filters extends Component<PropsType, StateType> {
 	constructor(props: PropsType) {
 		super(props);
@@ -53,30 +60,30 @@ class Filters extends Component<PropsType, StateType> {
 				(climbed_problems.indexOf(problem.id) === -1)
 		)
 			return false;
-		if (Filters.shouldFilterSelect("difficulty", problem, filters))
+		if (Filters.shouldFilterSelect(SelectType.difficulty, problem, filters))
 			return false;
-		if (Filters.shouldFilterSelect("location", problem, filters))
+		if (Filters.shouldFilterSelect(SelectType.location, problem, filters))
 			return false;
 		if (
 			Boolean(filters.active) &&
-			problem.active != (filters.active === "true")
+			Boolean(problem.active) === (filters.active === "true")
 		)
 			return false;
-		if (Filters.shouldFilterSelect("color", problem, filters)) return false;
+		if (Filters.shouldFilterSelect(SelectType.color, problem, filters))
+			return false;
+		if (Filters.shouldFilterSelect(SelectType.setter, problem, filters))
+			return false;
 		return true;
 	}
 
 	static shouldFilterSelect(
-		field: string,
+		field: SelectType,
 		problem: gt.problemType,
 		filters: StateType
 	): boolean {
 		return (
-			// @ts-ignore Type error: Element implicitly has an 'any' type because type 'StateType' has no index signature.
 			filters[field] !== undefined &&
-			// @ts-ignore Type error: Element implicitly has an 'any' type because type 'StateType' has no index signature.
 			filters[field] !== "" &&
-			// @ts-ignore Type error: Element implicitly has an 'any' type because type 'StateType' has no index signature.
 			filters[field] !== problem[field]
 		);
 	}
@@ -96,16 +103,13 @@ class Filters extends Component<PropsType, StateType> {
 		this.props.updateFilter({ [event.target.name]: event.target.value });
 	}
 
-	getSelectOptions(field: string): any[] {
+	getSelectOptions(field: SelectType): any[] {
 		return this.props.problemsBank
-			.map(
-				// @ts-ignore Type error: Element implicitly has an 'any' type because type 'problemType' has no index signature.
-				problem => problem[field] as string
-			)
+			.map(problem => problem[field] as string)
 			.sort();
 	}
 
-	selectComponent(field: string) {
+	selectComponent(field: SelectType) {
 		return (
 			<select name={field} onChange={this.selectAction.bind(this)}>
 				<option value={""}>All</option>
@@ -140,11 +144,11 @@ class Filters extends Component<PropsType, StateType> {
 					</div>
 					<div>
 						<p>Difficulty</p>
-						{this.selectComponent("difficulty")}
+						{this.selectComponent(SelectType.difficulty)}
 					</div>
 					<div>
 						<p>Location</p>
-						{this.selectComponent("location")}
+						{this.selectComponent(SelectType.location)}
 					</div>
 					<div>
 						<p>Status</p>
@@ -159,11 +163,11 @@ class Filters extends Component<PropsType, StateType> {
 					</div>
 					<div>
 						<p>Color</p>
-						{this.selectComponent("color")}
+						{this.selectComponent(SelectType.color)}
 					</div>
 					<div>
 						<p>Setter</p>
-						{this.selectComponent("setter")}
+						{this.selectComponent(SelectType.setter)}
 					</div>
 				</div>
 			</div>
