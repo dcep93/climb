@@ -5,6 +5,8 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
+import styles from "./GymProblems.module.css";
+
 interface PropsType {
 	gym: gt.gymType & {
 		climbed_problems: number[];
@@ -53,11 +55,13 @@ class GymProblems extends Component<PropsType, StateType> {
 
 	renderProblem(problem: gt.problemType) {
 		return (
-			<div key={problem.id} className={`${gs.bubble} ${gs.flex}`}>
+			<Link
+				to={`${this.props.gym.path}/problem/${problem.id}`}
+				key={problem.id}
+				className={`${gs.bubble} ${gs.flex}`}
+			>
 				<div>
-					<Link to={`${this.props.gym.path}/problem/${problem.id}`}>
-						<h4>{`${problem.name} (${problem.id})`}</h4>
-					</Link>
+					<h4>{`${problem.name} (${problem.id})`}</h4>
 					<p>
 						<label>
 							<span>{problem.difficulty} </span>
@@ -76,8 +80,12 @@ class GymProblems extends Component<PropsType, StateType> {
 						)}
 					</p>
 				</div>
-				{Boolean(problem.picture) && <img src={problem.picture} />}
-			</div>
+				{Boolean(problem.picture) && (
+					<div className={styles.picture_div}>
+						<img className={styles.picture} src={problem.picture} />
+					</div>
+				)}
+			</Link>
 		);
 	}
 
