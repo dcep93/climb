@@ -12,10 +12,22 @@ interface PropsType {
 	gym: gt.gymType & {
 		climbed_problems: number[];
 		problems: gt.problemType[];
+		pictures: { picture: string; problem_id: number }[];
 	};
 }
 
 class Gym extends Component<PropsType, any> {
+	constructor(props: PropsType) {
+		super(props);
+		let pictures: { [problem_id: number]: string } = {};
+		props.gym.pictures.forEach(picture => {
+			pictures[picture.problem_id] = picture.picture;
+		});
+		props.gym.problems.forEach(problem => {
+			problem.picture = pictures[problem.id];
+		});
+	}
+
 	updateFilter(filters: any) {
 		this.setState(filters);
 	}

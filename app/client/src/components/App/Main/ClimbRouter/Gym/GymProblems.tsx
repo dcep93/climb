@@ -53,27 +53,30 @@ class GymProblems extends Component<PropsType, StateType> {
 
 	renderProblem(problem: gt.problemType) {
 		return (
-			<div key={problem.id} className={gs.bubble}>
-				<Link to={`${this.props.gym.path}/problem/${problem.id}`}>
-					<h4>{`${problem.name} (${problem.id})`}</h4>
-				</Link>
-				<p>
-					<label>
-						<span>{problem.difficulty} </span>
-						<input {...this.checkboxProps(problem.id)} />
-					</label>
-				</p>
-				<p>{formatDate(problem.date)}</p>
-				<p>
-					{problem.location}
-					{Boolean(problem.active) && <span> (retired)</span>}
-				</p>
-				<p>
-					{problem.color}
-					{Boolean(problem.setter) && (
-						<span> - set by {problem.setter}</span>
-					)}
-				</p>
+			<div key={problem.id} className={`${gs.bubble} ${gs.flex}`}>
+				<div>
+					<Link to={`${this.props.gym.path}/problem/${problem.id}`}>
+						<h4>{`${problem.name} (${problem.id})`}</h4>
+					</Link>
+					<p>
+						<label>
+							<span>{problem.difficulty} </span>
+							<input {...this.checkboxProps(problem.id)} />
+						</label>
+					</p>
+					<p>{formatDate(problem.date)}</p>
+					<p>
+						{problem.location}
+						{Boolean(problem.active) && <span> (retired)</span>}
+					</p>
+					<p>
+						{problem.color}
+						{Boolean(problem.setter) && (
+							<span> - set by {problem.setter}</span>
+						)}
+					</p>
+				</div>
+				{Boolean(problem.picture) && <img src={problem.picture} />}
 			</div>
 		);
 	}

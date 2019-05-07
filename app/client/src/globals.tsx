@@ -33,6 +33,7 @@ interface problemType {
 	active: boolean;
 	color: string;
 	gym_path: string;
+	picture?: string;
 }
 
 interface mediaType {
@@ -40,11 +41,12 @@ interface mediaType {
 	problem_id: number;
 	gcs_path: string;
 	user_id: number;
-	fils_size: number;
+	file_size: number;
 	mime: string;
 	data: string;
 	width: number;
 	height: number;
+	picture: string;
 }
 
 function req(url: string, method?: string, body?: any): Promise<Response> {

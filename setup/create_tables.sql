@@ -52,6 +52,7 @@ CREATE TABLE climbed_problems (
 
 CREATE TABLE problem_media (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    gym_path VARCHAR(32) NOT NULL,
     problem_id INT UNSIGNED NOT NULL,
     gcs_path VARCHAR(128) NOT NULL,
     user_id INT UNSIGNED NOT NULL,
@@ -60,6 +61,8 @@ CREATE TABLE problem_media (
     data TEXT,
     width INT UNSIGNED,
     height INT UNSIGNED,
+    picture VARCHAR(256),
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    KEY gym_path_problem_id (gym_path, problem_id)
 );

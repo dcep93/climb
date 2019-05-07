@@ -29,6 +29,17 @@ app.get("/", function(req, res, next) {
 		.then(climbed_problems =>
 			Object.assign(state.gym, { climbed_problems })
 		)
+		.then(() =>
+			orm.select(
+				"problem_media",
+				{ gym_path },
+				{
+					columns: ["picture", "problem_id"],
+					suffix: "GROUP BY problem_id"
+				}
+			)
+		)
+		.then(pictures => Object.assign(state.gym, { pictures }))
 		.then(() => res.data(state))
 		.catch(next);
 });

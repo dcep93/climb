@@ -72,6 +72,7 @@ function submitNewMedia(
 		.then(response =>
 			g.req(`/gym/${gym_path}/problem/${problem_id}/upload`, "POST", {
 				gcs_path: response.name,
+				gym_path,
 				gcs_id: response.id,
 				mime: file.type,
 				size: file.size,

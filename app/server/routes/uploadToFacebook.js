@@ -48,12 +48,12 @@ function getVars(vars) {
 	if (vars.mime === "image") {
 		endpoint = "https://graph.facebook.com/v3.2/me/photos";
 		upload_field = "url";
-		fields_to_get = "images,width,height";
+		fields_to_get = "images,width,height,picture";
 		handleGetResponse = imageGetResponse;
 	} else if (vars.mime === "video") {
 		endpoint = "https://graph-video.facebook.com/v3.2/me/videos";
 		upload_field = "file_url";
-		fields_to_get = "permalink_url,format,status";
+		fields_to_get = "permalink_url,format,status,picture";
 		handleGetResponse = videoGetResponse;
 	} else {
 		fail(`bad mime ${vars.mime}`);
@@ -78,7 +78,9 @@ function imageGetResponse(vars, raw_response) {
 	const width = response.width;
 	if (!height || !width)
 		fail(`bad dimensions - ${width}x${height}`, raw_response);
-	return Object.assign(vars, { data: img_source, height, width });
+	const picture = response.picture;
+	if (!picture) fail("no picture", raw_response);
+	return Object.assign(vars, { data: img_source, height, width, picture });
 }
 
 function videoGetResponse(vars, raw_response) {
@@ -99,7 +101,14 @@ function videoGetResponse(vars, raw_response) {
 		const width = last_format.width;
 		if (!height || !width)
 			fail(`bad dimensions - ${width}x${height}`, raw_response);
-		return Object.assign(vars, { data: perma_link, height, width });
+		const picture = response.picture;
+		if (!picture) fail("no picture", raw_response);
+		return Object.assign(vars, {
+			data: perma_link,
+			height,
+			width,
+			picture
+		});
 	} else if (video_status === "processing") {
 		const processing_progress = status.processing_progress;
 		if (processing_progress === undefined)
@@ -112,7 +121,7 @@ function videoGetResponse(vars, raw_response) {
 					mime: `${vars.mime} - processing ${processing_progress}%`,
 					data: perma_link
 				},
-				{ id: vars.problem_media }
+				{ id: vars.problem_media_id }
 			)
 			.then(() => {
 				if (++vars.get_media_tries === MAX_MEDIA_TRIES)
@@ -171,7 +180,8 @@ function write(vars) {
 				mime: vars.mime,
 				data: vars.data,
 				height: vars.height,
-				width: vars.width
+				width: vars.width,
+				picture: vars.picture
 			},
 			{ id: vars.problem_media_id }
 		)

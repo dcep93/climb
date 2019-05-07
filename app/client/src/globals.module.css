@@ -54,3 +54,7 @@ input[type="checkbox"] {
 .text_align {
 	text-align: center;
 }
+
+img {
+	object-fit: scale-down;
+}

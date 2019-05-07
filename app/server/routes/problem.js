@@ -18,7 +18,7 @@ app.get("/", function(req, res, next) {
 		.then(() =>
 			orm.select(
 				"problem_media",
-				{ problem_id },
+				{ gym_path, problem_id },
 				{ suffix: "ORDER BY id DESC" }
 			)
 		)
@@ -74,6 +74,7 @@ app.post("/edit", function(req, res, next) {
 app.post("/upload", function(req, res, next) {
 	if (!res.common.user.is_verified) return res.sendStatus(403);
 	const problem_id = req.params.problem_id;
+	const gym_path = req.params.gym_path;
 
 	// const gcs_id = req.body.gcs_id;
 	const gcs_path = req.body.gcs_path;
@@ -89,6 +90,7 @@ app.post("/upload", function(req, res, next) {
 
 	orm.insert("problem_media", {
 		problem_id,
+		gym_path,
 		gcs_path,
 		user_id: res.common.user.id,
 		file_size,
