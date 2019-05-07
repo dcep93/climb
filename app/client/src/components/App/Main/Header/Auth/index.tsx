@@ -52,7 +52,6 @@ function Auth() {
 			<div
 				hidden={loggedIn()}
 				id="sign-in-button"
-				// className="g-signin2"
 				className={`g-signin2 ${styles.g_sign_in}`}
 				data-onsuccess="onSignIn"
 			/>
