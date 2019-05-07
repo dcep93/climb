@@ -19,10 +19,6 @@ interface StateType {
 	[id: number]: boolean;
 }
 
-function formatDate(dateString: string): string {
-	return new Date(dateString).toDateString();
-}
-
 class GymProblems extends Component<PropsType, StateType> {
 	constructor(props: PropsType) {
 		super(props);
@@ -68,7 +64,7 @@ class GymProblems extends Component<PropsType, StateType> {
 							<input {...this.checkboxProps(problem.id)} />
 						</label>
 					</p>
-					<p>{formatDate(problem.date)}</p>
+					<p>{g.formatDate(problem.date)}</p>
 					<p>
 						{problem.location}
 						{Boolean(problem.active) && <span> (retired)</span>}

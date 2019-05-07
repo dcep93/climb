@@ -16,6 +16,13 @@ app.get("/", function(req, res, next) {
 		.then(gyms => gyms[0] || Promise.reject())
 		.then(gym => Object.assign(state.problem, { gym }))
 		.then(() =>
+			orm.select("gyms", { path: gym_path }, { columns: ["name"] })
+		)
+		.then(gyms => gyms[0] || Promise.reject())
+		.then(gym => gym.name || Promise.reject())
+		.then(gym_name => Object.assign(state.problem, { gym_name }))
+		.then(console.log)
+		.then(() =>
 			orm.select(
 				"problem_media",
 				{ gym_path, problem_id },

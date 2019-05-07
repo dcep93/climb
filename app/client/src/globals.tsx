@@ -125,6 +125,10 @@ function inputDate(dateString?: string) {
 	return date.toISOString().slice(0, 10);
 }
 
+function formatDate(dateString: string): string {
+	return new Date(dateString).toDateString();
+}
+
 class Title extends Component<{ title: string }> {
 	componentDidMount = () => {
 		document.title = this.props.title;
@@ -143,7 +147,8 @@ export default {
 	unready,
 	unready_o,
 	inputDate,
-	Title
+	Title,
+	formatDate
 };
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
