@@ -51,16 +51,7 @@ class NewProblem extends Component<{ gym_path: string }, gt.problemType> {
 						<br />
 						<input {...g.input(this, "difficulty")} size={5} />
 					</div>
-					<div>
-						date
-						<br />
-						<input
-							{...g.input(this, "date")}
-							type="date"
-							min="2019-01-01"
-							max="2030-12-31"
-						/>
-					</div>
+					<br />
 					<div>
 						location
 						<br />
@@ -75,6 +66,16 @@ class NewProblem extends Component<{ gym_path: string }, gt.problemType> {
 						setter
 						<br />
 						<input {...g.input(this, "setter")} size={8} />
+					</div>
+					<div>
+						date
+						<br />
+						<input
+							{...g.input(this, "date")}
+							type="date"
+							min="2019-01-01"
+							max="2030-12-31"
+						/>
 					</div>
 				</div>
 				<div className={gs.vertical_space} />

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Button from "react-bootstrap/Button";
 
 import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
@@ -15,8 +16,7 @@ class EditProblem extends Component<
 		});
 	}
 
-	submit = (event: React.MouseEvent<HTMLInputElement>): void => {
-		event.preventDefault();
+	submit = (): void => {
 		const url = `/gym/${this.props.gym_path}/problem/${this.props.id}/edit`;
 		g.req(url, "POST", this.state).then(g.refresh);
 	};
@@ -24,32 +24,54 @@ class EditProblem extends Component<
 	render() {
 		return (
 			<div className={gs.bubble}>
-				<p>id: {this.props.id}</p>
-				<p>
-					name: <input {...g.input(this, "name")} />
-				</p>
-				<p>
-					difficulty: <input {...g.input(this, "difficulty")} />
-				</p>
-				<p>
-					location: <input {...g.input(this, "location")} />
-				</p>
-				<p>
-					date: <input {...g.input(this, "date")} type="date" />
-				</p>
-				<p>
-					setter: <input {...g.input(this, "setter")} />
-				</p>
-				<p>
-					color: <input {...g.input(this, "color")} />
-				</p>
-				<p>
-					active:{" "}
-					<input
-						{...g.input(this, "active", gt.InputType.Checkbox)}
-					/>
-				</p>
-				<input type="submit" onClick={this.submit} />
+				<div>
+					<label>
+						<span>id: {this.props.id} - active </span>
+						<input
+							{...g.input(this, "active", gt.InputType.Checkbox)}
+						/>
+					</label>
+				</div>
+				<div className={gs.flex}>
+					<div className={gs.padding}>
+						name
+						<br />
+						<input {...g.input(this, "name")} size={10} />
+					</div>
+					<div className={gs.padding}>
+						difficulty
+						<br />
+						<input {...g.input(this, "difficulty")} size={4} />
+					</div>
+					<div className={gs.padding}>
+						location
+						<br />
+						<input {...g.input(this, "location")} size={9} />
+					</div>
+					<div className={gs.padding}>
+						color
+						<br />
+						<input {...g.input(this, "color")} size={6} />
+					</div>
+					<div className={gs.padding}>
+						setter
+						<br />
+						<input {...g.input(this, "setter")} size={7} />
+					</div>
+					<div className={gs.padding}>
+						date
+						<br />
+						<input
+							{...g.input(this, "date")}
+							type="date"
+							min="2019-01-01"
+							max="2030-12-31"
+						/>
+					</div>
+					<div>
+						<Button onClick={this.submit}>Submit</Button>
+					</div>
+				</div>
 			</div>
 		);
 	}
