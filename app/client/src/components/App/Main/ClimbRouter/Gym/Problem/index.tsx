@@ -46,7 +46,14 @@ function Problem(props: {
 						)}
 					</p>
 				</div>
-				{Media.newMedia(props.problem.gym_path, props.problem.id)}
+				<div>
+					<div className={gs.bubble}>
+						{Media.newMedia(
+							props.problem.gym_path,
+							props.problem.id
+						)}
+					</div>
+				</div>
 			</div>
 
 			<Media

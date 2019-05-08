@@ -14,28 +14,32 @@ const new_media_ref: RefObject<HTMLInputElement> = React.createRef();
 
 function newMedia(gym_path: string, problem_id: number) {
 	if (g.common().user.id === undefined) {
-		return <p>Login and become verified to upload media.</p>;
+		return (
+			<div>
+				<p>Login and become verified to upload media.</p>
+			</div>
+		);
 	} else if (!g.common().user.is_verified) {
 		return (
-			<p>
-				Email climb.nomorerice@gmail.com with a link to your profile to
-				become verified to upload media.
-			</p>
+			<div>
+				<p>
+					Email climb.nomorerice@gmail.com with a link to your profile
+					to become verified to upload media.
+				</p>
+			</div>
 		);
 	} else {
 		return (
 			<div>
-				<div className={gs.bubble}>
-					<p>New Media</p>
-					<div>
-						<input ref={new_media_ref} type="file" name="upload" />
-						<br />
-						<Button
-							onClick={() => submitNewMedia(gym_path, problem_id)}
-						>
-							Submit
-						</Button>
-					</div>
+				<p>New Media</p>
+				<div>
+					<input ref={new_media_ref} type="file" name="upload" />
+					<br />
+					<Button
+						onClick={() => submitNewMedia(gym_path, problem_id)}
+					>
+						Submit
+					</Button>
 				</div>
 			</div>
 		);
