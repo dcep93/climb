@@ -30,13 +30,18 @@ function connect() {
 }
 
 function getCons(where) {
-	const wk = Object.keys(where || {});
-	const w = wk.map(
-		key => `${key}${Array.isArray(where[key]) ? " IN (?)" : "=?"}`
-	);
-	const p = wk.map(key => where[key]);
-	console.log(JSON.stringify(p));
-
+	const w = [];
+	const p = [];
+	for (let key in where) {
+		let val = where[key];
+		if (Array.isArray(val)) {
+			w.push(`${key} IN (?) `);
+			p.push(val.length === 0 ? null : val);
+		} else {
+			w.push(`${key}=?`);
+			p.push(val);
+		}
+	}
 	return { w, p };
 }
 
