@@ -61,12 +61,7 @@ class EditProblem extends Component<
 					<div className={gs.padding}>
 						date
 						<br />
-						<input
-							{...g.input(this, "date")}
-							type="date"
-							min="2019-01-01"
-							max="2030-12-31"
-						/>
+						<input {...g.dateInput(this, "date")} />
 					</div>
 					<div>
 						<Button onClick={this.submit}>Submit</Button>

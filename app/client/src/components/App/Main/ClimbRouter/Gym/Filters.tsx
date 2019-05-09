@@ -66,7 +66,7 @@ class Filters extends Component<PropsType, StateType> {
 			return false;
 		if (
 			Boolean(filters.active) &&
-			Boolean(problem.active) === (filters.active === "true")
+			Boolean(problem.active) !== (filters.active === "true")
 		)
 			return false;
 		if (Filters.shouldFilterSelect(SelectType.color, problem, filters))

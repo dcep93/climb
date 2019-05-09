@@ -70,12 +70,7 @@ class NewProblem extends Component<{ gym_path: string }, gt.problemType> {
 					<div>
 						date
 						<br />
-						<input
-							{...g.input(this, "date")}
-							type="date"
-							min="2019-01-01"
-							max="2030-12-31"
-						/>
+						<input {...g.dateInput(this, "date")} />
 					</div>
 				</div>
 				<div className={gs.vertical_space_20} />

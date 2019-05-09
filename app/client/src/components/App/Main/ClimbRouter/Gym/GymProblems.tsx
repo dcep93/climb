@@ -67,7 +67,7 @@ class GymProblems extends Component<PropsType, StateType> {
 					<p>{g.formatDate(problem.date)}</p>
 					<p>
 						{problem.location}
-						{Boolean(problem.active) && <span> (retired)</span>}
+						{!Boolean(problem.active) && <span> (retired)</span>}
 					</p>
 					<p>
 						{problem.color}

@@ -98,6 +98,15 @@ const input = (
 	};
 };
 
+const dateInput = (c: Component<object, Readonly<any>>, name: string) => {
+	const params = input(c, name);
+	return Object.assign(params, {
+		type: "date",
+		min: "2019-01-01",
+		max: "2030-12-31"
+	});
+};
+
 const err = console.error;
 
 var app: { _refresh(_: any): void; _common(): commonType };
@@ -148,7 +157,8 @@ export default {
 	unready_o,
 	inputDate,
 	Title,
-	formatDate
+	formatDate,
+	dateInput
 };
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
