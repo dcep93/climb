@@ -137,7 +137,7 @@ function Media(props: {
 			<div>
 				{props.media.map(m => (
 					<div key={m.id} className={gs.bubble}>
-						<Link className={gs.margin} to={`/user/1`}>
+						<Link className={gs.margin} to={`/user/${m.user_id}`}>
 							<div>
 								<img
 									className={`${profile_styles.profile_pic} ${
