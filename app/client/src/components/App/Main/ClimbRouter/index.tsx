@@ -40,7 +40,11 @@ function ClimbRouter(props: any) {
 				/>
 				<Route
 					{...p("/user/:user_id", () => (
-						<Profile user={props.user} />
+						<Profile
+							user={props.user}
+							media={props.media}
+							problems={props.problems}
+						/>
 					))}
 				/>
 				<Route

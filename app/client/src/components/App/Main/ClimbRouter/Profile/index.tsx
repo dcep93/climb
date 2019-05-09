@@ -4,9 +4,14 @@ import g from "../../../../../globals";
 import * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
+import Media from "../Gym/Problem/Media";
+
 import styles from "./index.module.css";
 
-class Profile extends Component<{ user: gt.userType }, gt.userType> {
+class Profile extends Component<
+	{ user: gt.userType; media: gt.mediaType[]; problems: gt.problemType[] },
+	gt.userType
+> {
 	constructor(props: any) {
 		super(props);
 		this.state = Object.assign({}, props.user);
@@ -60,12 +65,20 @@ class Profile extends Component<{ user: gt.userType }, gt.userType> {
 
 	render() {
 		return (
-			<div className={`${gs.bubble} ${styles.profile}`}>
-				<g.Title title={this.props.user.name} />
-				<div>
-					{Profile.profileDiv(this.props.user)}
-					{g.common().user.is_admin && this.permissionDiv()}
+			<div>
+				<div className={`${gs.bubble} ${styles.profile}`}>
+					<g.Title title={this.props.user.name} />
+					<div>
+						{Profile.profileDiv(this.props.user)}
+						{g.common().user.is_admin && this.permissionDiv()}
+					</div>
 				</div>
+				<Media
+					media={this.props.media}
+					users={[this.props.user]}
+					problems={this.props.problems}
+					forProfile={true}
+				/>
 			</div>
 		);
 	}

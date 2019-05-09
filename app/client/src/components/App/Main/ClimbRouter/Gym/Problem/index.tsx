@@ -58,10 +58,10 @@ class Problem extends Component<PropsType, StateType> {
 				</div>
 
 				<Media
-					gym_path={this.props.problem.gym_path}
-					problem_id={this.props.problem.id}
 					media={this.props.problem.media}
 					users={this.props.problem.users}
+					problems={[]}
+					forProfile={false}
 				/>
 			</div>
 		);

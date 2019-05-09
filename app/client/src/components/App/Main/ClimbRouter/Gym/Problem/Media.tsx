@@ -122,34 +122,60 @@ function mediaData(m: gt.mediaType) {
 	}
 }
 
+function profileLink(
+	m: gt.mediaType,
+	problemsDict: { [id: number]: gt.problemType }
+) {
+	return (
+		<Link to={`/gym/${m.gym_path}/problem/${m.problem_id}`}>
+			<div className={gs.padding}>{problemsDict[m.problem_id].name}</div>
+		</Link>
+	);
+}
+
+function problemLink(
+	m: gt.mediaType,
+	usersDict: { [id: number]: gt.userType }
+) {
+	return (
+		<Link className={gs.margin} to={`/user/${m.user_id}`}>
+			<div>
+				<img
+					className={`${profile_styles.profile_pic} ${gs.inline}`}
+					src={usersDict[m.user_id].image}
+				/>
+				<p className={`${gs.inline} ${gs.margin}`}>
+					{usersDict[m.user_id].name} ({m.user_id})
+				</p>
+			</div>
+		</Link>
+	);
+}
+
+function keyById(items: { id: number }[]) {
+	const dict: { [id: number]: any } = {};
+	items.forEach(item => {
+		dict[item.id] = item;
+	});
+	return dict;
+}
+
 function Media(props: {
-	gym_path: string;
-	problem_id: number;
 	media: gt.mediaType[];
 	users: gt.userType[];
+	problems: gt.problemType[];
+	forProfile: boolean;
 }) {
-	const usersDict: { [id: number]: gt.userType } = {};
-	props.users.forEach(user => {
-		usersDict[user.id] = user;
-	});
+	const usersDict = keyById(props.users);
+	const problemsDict = keyById(props.problems);
 	return (
 		<div>
 			<div>
 				{props.media.map(m => (
 					<div key={m.id} className={gs.bubble}>
-						<Link className={gs.margin} to={`/user/${m.user_id}`}>
-							<div>
-								<img
-									className={`${profile_styles.profile_pic} ${
-										gs.inline
-									}`}
-									src={usersDict[m.user_id].image}
-								/>
-								<p className={`${gs.inline} ${gs.margin}`}>
-									{usersDict[m.user_id].name} ({m.user_id})
-								</p>
-							</div>
-						</Link>
+						{props.forProfile
+							? profileLink(m, problemsDict)
+							: problemLink(m, usersDict)}
 						{mediaData(m)}
 					</div>
 				))}

@@ -64,5 +64,6 @@ CREATE TABLE problem_media (
     picture VARCHAR(256),
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY gym_path_problem_id (gym_path, problem_id)
+    KEY gym_path_problem_id (gym_path, problem_id),
+    KEY user_id (user_id)
 );

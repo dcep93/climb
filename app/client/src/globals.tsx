@@ -39,6 +39,7 @@ interface problemType {
 interface mediaType {
 	id: number;
 	problem_id: number;
+	gym_path: string;
 	gcs_path: string;
 	user_id: number;
 	file_size: number;
