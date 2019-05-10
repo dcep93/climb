@@ -58,6 +58,7 @@ CREATE TABLE problem_media (
     user_id INT UNSIGNED NOT NULL,
     file_size INT UNSIGNED NOT NULL,
     mime VARCHAR(32) NOT NULL,
+    facebook_id INT UNSIGNED,
     data TEXT,
     width INT UNSIGNED,
     height INT UNSIGNED,

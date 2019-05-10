@@ -155,7 +155,15 @@ function uploadRequest(vars) {
 			const media_id = JSON.parse(response).id;
 			if (!media_id) fail("no media id", response);
 			return Object.assign(vars, { media_id });
-		});
+		})
+		.then(() =>
+			orm.update(
+				"problem_media",
+				{ facebook_id: vars.media_id },
+				{ id: vars.problem_media_id }
+			)
+		)
+		.then(() => vars);
 }
 
 function getMedia(vars) {
