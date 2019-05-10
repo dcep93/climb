@@ -84,7 +84,6 @@ function imageGetResponse(vars, raw_response) {
 }
 
 function videoGetResponse(vars, raw_response) {
-	// TODO dont make client wait
 	const response = JSON.parse(raw_response);
 	const perma_link = response.permalink_url;
 	if (!perma_link) fail("no permalink", raw_response);
