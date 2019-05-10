@@ -196,6 +196,7 @@ function write(vars) {
 		.then(() => vars);
 }
 
+// todo
 function deleteFromGCS(vars) {
 	return vars;
 }

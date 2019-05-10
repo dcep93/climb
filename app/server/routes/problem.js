@@ -115,7 +115,7 @@ app.post("/upload", function(req, res, next) {
 		file_size,
 		mime
 	})
-		.then(id => uploadToFacebook(id, mime, gcs_path))
+		.then(id => setTimeout(() => uploadToFacebook(id, mime, gcs_path)))
 		.then(() => res.sendStatus(200))
 		.catch(next);
 });
