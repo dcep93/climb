@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import Media from "./Media";
+import NewMedia from "./NewMedia";
 
 import * as gt from "../../../../../../globals";
 import gs from "../../../../../../globals.module.css";
@@ -49,10 +50,7 @@ class Problem extends Component<PropsType, StateType> {
 					</div>
 					<div>
 						<div className={gs.bubble}>
-							{Media.newMedia(
-								this.props.problem.gym_path,
-								this.props.problem.id
-							)}
+							<NewMedia {...this.props.problem} />
 						</div>
 					</div>
 				</div>
