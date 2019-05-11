@@ -7,10 +7,9 @@ import g, * as gt from "../../../../../../globals";
 import Button from "react-bootstrap/Button";
 
 interface PropsType {
-	problem: gt.problemType & {
-		media: gt.mediaType[];
-		users: gt.userType[];
-	};
+	problem: gt.problemType;
+	media: gt.mediaType[];
+	users: gt.userType[];
 	gym_name: string;
 	setShow(toShow: boolean): void;
 }

@@ -10,10 +10,9 @@ import ProblemShow from "./ProblemShow";
 import ProblemEdit from "./ProblemEdit";
 
 interface PropsType {
-	problem: gt.problemType & {
-		media: gt.mediaType[];
-		users: gt.userType[];
-	};
+	problem: gt.problemType;
+	media: gt.mediaType[];
+	users: gt.userType[];
 	gym_name: string;
 }
 
@@ -56,8 +55,8 @@ class Problem extends Component<PropsType, StateType> {
 				</div>
 
 				<MediaForProblem
-					media={this.props.problem.media}
-					users={this.props.problem.users}
+					media={this.props.media}
+					users={this.props.users}
 				/>
 			</div>
 		);

@@ -48,11 +48,18 @@ function ClimbRouter(props: any) {
 					))}
 				/>
 				<Route
-					{...p("/gym/:gym_path", () => <Gym gym={props.gym} />)}
+					{...p("/gym/:gym_path", () => (
+						<Gym
+							gym={props.gym}
+							climbed_problems={props.climbed_problems}
+							problems={props.problems}
+							pictures={props.pictures}
+						/>
+					))}
 				/>
 				<Route
 					{...p("/gym/:gym_path/edit", () => (
-						<GymEdit gym={props.gym} />
+						<GymEdit gym={props.gym} problems={props.problems} />
 					))}
 				/>
 				<Route
@@ -60,6 +67,8 @@ function ClimbRouter(props: any) {
 						<Problem
 							problem={props.problem}
 							gym_name={props.gym_name}
+							media={props.media}
+							users={props.users}
 						/>
 					))}
 				/>

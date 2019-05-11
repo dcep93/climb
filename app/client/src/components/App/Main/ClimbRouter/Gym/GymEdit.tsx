@@ -10,7 +10,8 @@ import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 interface PropsType {
-	gym: gt.gymType & { problems: gt.problemType[] };
+	gym: gt.gymType;
+	problems: gt.problemType[];
 }
 class GymEdit extends Component<PropsType, gt.gymType> {
 	constructor(props: PropsType) {
@@ -52,7 +53,7 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 					<NewProblem gym_path={this.props.gym.path} />
 				</div>
 				<div className={gs.flex}>
-					{this.props.gym.problems.map(problem => (
+					{this.props.problems.map(problem => (
 						<EditProblem
 							key={problem.id}
 							gym_path={this.props.gym.path}

@@ -14,7 +14,7 @@ app.get("/", function(req, res, next) {
 		.then(problem => Object.assign(state, { problem }))
 		.then(() => orm.select("problems", { gym_path }))
 		.then(gyms => gyms[0] || Promise.reject())
-		.then(gym => Object.assign(state.problem, { gym }))
+		.then(gym => Object.assign(state, { gym }))
 		.then(() =>
 			orm.select("gyms", { path: gym_path }, { columns: ["name"] })
 		)
@@ -28,20 +28,20 @@ app.get("/", function(req, res, next) {
 				{ suffix: "ORDER BY id DESC" }
 			)
 		)
-		.then(media => Object.assign(state.problem, { media }))
+		.then(media => Object.assign(state, { media }))
 		.then(() =>
 			orm.select(
 				"users",
 				{
 					id: Array.from(
-						new Set(state.problem.media.map(media => media.user_id))
+						new Set(state.media.map(media => media.user_id))
 					)
 				},
 				{ columns: ["id", "image", "name"] }
 			)
 		)
 
-		.then(users => Object.assign(state.problem, { users }))
+		.then(users => Object.assign(state, { users }))
 		.then(() => res.data(state))
 		.catch(next);
 });

@@ -17,7 +17,7 @@ app.get("/", function(req, res, next) {
 		.then(() =>
 			orm.select("problems", { gym_path }, { suffix: "ORDER BY id DESC" })
 		)
-		.then(problems => Object.assign(state.gym, { problems }))
+		.then(problems => Object.assign(state, { problems }))
 		.then(() =>
 			orm.select(
 				"climbed_problems",
@@ -26,9 +26,7 @@ app.get("/", function(req, res, next) {
 			)
 		)
 		.then(rows => rows.map(row => row.problem_id))
-		.then(climbed_problems =>
-			Object.assign(state.gym, { climbed_problems })
-		)
+		.then(climbed_problems => Object.assign(state, { climbed_problems }))
 		.then(() =>
 			orm.select(
 				"problem_media",
@@ -39,7 +37,7 @@ app.get("/", function(req, res, next) {
 				}
 			)
 		)
-		.then(pictures => Object.assign(state.gym, { pictures }))
+		.then(pictures => Object.assign(state, { pictures }))
 		.then(() => res.data(state))
 		.catch(next);
 });
@@ -55,7 +53,7 @@ app.get("/edit", function(req, res, next) {
 		.then(() =>
 			orm.select("problems", { gym_path }, { suffix: "ORDER BY id DESC" })
 		)
-		.then(problems => Object.assign(state.gym, { problems }))
+		.then(problems => Object.assign(state, { problems }))
 		.then(() => res.data(state))
 		.catch(next);
 });

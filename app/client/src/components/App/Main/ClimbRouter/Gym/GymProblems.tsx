@@ -7,10 +7,9 @@ import gs from "../../../../../globals.module.css";
 import styles from "./GymProblems.module.css";
 
 interface PropsType {
-	gym: gt.gymType & {
-		climbed_problems: number[];
-		problems: gt.problemType[];
-	};
+	gym: gt.gymType;
+	climbed_problems: number[];
+	problems: gt.problemType[];
 	shouldDisplayProblem(problem: gt.problemType): boolean;
 }
 
@@ -22,9 +21,9 @@ class GymProblems extends Component<PropsType, StateType> {
 	constructor(props: PropsType) {
 		super(props);
 		const state: StateType = {};
-		props.gym.problems.forEach((problem: gt.problemType) => {
+		props.problems.forEach((problem: gt.problemType) => {
 			state[problem.id] =
-				props.gym.climbed_problems.indexOf(problem.id) !== -1;
+				props.climbed_problems.indexOf(problem.id) !== -1;
 		});
 		this.state = state;
 	}
@@ -85,7 +84,7 @@ class GymProblems extends Component<PropsType, StateType> {
 	}
 
 	render() {
-		const problems = this.props.gym.problems.filter(
+		const problems = this.props.problems.filter(
 			this.props.shouldDisplayProblem
 		);
 		if (problems.length > 0) {
