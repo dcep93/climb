@@ -10,7 +10,7 @@ interface ProgressType {
 	p: number;
 }
 
-const PROGRESS_LOOKBACK = 10;
+const PROGRESS_LOOKBACK = 20;
 
 class NewMedia extends Component<
 	gt.problemType,
