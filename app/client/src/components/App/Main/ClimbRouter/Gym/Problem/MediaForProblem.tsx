@@ -2,7 +2,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import * as gt from "../../../../../../globals";
+import g, * as gt from "../../../../../../globals";
 import gs from "../../../../../../globals.module.css";
 
 import Media from "./Media";
@@ -57,15 +57,21 @@ function problemLink(
 	usersDict: { [id: number]: gt.userType }
 ) {
 	return (
-		<Link className={gs.margin} to={`/user/${m.user_id}`}>
-			<div>
+		<Link to={`/user/${m.user_id}`}>
+			<div className={gs.margin}>
 				<img
 					className={`${profile_styles.profile_pic} ${gs.inline}`}
 					src={usersDict[m.user_id].image}
 				/>
-				<p className={`${gs.inline} ${gs.margin}`}>
-					{usersDict[m.user_id].name} ({m.user_id})
-				</p>
+				<div className={`${gs.inline} ${styles.link_info}`}>
+					<span>
+						{usersDict[m.user_id].name} ({m.user_id})
+					</span>
+					<br />
+					<span>
+						{g.formatDate(new Date(m.timestamp).toString())}
+					</span>
+				</div>
 			</div>
 		</Link>
 	);

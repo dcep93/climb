@@ -48,6 +48,7 @@ interface mediaType {
 	width: number;
 	height: number;
 	picture: string;
+	timestamp: number;
 }
 
 function req(url: string, method?: string, body?: any): Promise<Response> {

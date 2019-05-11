@@ -2,7 +2,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import * as gt from "../../../../../../globals";
+import g, * as gt from "../../../../../../globals";
 import gs from "../../../../../../globals.module.css";
 
 import Media from "./Media";
@@ -13,7 +13,11 @@ function profileLink(
 ) {
 	return (
 		<Link to={`/gym/${m.gym_path}/problem/${m.problem_id}`}>
-			<div className={gs.padding}>{problemsDict[m.problem_id].name}</div>
+			<div className={gs.padding}>
+				<span>{problemsDict[m.problem_id].name}</span>
+				<br />
+				<span>{g.formatDate(new Date(m.timestamp).toString())}</span>
+			</div>
 		</Link>
 	);
 }
