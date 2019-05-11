@@ -43,37 +43,30 @@ class NewProblem extends Component<PropsType, gt.problemType> {
 					styles.new_problem_container
 				}`}
 			>
-				<p>New Problem</p>
+				<h5>New Problem</h5>
 				<div className={styles.new_problem}>
 					<div>
-						name
-						<br />
+						<div>name</div>
 						<input {...g.input(this, "name")} size={11} />
 					</div>
 					<div>
-						difficulty
-						<br />
+						<div>difficulty</div>
 						<input {...g.input(this, "difficulty")} size={5} />
 					</div>
-					<br />
 					<div>
-						location
-						<br />
+						<div>location</div>
 						<input {...g.input(this, "location")} size={10} />
 					</div>
 					<div>
-						color
-						<br />
+						<div>color</div>
 						<input {...g.input(this, "color")} size={7} />
 					</div>
 					<div>
-						setter
-						<br />
+						<div>setter</div>
 						<input {...g.input(this, "setter")} size={8} />
 					</div>
 					<div>
-						date
-						<br />
+						<div>date</div>
 						<input {...g.dateInput(this, "date")} />
 					</div>
 				</div>

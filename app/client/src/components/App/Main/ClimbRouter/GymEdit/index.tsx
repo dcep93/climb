@@ -30,26 +30,25 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 			<div>
 				<g.Title title={`Edit: ${this.props.gym.name}`} />
 				<div>
-					<div className={`${gs.bubble} ${gs.inline}`}>
-						<Link to={`/gym/${this.props.gym.path}`}>
-							To Gym Page
-						</Link>
-						<div className={gs.vertical_space_20} />
-						<p>
-							name
-							<br />
-							<input {...g.input(this, "name")} />
-						</p>
-						<p>
-							description
-							<br />
-							<textarea {...g.input(this, "description")} />
-						</p>
-						<Button onClick={this.submit} variant="primary">
-							Edit
-						</Button>
+					<div>
+						<div className={`${gs.bubble} ${gs.inline}`}>
+							<Link to={`/gym/${this.props.gym.path}`}>
+								To {this.props.gym.name}
+							</Link>
+							<div className={gs.vertical_space_20} />
+							<p>
+								<div>name</div>
+								<input {...g.input(this, "name")} />
+							</p>
+							<p>
+								<div>description</div>
+								<textarea {...g.input(this, "description")} />
+							</p>
+							<Button onClick={this.submit} variant="primary">
+								Edit
+							</Button>
+						</div>
 					</div>
-					<br />
 					<NewProblem gym_path={this.props.gym.path} />
 				</div>
 				<div className={gs.flex}>

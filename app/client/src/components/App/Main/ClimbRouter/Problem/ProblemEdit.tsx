@@ -41,7 +41,7 @@ class ProblemEdit extends Component<PropsType, gt.problemType> {
 				</p>
 				<p>
 					<input {...g.input(this, "name")} size={10} />
-					<span> id: ({this.props.problem.id})</span>
+					<span> ({this.props.problem.id})</span>
 				</p>
 				<p>
 					<input {...g.input(this, "difficulty")} size={5} />

@@ -129,11 +129,11 @@ class Filters extends Component<PropsType, StateType> {
 				<h4>Filters</h4>
 				<div className={`${styles.filters} ${gs.flex}`}>
 					<div>
-						<p>Name</p>
+						<div>Name</div>
 						<input {...this.inputProperties("name")} size={7} />
 					</div>
 					<div>
-						<p>Climbed</p>
+						<div>Climbed</div>
 						<select
 							name={"climbed"}
 							onChange={this.selectAction.bind(this)}
@@ -144,15 +144,15 @@ class Filters extends Component<PropsType, StateType> {
 						</select>
 					</div>
 					<div>
-						<p>Difficulty</p>
+						<div>Difficulty</div>
 						{this.selectComponent(SelectType.difficulty)}
 					</div>
 					<div>
-						<p>Location</p>
+						<div>Location</div>
 						{this.selectComponent(SelectType.location)}
 					</div>
 					<div>
-						<p>Status</p>
+						<div>Status</div>
 						<select
 							name={"active"}
 							onChange={this.selectAction.bind(this)}
@@ -163,11 +163,11 @@ class Filters extends Component<PropsType, StateType> {
 						</select>
 					</div>
 					<div>
-						<p>Color</p>
+						<div>Color</div>
 						{this.selectComponent(SelectType.color)}
 					</div>
 					<div>
-						<p>Setter</p>
+						<div>Setter</div>
 						{this.selectComponent(SelectType.setter)}
 					</div>
 				</div>

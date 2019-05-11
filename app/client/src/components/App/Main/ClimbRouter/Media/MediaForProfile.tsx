@@ -14,11 +14,10 @@ function profileLink(
 	return (
 		<Link to={`/gym/${m.gym_path}/problem/${m.problem_id}`}>
 			<div className={gs.padding}>
-				<span>{problemsDict[m.problem_id].name}</span>
-				<br />
-				<span>
+				<div>{problemsDict[m.problem_id].name}</div>
+				<div>
 					{g.formatDate(new Date(m.timestamp).toString())} ({m.id})
-				</span>
+				</div>
 			</div>
 		</Link>
 	);

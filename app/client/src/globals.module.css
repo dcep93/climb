@@ -30,6 +30,10 @@
 	font-size: 125%;
 }
 
+input[type="date"] {
+	font-size: 90%;
+}
+
 body::after {
 	content: "";
 	background-image: url("/background.jpg");
@@ -40,6 +44,10 @@ body::after {
 	right: 0;
 	position: fixed;
 	z-index: -1;
+}
+
+.align_center {
+	align-self: center;
 }
 
 label > * {

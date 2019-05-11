@@ -21,14 +21,13 @@ function problemLink(
 					src={usersDict[m.user_id].image}
 				/>
 				<div className={`${gs.inline} ${styles.link_info}`}>
-					<span>
+					<div>
 						{usersDict[m.user_id].name} ({m.user_id})
-					</span>
-					<br />
-					<span>
+					</div>
+					<div>
 						{g.formatDate(new Date(m.timestamp).toString())} ({m.id}
 						)
-					</span>
+					</div>
 				</div>
 			</div>
 		</Link>

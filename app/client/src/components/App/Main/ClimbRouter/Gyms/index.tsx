@@ -21,7 +21,7 @@ function Gyms(props: { gyms: gt.gymType[] }) {
 						>
 							<Link to={`/gym/${gym.path}`}>
 								<h3>{gym.name}</h3>
-								<p>{gym.description}</p>
+								<div>{gym.description}</div>
 							</Link>
 						</div>
 					))}

@@ -24,46 +24,45 @@ class GymEditProblem extends Component<PropsType, gt.problemType> {
 	render() {
 		return (
 			<div className={gs.bubble}>
-				<div>
-					<label>
-						<span>id: {this.props.id} - active </span>
-						<input
-							{...g.input(this, "active", gt.InputType.Checkbox)}
-						/>
-					</label>
-				</div>
+				<div>id: {this.props.id}</div>
 				<div className={gs.flex}>
 					<div className={gs.padding}>
-						name
-						<br />
-						<input {...g.input(this, "name")} size={10} />
+						<div>name</div>
+						<input {...g.input(this, "name")} size={7} />
 					</div>
 					<div className={gs.padding}>
-						difficulty
-						<br />
+						<div>difficulty</div>
 						<input {...g.input(this, "difficulty")} size={4} />
 					</div>
 					<div className={gs.padding}>
-						location
-						<br />
-						<input {...g.input(this, "location")} size={9} />
+						<div>location</div>
+						<input {...g.input(this, "location")} size={5} />
 					</div>
 					<div className={gs.padding}>
-						color
-						<br />
-						<input {...g.input(this, "color")} size={6} />
+						<div>color</div>
+						<input {...g.input(this, "color")} size={5} />
 					</div>
 					<div className={gs.padding}>
-						setter
-						<br />
-						<input {...g.input(this, "setter")} size={7} />
+						<div>setter</div>
+						<input {...g.input(this, "setter")} size={5} />
 					</div>
 					<div className={gs.padding}>
-						date
-						<br />
+						<div>date</div>
 						<input {...g.dateInput(this, "date")} />
 					</div>
-					<div>
+					<div className={gs.padding}>
+						<label>
+							<div>active</div>
+							<input
+								{...g.input(
+									this,
+									"active",
+									gt.InputType.Checkbox
+								)}
+							/>
+						</label>
+					</div>
+					<div className={`${gs.align_center} ${gs.margin}`}>
 						<Button onClick={this.submit}>Submit</Button>
 					</div>
 				</div>
