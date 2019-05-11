@@ -10,7 +10,7 @@ import Gym from "./Gym";
 import Problem from "./Problem";
 import GymEdit from "./GymEdit";
 import Gyms from "./Gyms";
-import LatestUsers from "./LatestUsers";
+import LatestUsers from "./Profile/LatestUsers";
 import Profile from "./Profile";
 
 import g from "../../../../globals";

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import NewProblem from "../Gym/NewProblem";
+import NewProblem from "./NewProblem";
 import GymEditProblems from "./GymEditProblems";
 
 import g, * as gt from "../../../../../globals";

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import g, * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-import profile from "../Profile";
+import profile from ".";
 
 function LatestUsers(props: { users: gt.userType[] }) {
 	return (
