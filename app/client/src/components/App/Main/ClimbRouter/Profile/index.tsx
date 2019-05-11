@@ -1,20 +1,30 @@
 import React, { Component } from "react";
 
-import g from "../../../../../globals";
-import * as gt from "../../../../../globals";
+import g, * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-import Media from "../Gym/Problem/Media";
+import MediaForProfile from "../Gym/Problem/MediaForProfile";
 
 import styles from "./index.module.css";
 
-class Profile extends Component<
-	{ user: gt.userType; media: gt.mediaType[]; problems: gt.problemType[] },
-	gt.userType
-> {
-	constructor(props: any) {
+interface PropsType {
+	user: gt.userType;
+	media: gt.mediaType[];
+	problems: gt.problemType[];
+}
+
+interface StateType {
+	is_admin: boolean;
+	is_verified: boolean;
+}
+
+class Profile extends Component<PropsType, StateType> {
+	constructor(props: PropsType) {
 		super(props);
-		this.state = Object.assign({}, props.user);
+		this.state = {
+			is_verified: props.user.is_verified,
+			is_admin: props.user.is_admin
+		};
 	}
 
 	checkboxProps(name: string) {
@@ -73,11 +83,9 @@ class Profile extends Component<
 						{g.common().user.is_admin && this.permissionDiv()}
 					</div>
 				</div>
-				<Media
+				<MediaForProfile
 					media={this.props.media}
-					users={[this.props.user]}
 					problems={this.props.problems}
-					forProfile={true}
 				/>
 			</div>
 		);

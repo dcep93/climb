@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import Media from "./Media";
+import MediaForProblem from "./MediaForProblem";
 import NewMedia from "./NewMedia";
 
 import * as gt from "../../../../../../globals";
@@ -55,11 +55,9 @@ class Problem extends Component<PropsType, StateType> {
 					</div>
 				</div>
 
-				<Media
+				<MediaForProblem
 					media={this.props.problem.media}
 					users={this.props.problem.users}
-					problems={[]}
-					forProfile={false}
 				/>
 			</div>
 		);

@@ -20,7 +20,11 @@ app.get("/", function(req, res, next) {
 		)
 		.then(media => Object.assign(state, { media }))
 		.then(() =>
-			orm.select("problems", { id: state.media.map(m => m.problem_id) })
+			orm.select(
+				"problems",
+				{ id: state.media.map(m => m.problem_id) },
+				{ columns: ["id", "name"] }
+			)
 		)
 		.then(problems => Object.assign(state, { problems }))
 		.then(() => res.data(state))
