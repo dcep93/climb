@@ -2,15 +2,19 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import g from "../../../../../../globals";
+import g, * as gt from "../../../../../../globals";
 import Button from "react-bootstrap/Button";
 
-function ProblemShow(props: any) {
+function ProblemShow(props: {
+	problem: gt.problemType;
+	gym_name: string;
+	setShow: (toShow: boolean) => void;
+}) {
 	return (
 		<div>
 			<p>
 				<Link to={`/gym/${props.problem.gym_path}`}>
-					To {props.problem.gym_name}
+					To {props.gym_name}
 				</Link>
 			</p>
 			<p>

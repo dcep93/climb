@@ -20,7 +20,7 @@ app.get("/", function(req, res, next) {
 		)
 		.then(gyms => gyms[0] || Promise.reject())
 		.then(gym => gym.name || Promise.reject())
-		.then(gym_name => Object.assign(state.problem, { gym_name }))
+		.then(gym_name => Object.assign(state, { gym_name }))
 		.then(() =>
 			orm.select(
 				"problem_media",

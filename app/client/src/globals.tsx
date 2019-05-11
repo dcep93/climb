@@ -51,6 +51,10 @@ interface mediaType {
 	timestamp: number;
 }
 
+interface dictType {
+	[x: string]: any;
+}
+
 function req(url: string, method?: string, body?: any): Promise<Response> {
 	return fetch(`/api${url}`, {
 		method,
@@ -162,4 +166,4 @@ export default {
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
 // prettier-ignore
-export { commonType, userType, gymType, problemType, mediaType, InputType };
+export { commonType, userType, gymType, problemType, mediaType, InputType, dictType };

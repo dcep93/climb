@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 
-import g from "../../../../../globals";
-import * as gt from "../../../../../globals";
+import g, * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-class EditProblem extends Component<
-	gt.problemType & { gym_path: string },
-	gt.problemType
-> {
-	constructor(props: any) {
+interface PropsType extends gt.problemType {
+	gym_path: string;
+}
+
+class EditProblem extends Component<PropsType, gt.problemType> {
+	constructor(props: PropsType) {
 		super(props);
 		this.state = Object.assign({}, props, {
 			date: g.inputDate(props.date)

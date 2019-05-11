@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-import g from "../../../../../globals";
-import * as gt from "../../../../../globals";
+import g, * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
 import styles from "./NewProblem.module.css";
@@ -18,8 +17,13 @@ const initial_problem: gt.problemType = {
 	active: true,
 	gym_path: ""
 };
-class NewProblem extends Component<{ gym_path: string }, gt.problemType> {
-	constructor(props: any) {
+
+interface PropsType {
+	gym_path: string;
+}
+
+class NewProblem extends Component<PropsType, gt.problemType> {
+	constructor(props: PropsType) {
 		super(props);
 		this.state = Object.assign({}, initial_problem, {
 			date: g.inputDate()

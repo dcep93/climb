@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import g from "../../../../../globals";
-import * as gt from "../../../../../globals";
+import g, * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
 import styles from "./GymProblems.module.css";

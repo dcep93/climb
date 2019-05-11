@@ -1,8 +1,7 @@
 import React, { Component, RefObject } from "react";
 import Button from "react-bootstrap/Button";
 
-import g from "../../../../../../globals";
-import * as gt from "../../../../../../globals";
+import g, * as gt from "../../../../../../globals";
 import gs from "../../../../../../globals.module.css";
 
 interface ProgressType {

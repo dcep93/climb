@@ -2,18 +2,17 @@ import React, { Component } from "react";
 
 import { Link } from "react-router-dom";
 
-import g from "../../../../../../globals";
-import * as gt from "../../../../../../globals";
+import g, * as gt from "../../../../../../globals";
 
 import Button from "react-bootstrap/Button";
 
 interface PropsType {
 	problem: gt.problemType & {
 		media: gt.mediaType[];
-		gym_name: string;
 		users: gt.userType[];
 	};
-	setShow(showing: boolean): void;
+	gym_name: string;
+	setShow(toShow: boolean): void;
 }
 
 class ProblemEdit extends Component<PropsType, gt.problemType> {
@@ -38,7 +37,7 @@ class ProblemEdit extends Component<PropsType, gt.problemType> {
 			<div>
 				<p>
 					<Link to={`/gym/${this.props.problem.gym_path}`}>
-						To {this.props.problem.gym_name}
+						To {this.props.gym_name}
 					</Link>
 				</p>
 				<p>

@@ -12,9 +12,9 @@ import ProblemEdit from "./ProblemEdit";
 interface PropsType {
 	problem: gt.problemType & {
 		media: gt.mediaType[];
-		gym_name: string;
 		users: gt.userType[];
 	};
+	gym_name: string;
 }
 
 interface StateType {

@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import g from "../../../../../globals";
-import * as gt from "../../../../../globals";
+import g, * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-import Filters from "./Filters";
+import Filters, * as FiltersTypes from "./Filters";
 import GymProblems from "./GymProblems";
 
 interface PropsType {
@@ -16,7 +15,7 @@ interface PropsType {
 	};
 }
 
-class Gym extends Component<PropsType, any> {
+class Gym extends Component<PropsType, FiltersTypes.StateType> {
 	constructor(props: PropsType) {
 		super(props);
 		let pictures: { [problem_id: number]: string } = {};

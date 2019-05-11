@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 
-import g from "../../../../../globals";
-import * as gt from "../../../../../globals";
+import g, * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
 import styles from "./Filters.module.css";
 
 interface PropsType {
-	updateFilter: any;
+	updateFilter: (filters: gt.dictType) => void;
 	problemsBank: gt.problemType[];
 }
 
@@ -19,6 +18,7 @@ interface StateType {
 	active: string;
 	color: string;
 	setter: string;
+	climbed: string;
 }
 
 enum SelectType {
@@ -38,13 +38,14 @@ class Filters extends Component<PropsType, StateType> {
 			date: "",
 			active: "",
 			color: "",
-			setter: ""
+			setter: "",
+			climbed: ""
 		};
 	}
 
 	static shouldDisplayProblem(
 		problem: gt.problemType,
-		filters: any,
+		filters: StateType,
 		climbed_problems: number[]
 	): boolean {
 		if (filters === null) return true;
@@ -88,7 +89,7 @@ class Filters extends Component<PropsType, StateType> {
 		);
 	}
 
-	inputProperties(name: string): any {
+	inputProperties(name: string): gt.dictType {
 		const g_props = g.input(this, name);
 		const original_on_change = g_props.onChange;
 		const onChange: typeof original_on_change = event => {
@@ -103,7 +104,7 @@ class Filters extends Component<PropsType, StateType> {
 		this.props.updateFilter({ [event.target.name]: event.target.value });
 	}
 
-	getSelectOptions(field: SelectType): any[] {
+	getSelectOptions(field: SelectType): string[] {
 		return this.props.problemsBank
 			.map(problem => problem[field] as string)
 			.sort();
@@ -176,3 +177,5 @@ class Filters extends Component<PropsType, StateType> {
 }
 
 export default Filters;
+// @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
+export { StateType };

@@ -14,7 +14,7 @@ declare global {
 	}
 }
 
-function login(response: any): void {
+function login(response: { Zi: { id_token: string } }): void {
 	if (loggedIn()) return;
 	const id_token = response.Zi.id_token;
 	g.req("/auth/login", "POST", { id_token }).then(g.unready);

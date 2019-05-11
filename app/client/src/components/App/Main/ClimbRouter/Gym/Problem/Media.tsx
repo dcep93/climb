@@ -37,8 +37,8 @@ function mediaData(m: gt.mediaType) {
 	}
 }
 
-function keyById(items: { id: number }[]) {
-	const dict: { [id: number]: any } = {};
+function keyById<T extends { id: number }>(items: T[]): { [id: number]: T } {
+	const dict: { [id: number]: T } = {};
 	items.forEach(item => {
 		dict[item.id] = item;
 	});

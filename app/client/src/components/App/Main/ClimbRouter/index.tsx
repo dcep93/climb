@@ -57,7 +57,10 @@ function ClimbRouter(props: any) {
 				/>
 				<Route
 					{...p("/gym/:gym_path/problem/:problem_id", () => (
-						<Problem problem={props.problem} />
+						<Problem
+							problem={props.problem}
+							gym_name={props.gym_name}
+						/>
 					))}
 				/>
 			</Switch>
