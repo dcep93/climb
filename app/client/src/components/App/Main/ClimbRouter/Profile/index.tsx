@@ -29,7 +29,7 @@ class Profile extends Component<
 				.then(g.unready)
 				.catch(err => {
 					this.setState(original_state);
-					g.err(err);
+					console.error(err);
 				});
 			return state_change;
 		};

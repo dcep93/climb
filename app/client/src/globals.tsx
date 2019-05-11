@@ -108,8 +108,6 @@ const dateInput = (c: Component<object, Readonly<any>>, name: string) => {
 	});
 };
 
-const err = console.error;
-
 var app: { _refresh(_: any): void; _common(): commonType };
 
 function setApp(_app: typeof app) {
@@ -150,7 +148,6 @@ class Title extends Component<{ title: string }> {
 export default {
 	req,
 	input,
-	err,
 	refresh,
 	common,
 	setApp,

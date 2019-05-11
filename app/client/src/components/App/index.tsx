@@ -5,7 +5,10 @@ import Main from "./Main";
 
 import g, * as gt from "../../globals";
 
-class App extends Component<RouteComponentProps, { ready: boolean } & any> {
+class App extends Component<
+	RouteComponentProps,
+	{ ready: boolean; data?: any }
+> {
 	constructor(props: RouteComponentProps) {
 		super(props);
 
@@ -20,6 +23,11 @@ class App extends Component<RouteComponentProps, { ready: boolean } & any> {
 		g.refresh();
 	}
 
+	render(): any {
+		if (!this.state.ready) return null;
+		return <Main {...this.state.data} />;
+	}
+
 	_refresh = (_unready: any): Promise<any> => {
 		const unready = _unready === g.unready_o;
 		console.log("refresh", unready, this.props.history.location.pathname);
@@ -29,20 +37,15 @@ class App extends Component<RouteComponentProps, { ready: boolean } & any> {
 		return g
 			.req(`${this.props.history.location.pathname}`)
 			.then(response => response.json())
-			.then(response => {
-				this.setState(Object.assign({ ready: true }, response));
-				return response;
+			.then(data => {
+				this.setState(Object.assign({ ready: true }, { data }));
+				return data;
 			});
 	};
 
 	_common = (): gt.commonType => {
-		return this.state.common;
+		return this.state.data.common;
 	};
-
-	render(): any {
-		if (!this.state.ready) return null;
-		return <Main {...this.state as any} />;
-	}
 }
 
 export default withRouter(App);
