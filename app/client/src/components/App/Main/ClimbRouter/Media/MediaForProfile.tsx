@@ -2,10 +2,10 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import g, * as gt from "../../../../../../globals";
-import gs from "../../../../../../globals.module.css";
+import g, * as gt from "../../../../../globals";
+import gs from "../../../../../globals.module.css";
 
-import Media from "./Media";
+import Media from ".";
 
 function profileLink(
 	m: gt.mediaType,

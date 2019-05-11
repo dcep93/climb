@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
-import MediaForProblem from "./MediaForProblem";
-import NewMedia from "./NewMedia";
+import MediaForProblem from "../Media/MediaForProblem";
+import NewMedia from "../Media/NewMedia";
 
-import * as gt from "../../../../../../globals";
-import gs from "../../../../../../globals.module.css";
+import * as gt from "../../../../../globals";
+import gs from "../../../../../globals.module.css";
 
 import ProblemShow from "./ProblemShow";
 import ProblemEdit from "./ProblemEdit";

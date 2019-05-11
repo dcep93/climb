@@ -7,8 +7,8 @@ import {
 } from "react-router";
 
 import Gym from "./Gym";
-import Problem from "./Gym/Problem";
-import GymEdit from "./Gym/GymEdit";
+import Problem from "./Problem";
+import GymEdit from "./GymEdit";
 import Gyms from "./Gyms";
 import LatestUsers from "./LatestUsers";
 import Profile from "./Profile";

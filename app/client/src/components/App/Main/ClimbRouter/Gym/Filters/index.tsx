@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-import g, * as gt from "../../../../../globals";
-import gs from "../../../../../globals.module.css";
+import g, * as gt from "../../../../../../globals";
+import gs from "../../../../../../globals.module.css";
 
-import styles from "./Filters.module.css";
+import styles from "./index.module.css";
 
 interface PropsType {
 	updateFilter: (filters: gt.dictType) => void;

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import g, * as gt from "../../../../../globals";
-import gs from "../../../../../globals.module.css";
+import g, * as gt from "../../../../../../globals";
+import gs from "../../../../../../globals.module.css";
 
-import styles from "./GymProblems.module.css";
+import styles from "./index.module.css";
 
 interface PropsType {
 	gym: gt.gymType;

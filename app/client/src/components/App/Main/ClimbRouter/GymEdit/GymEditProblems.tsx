@@ -8,7 +8,7 @@ interface PropsType extends gt.problemType {
 	gym_path: string;
 }
 
-class EditProblem extends Component<PropsType, gt.problemType> {
+class GymEditProblem extends Component<PropsType, gt.problemType> {
 	constructor(props: PropsType) {
 		super(props);
 		this.state = Object.assign({}, props, {
@@ -72,4 +72,4 @@ class EditProblem extends Component<PropsType, gt.problemType> {
 	}
 }
 
-export default EditProblem;
+export default GymEditProblem;

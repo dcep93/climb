@@ -1,9 +1,9 @@
 import React from "react";
 
-import * as gt from "../../../../../../globals";
-import gs from "../../../../../../globals.module.css";
+import * as gt from "../../../../../globals";
+import gs from "../../../../../globals.module.css";
 
-import styles from "./Media.module.css";
+import styles from "./index.module.css";
 
 function mediaData(m: gt.mediaType) {
 	if (!m.data) {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import NewProblem from "./NewProblem";
-import EditProblem from "./EditProblem";
+import NewProblem from "../Gym/NewProblem";
+import GymEditProblems from "./GymEditProblems";
 
 import g, * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
@@ -54,7 +54,7 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 				</div>
 				<div className={gs.flex}>
 					{this.props.problems.map(problem => (
-						<EditProblem
+						<GymEditProblems
 							key={problem.id}
 							gym_path={this.props.gym.path}
 							{...problem}

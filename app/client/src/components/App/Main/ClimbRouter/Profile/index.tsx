@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import g, * as gt from "../../../../../globals";
 import gs from "../../../../../globals.module.css";
 
-import MediaForProfile from "../Gym/Problem/MediaForProfile";
+import MediaForProfile from "../Media/MediaForProfile";
 
 import styles from "./index.module.css";
 

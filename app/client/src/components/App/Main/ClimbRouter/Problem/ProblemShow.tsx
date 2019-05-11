@@ -2,7 +2,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import g, * as gt from "../../../../../../globals";
+import g, * as gt from "../../../../../globals";
 import Button from "react-bootstrap/Button";
 
 function ProblemShow(props: {

@@ -2,12 +2,12 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import g, * as gt from "../../../../../../globals";
-import gs from "../../../../../../globals.module.css";
+import g, * as gt from "../../../../../globals";
+import gs from "../../../../../globals.module.css";
 
-import Media from "./Media";
-import styles from "./Media.module.css";
-import profile_styles from "../../Profile/index.module.css";
+import Media from ".";
+import styles from "./index.module.css";
+import profile_styles from "../Profile/index.module.css";
 
 function problemLink(
 	m: gt.mediaType,
