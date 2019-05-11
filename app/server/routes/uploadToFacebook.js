@@ -113,28 +113,31 @@ function videoGetResponse(vars, raw_response) {
 		if (processing_progress === undefined)
 			fail("undefined progress", raw_response);
 
-		return orm
-			.update(
+		let promise;
+		if (processing_progress !== vars.processing_progress) {
+			vars.processing_progress = processing_progress;
+			promise = orm.update(
 				"problem_media",
 				{
-					mime: `${vars.mime} - processing ${processing_progress}%`,
-					data: perma_link
+					mime: `${vars.mime} - processing ${processing_progress}%`
 				},
 				{ id: vars.problem_media_id }
-			)
-			.then(() => {
-				if (++vars.get_media_tries === MAX_MEDIA_TRIES)
-					fail("max retries");
-				if (vars.get_media_tries % MEDIA_TRIES_PRINT_INTERVAL === 0)
-					console.log(
-						`processing ${processing_progress}% ${vars.media_id} ${
-							vars.get_media_tries
-						}`
-					);
-				return new Promise((resolve, reject) => {
-					setTimeout(() => resolve(vars), GET_MEDIA_INTERVAL);
-				}).then(getMedia);
-			});
+			);
+		} else {
+			promise = Promise.resolve();
+		}
+		return promise.then(() => {
+			if (++vars.get_media_tries === MAX_MEDIA_TRIES) fail("max retries");
+			if (vars.get_media_tries % MEDIA_TRIES_PRINT_INTERVAL === 0)
+				console.log(
+					`processing ${processing_progress}% ${vars.media_id} ${
+						vars.get_media_tries
+					}`
+				);
+			return new Promise((resolve, reject) => {
+				setTimeout(() => resolve(vars), GET_MEDIA_INTERVAL);
+			}).then(getMedia);
+		});
 	} else {
 		fail(`bad video status ${video_status}`, raw_response);
 	}
