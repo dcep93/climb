@@ -20,7 +20,7 @@ read GOOGLE_SIGNIN_CLIENT_ID
 echo -n "mysql password: "
 read -s MYSQL_PASSWORD
 
-echo "Create a service account to write to GCS and place it in app/creds.json"
+echo "Create a service account to write to GCS and place it in app/server/climb/creds.json"
 read -s
 
 echo "Create a GCS bucket from https://console.cloud.google.com/storage/browser"
