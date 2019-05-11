@@ -16,7 +16,9 @@ function profileLink(
 			<div className={gs.padding}>
 				<span>{problemsDict[m.problem_id].name}</span>
 				<br />
-				<span>{g.formatDate(new Date(m.timestamp).toString())}</span>
+				<span>
+					{g.formatDate(new Date(m.timestamp).toString())} ({m.id})
+				</span>
 			</div>
 		</Link>
 	);
