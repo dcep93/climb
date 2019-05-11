@@ -14,6 +14,15 @@ const user = require("../routes/user");
 
 const app = express.Router();
 
+var gcs_token;
+exec(
+	`GOOGLE_APPLICATION_CREDENTIALS=${__dirname}/creds.json gcloud auth application-default print-access-token`,
+	function(err, stdout, stderr) {
+		if (err) throw new Error(err);
+		gcs_token = stdout;
+	}
+);
+
 app.use(function(req, res, next) {
 	console.log(req.path);
 	next();
@@ -34,17 +43,11 @@ app.get("/", function(req, res, next) {
 
 app.get("/get_gcs_key", function(req, res, next) {
 	if (!res.common.user.is_verified) return res.sendStatus(403);
-	exec(
-		`GOOGLE_APPLICATION_CREDENTIALS=${__dirname}/creds.json gcloud auth application-default print-access-token`,
-		function(err, stdout, stderr) {
-			if (err) return next(new Error(err));
-			res.json({
-				folder: res.common.user.id,
-				token: stdout,
-				bucket: config.gcs_bucket_id
-			});
-		}
-	);
+	res.json({
+		folder: res.common.user.id,
+		token: gcs_token,
+		bucket: config.gcs_bucket_id
+	});
 });
 
 module.exports = app;

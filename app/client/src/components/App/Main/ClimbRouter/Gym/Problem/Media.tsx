@@ -66,17 +66,23 @@ function submitNewMedia(gym_path: string, problem_id: number) {
 			const name = `${folder}/${new Date().getTime()}_${file.name}`;
 			const endpoint = `https://www.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=${name}`;
 
-			return fetch(endpoint, {
-				method: "POST",
-				body: file,
-				headers: {
-					Authorization: `Bearer ${gcs_key}`,
-					"Content-Type": file.type
-					// 'Content-Length': file.size,
-				}
-			});
+			return new Promise((resolve, reject) => {
+				let req = new XMLHttpRequest();
+				req.upload.onprogress = function(e) {
+					console.log(new Date(), "progress", e.loaded, e.total);
+				};
+				req.open("POST", endpoint);
+				req.onload = function(e) {
+					console.log(new Date(), "loaded");
+					resolve(req);
+				};
+				req.setRequestHeader("Authorization", `Bearer ${gcs_key}`);
+				req.setRequestHeader("Content-Type", file.type);
+				req.send(file);
+			}) as Promise<XMLHttpRequest>;
 		})
-		.then(response => response.json())
+		.then(req => req.response)
+		.then(JSON.parse)
 		.then(response =>
 			g.req(`/gym/${gym_path}/problem/${problem_id}/upload`, "POST", {
 				gcs_path: response.name,
