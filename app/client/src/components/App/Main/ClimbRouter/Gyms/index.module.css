@@ -8,4 +8,5 @@
 
 .gyms_parent {
 	justify-content: space-between;
+	max-width: 50%;
 }
