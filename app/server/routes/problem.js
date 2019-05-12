@@ -110,11 +110,11 @@ app.post("/upload", function(req, res, next) {
 
 	const caption = `${
 		res.common.user.name
-	} - https://climb.nomorerice.com/user/${user_id}\n${
+	}\nhttps://climb.nomorerice.com/user/${user_id}\n\n${
 		req.body.problem_name
 	} - ${
 		req.body.gym_name
-	} - https://climb.nomorerice.com/gym/${gym_path}/problem/${problem_id}`;
+	}\nhttps://climb.nomorerice.com/gym/${gym_path}/problem/${problem_id}`;
 
 	orm.insert("problem_media", {
 		problem_id,
