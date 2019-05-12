@@ -49,7 +49,10 @@ class Problem extends Component<PropsType, StateType> {
 					</div>
 					<div>
 						<div className={gs.bubble}>
-							<NewMedia {...this.props.problem} />
+							<NewMedia
+								problem={this.props.problem}
+								gym_name={this.props.gym_name}
+							/>
 						</div>
 					</div>
 				</div>

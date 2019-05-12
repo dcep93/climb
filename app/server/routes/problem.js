@@ -94,6 +94,7 @@ app.post("/upload", function(req, res, next) {
 	if (!res.common.user.is_verified) return res.sendStatus(403);
 	const problem_id = req.params.problem_id;
 	const gym_path = req.params.gym_path;
+	const user_id = res.common.user.id;
 
 	// const gcs_id = req.body.gcs_id;
 	const gcs_path = req.body.gcs_path;
@@ -107,15 +108,25 @@ app.post("/upload", function(req, res, next) {
 
 	if (acceptable_media.indexOf(mime) === -1) return res.sendStatus(400);
 
+	const caption = `${
+		res.common.user.name
+	} - https://climb.nomorerice.com/user/${user_id}\n${
+		req.body.problem_name
+	} - ${
+		req.body.gym_name
+	} - https://climb.nomorerice.com/gym/${gym_path}/problem/${problem_id}`;
+
 	orm.insert("problem_media", {
 		problem_id,
 		gym_path,
 		gcs_path,
-		user_id: res.common.user.id,
+		user_id,
 		file_size,
 		mime
 	})
-		.then(id => setTimeout(() => uploadToFacebook(id, mime, gcs_path)))
+		.then(id =>
+			setTimeout(() => uploadToFacebook(id, mime, gcs_path, caption))
+		)
 		.then(() => res.sendStatus(200))
 		.catch(next);
 });

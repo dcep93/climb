@@ -11,8 +11,13 @@ interface ProgressType {
 
 const PROGRESS_LOOKBACK = 20;
 
+interface PropsType {
+	problem: gt.problemType;
+	gym_name: string;
+}
+
 class NewMedia extends Component<
-	gt.problemType,
+	PropsType,
 	{
 		uploading_file?: string;
 		progress?: ProgressType;
@@ -22,7 +27,7 @@ class NewMedia extends Component<
 > {
 	new_media_ref: RefObject<HTMLInputElement> = React.createRef();
 
-	constructor(props: gt.problemType) {
+	constructor(props: PropsType) {
 		super(props);
 		this.state = { progress_log: [] };
 	}
@@ -136,11 +141,13 @@ class NewMedia extends Component<
 			.then(JSON.parse)
 			.then(response =>
 				g.req(
-					`/gym/${this.props.gym_path}/problem/${
-						this.props.id
+					`/gym/${this.props.problem.gym_path}/problem/${
+						this.props.problem.id
 					}/upload`,
 					"POST",
 					{
+						gym_name: this.props.gym_name,
+						problem_name: this.props.problem.name,
 						gcs_path: response.name,
 						gcs_id: response.id,
 						mime: file.type,

@@ -10,8 +10,14 @@ const MEDIA_TRIES_PRINT_INTERVAL = 10;
 const access_token = config.facebook_page_access_token;
 const storage_path = `https://storage.googleapis.com/${config.gcs_bucket_id}`;
 
-function uploadToFacebook(problem_media_id, mime, gcs_path) {
-	const vars = { problem_media_id, mime, gcs_path, get_media_tries: 0 };
+function uploadToFacebook(problem_media_id, mime, gcs_path, caption) {
+	const vars = {
+		problem_media_id,
+		mime,
+		gcs_path,
+		caption,
+		get_media_tries: 0
+	};
 	return Promise.resolve(vars)
 		.then(getVars)
 		.then(uploadRequest)
@@ -149,6 +155,7 @@ function uploadRequest(vars) {
 		method: "POST",
 		qs: {
 			access_token,
+			caption: vars.caption,
 			[vars.upload_field]: `${storage_path}/${vars.gcs_path}`
 		}
 	})
