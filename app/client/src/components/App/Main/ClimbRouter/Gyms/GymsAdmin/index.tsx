@@ -25,18 +25,18 @@ class GymsAdmin extends Component<object, gt.gymType> {
 		return (
 			<div className={`${gs.bubble} ${gs.margin} ${styles.new_gym}`}>
 				<h3>New Gym</h3>
-				<p>
+				<div>
 					<div>path</div>
 					<input {...g.input(this, "path", gt.InputType.Text)} />
-				</p>
-				<p>
+				</div>
+				<div>
 					<div>name</div>
 					<input {...g.input(this, "name", gt.InputType.Text)} />
-				</p>
-				<p>
+				</div>
+				<div>
 					<div>description</div>
 					<textarea {...g.input(this, "description")} />
-				</p>
+				</div>
 				<Button onClick={this.submit} variant="primary">
 					Submit
 				</Button>
