@@ -13,7 +13,7 @@ function Gyms(props: { gyms: gt.gymType[] }) {
 		<div>
 			<g.Title title="The Climbing App" />
 			<div className={`${gs.flex} ${styles.gyms_parent}`}>
-				<div className={gs.flex}>
+				<div>
 					{props.gyms.map(gym => (
 						<div
 							key={gym.id}

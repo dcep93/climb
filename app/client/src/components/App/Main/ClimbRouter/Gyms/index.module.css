@@ -1,12 +1,8 @@
 .gym {
 	height: fit-content;
-}
-
-.gyms {
-	align-self: flex-start;
+	width: fit-content;
 }
 
 .gyms_parent {
 	justify-content: space-between;
-	max-width: 50%;
 }
