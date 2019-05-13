@@ -16,9 +16,7 @@ class GymsAdmin extends Component<object, gt.gymType> {
 	submit = () => {
 		g.req("/admin/new_gym", "POST", this.state)
 			.then(() => this.setState(initial_gym))
-			.then(g.refresh)
-			.catch(response => response.text())
-			.then(err => alert(err.split("\n")[0]));
+			.then(g.refresh);
 	};
 
 	render() {
