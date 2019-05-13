@@ -6,18 +6,6 @@ import gs from "../../../../../../globals.module.css";
 import styles from "./index.module.css";
 import Button from "react-bootstrap/Button";
 
-const initial_problem: gt.problemType = {
-	id: 0,
-	name: "",
-	difficulty: "",
-	location: "",
-	date: "",
-	setter: "",
-	color: "",
-	active: true,
-	gym_path: ""
-};
-
 interface PropsType {
 	gym_path: string;
 }
@@ -25,16 +13,28 @@ interface PropsType {
 class NewProblem extends Component<PropsType, gt.problemType> {
 	constructor(props: PropsType) {
 		super(props);
-		this.state = Object.assign({}, initial_problem, {
-			date: g.inputDate()
-		});
+		this.state = this.getInitialProblem();
 	}
 
 	submit = (): void => {
 		g.req(`/gym/${this.props.gym_path}/new_problem`, "POST", this.state)
-			.then(() => this.setState(initial_problem))
+			.then(() => this.setState(this.getInitialProblem()))
 			.then(g.refresh);
 	};
+
+	getInitialProblem() {
+		return {
+			id: 0,
+			name: "",
+			difficulty: "",
+			location: "",
+			date: g.inputDate(),
+			setter: "",
+			color: "",
+			active: true,
+			gym_path: ""
+		};
+	}
 
 	render() {
 		return (

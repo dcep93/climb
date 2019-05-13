@@ -36,14 +36,14 @@ class GymEdit extends Component<PropsType, gt.gymType> {
 								To {this.props.gym.name}
 							</Link>
 							<div className={gs.vertical_space_20} />
-							<p>
+							<div>
 								<div>name</div>
 								<input {...g.input(this, "name")} />
-							</p>
-							<p>
+							</div>
+							<div>
 								<div>description</div>
 								<textarea {...g.input(this, "description")} />
-							</p>
+							</div>
 							<Button onClick={this.submit} variant="primary">
 								Edit
 							</Button>
