@@ -1,9 +1,10 @@
 .picture_div {
-	padding: 20px;
+	padding: 10px;
 	align-self: center;
 }
 
 .picture {
 	max-height: 200px;
-	border: 5px solid black;
+	border: 2px solid black;
+	max-width: 80px;
 }

@@ -56,12 +56,12 @@ class GymProblems extends Component<PropsType, StateType> {
 			>
 				<div>
 					<h4>{`${problem.name} (${problem.id})`}</h4>
-					<p>
+					<div>
 						<label>
 							<span>{problem.difficulty} </span>
 							<input {...this.checkboxProps(problem.id)} />
 						</label>
-					</p>
+					</div>
 					<p>{g.formatDate(problem.date)}</p>
 					<p>
 						{problem.location}

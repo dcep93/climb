@@ -105,8 +105,10 @@ class Filters extends Component<PropsType, StateType> {
 	}
 
 	getSelectOptions(field: SelectType): string[] {
-		return this.props.problemsBank
-			.map(problem => problem[field] as string)
+		return g
+			.unique(
+				this.props.problemsBank.map(problem => problem[field] as string)
+			)
 			.sort();
 	}
 

@@ -150,6 +150,10 @@ class Title extends Component<{ title: string }> {
 	render = () => null;
 }
 
+function unique<T>(values: T[]) {
+	return Array.from(new Set(values));
+}
+
 export default {
 	req,
 	input,
@@ -161,7 +165,8 @@ export default {
 	inputDate,
 	Title,
 	formatDate,
-	dateInput
+	dateInput,
+	unique
 };
 
 // @ts-ignore Type error: Cannot re-export a type when the '--isolatedModules' flag is provided.  TS1205
